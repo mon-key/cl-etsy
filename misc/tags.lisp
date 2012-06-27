@@ -1,6 +1,5 @@
-;; -*- Mode: common-lisp -*-
 
-(in-package "ETSY")
+(in-package #:cl-etsy)
 
 ;;; It is very unlikely that this can run to completion in a
 ;;; reasonable abount of time.  Given the daily limit on API calls and
@@ -15,12 +14,12 @@
   (loop
      with result = () finally (return result)
      with q = (get-top-tags)
-     while q do
-       (flet ((f (x)
-                (push x result)
-                (loop for i in (get-child-tags x)
-                     unless (or (find i q :test #'string=) (find i result :test #'string=))
-                     do (push i q))
-                (format t "~& ~D ~D" (length q) (length result))))
-         (f (pop q)))))
-
+     while q
+     do (flet ((f (x)
+                 (push x result)
+                 (loop
+                    for i in (get-child-tags x)
+                    unless (or (find i q :test #'string=) (find i result :test #'string=))
+                    do (push i q))
+                 (format t "~& ~D ~D" (length q) (length result))))
+          (f (pop q)))))

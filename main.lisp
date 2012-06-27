@@ -1,2 +1,3 @@
-;; -*- mode: lisp; syntax: common-lisp; -*-
-(in-package "ETSY")
+(in-package #:cl-etsy)
+
+

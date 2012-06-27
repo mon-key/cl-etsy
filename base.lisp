@@ -1,16 +1,19 @@
-;; -*- mode: lisp; syntax: common-lisp; -*-
 
-(in-package "ETSY")
-
+(in-package #:cl-etsy)
 
 ;;;; Interval Timers
 
 (defclass timer ()
-  ((start-time :initform 0)
-   (first-index :initform 0)
-   (last-index :initform 0)
-   (max :initform 100)
-   (samples :initform (make-array 100))))
+  ((start-time
+    :initform 0)
+   (first-index
+    :initform 0)
+   (last-index
+    :initform 0)
+   (max
+    :initform 100)
+   (samples
+    :initform (make-array 100))))
 
 (defmethod clear-timer ((timer timer))
   (with-slots (first-index last-index) timer
@@ -21,10 +24,16 @@
   (with-slots (start-time first-index last-index max samples) timer
     (cond
       ((<= first-index last-index)
-       (loop for i from first-index below last-index do (funcall lambda (svref samples i))))
+       (loop
+          for i from first-index below last-index
+          do (funcall lambda (svref samples i))))
       (t
-       (loop for i from first-index below max do (funcall lambda (svref samples i)))
-       (loop for i from 0 below last-index do (funcall lambda (svref samples i)))))))
+       (loop
+          for i from first-index below max
+          do (funcall lambda (svref samples i)))
+       (loop
+          for i from 0 below last-index
+          do (funcall lambda (svref samples i)))))))
 
 (defmacro do-timer-samples ((var timer) &body body)
   `(map-over-timer-samples ,timer #'(lambda (,var) ,@body)))
@@ -40,6 +49,7 @@
       (incf sum x)
       (setf min (min min x))
       (setf max (max max x)))
+    ;; (let ((d (* 1.0 cl:internal-time-units-per-second)))
     (let ((d (* 1.0 INTERNAL-TIME-UNITS-PER-SECOND)))
       (values cnt (/ min d) (/ max d) (/ (/ sum d) cnt)))))
    
@@ -60,7 +70,6 @@
     (setf (svref samples last-index) (- (get-internal-real-time) start-time))))
 
 
-
 (defmacro with-interval-timer ((timer-var) &body body)
   `(let ((#1=#:timer-var ,timer-var))
      (begin-timer #1#)
@@ -70,13 +79,20 @@
 
 (defvar *etsy-api-request-timer* (make-instance 'timer))
 
-
 ;;;; Utilities
 
-(defparameter *base-url* "http://beta-api.etsy.com/v1")
+;; v1
+;; (defparameter *base-url* "http://beta-api.etsy.com/v1")
+
+;; v2
+(defparameter *base-url* "http://openapi.etsy.com/v2")
+  
 
 (defvar *api-key* "you need to set your *API-KEY*")
 
+;; :NOTE Should the following be providing a package to `intern':
+;; `build-symbol', `camel-to-lisp', `lisp-to-json-keyword',
+;; `keyword-to-lisp-symbol', `underscore-to-dash'???
 (defun build-symbol (&rest parts)
   (intern (format nil "~@:(~{~A~^-~}~)" parts)))
 
@@ -127,12 +143,11 @@
      ,@body))
 
 
-
 (defmacro with-json-bindings ((&rest vars) json &body body)
   `(let* ((#1=json ,json)
-          ,@(loop for var in vars
+          ,@(loop
+               for var in vars
                collect `(,var (cdr (assoc ,(lisp-to-json-keyword var) #1#)))))
      ,@body))
-
 
 

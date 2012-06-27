@@ -1,12 +1,11 @@
-;; -*- Mode: common-lisp -*-
 
-(in-package "ETSY")
-
-;; -*- Mode: Common-Lisp -*-
+(in-package #:cl-etsy)
 
 (defun list-of-p (type list)
   (and (listp list)
-       (loop for elm in list always (typep elm type))))
+       (loop
+          for elm in list
+          always (typep elm type))))
 
 (def-suite etsy-api :description "ETSY API")
 
@@ -22,13 +21,12 @@
            (not (find #\space *api-key*)))))
 
 (test ping
-  (is
-   (equal '(("pong") 1)
-          (multiple-value-list (etsy:ping)))))
+  (is (equal '(("pong") 1)
+             (multiple-value-list (cl-etsy:ping)))))
 
 (test get-server-epoch
   "Check if we can get the server's epoch"
-  (is (multiple-value-bind (n c) (etsy:get-server-epoch)
+  (is (multiple-value-bind (n c) (cl-etsy::get-server-epoch)
         (and (eq 1 c)
              (null (cdr n))
              (typep (car n) 'fixnum)))))
@@ -36,7 +34,7 @@
 (test get-user-details
   "See if this user's details still claims to have no cats."
   (is (search "I have no cats"
-              (slot-value (first (etsy:get-user-details 93 :detail-level :high))
+              (slot-value (first (cl-etsy:get-user-details 93 :detail-level :high))
                           'bio))))
 
 (test get-user
@@ -64,7 +62,6 @@
 
 (test get-child-categories
   (is (list-of-p 'string (get-child-categories "art:drawing"))))
-
 
 
 (test get-top-tags

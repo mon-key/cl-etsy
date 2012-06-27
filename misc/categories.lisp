@@ -1,6 +1,5 @@
-;; -*- Mode: common-lisp -*-
 
-(in-package "ETSY")
+(in-package #:cl-etsy)
 
 ;;; You can optionally load this file to get a list of all the known categories ad
 ;;; of the last time this was built.  Note that this list is so long that building 
@@ -1303,11 +1302,11 @@
   (loop
      with result = () finally (return result)
      with q = (get-top-categories)
-     while q do
-       (flet ((f (x)
-                (push x result)
-                (setf q (nconc (get-child-categories x) q))
-                (format t "~& ~D ~D" (length q) (length result))))
-         (f (pop q)))))
+     while q 
+     do (flet ((f (x)
+                 (push x result)
+                 (setf q (nconc (get-child-categories x) q))
+                 (format t "~& ~D ~D" (length q) (length result))))
+          (f (pop q)))))
 
 
