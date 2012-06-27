@@ -268,6 +268,9 @@
 
 (defun get-method-table ()
   "Get a list of all methods available."
+  ;; v2
+  ;; (demarshall-results (with-api-call ("/")) "ApiMethod" 'demarshall-method))
+  ;; v1
   (demarshall-results (with-api-call ("/")) "method" 'demarshall-method))
 
 (defun get-server-epoch ()
