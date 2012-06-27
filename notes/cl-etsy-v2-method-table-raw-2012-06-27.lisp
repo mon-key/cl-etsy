@@ -2,6 +2,30 @@
 ;;; :FILE cl-etsy/notes/cl-etsy-method-table-raw-2012-06-27.lisp
 ;;; ==============================
 
+#|
+ (URL `http://www.etsy.com/developers/documentation/reference/apimethod')
+
+Field  	    Visibility 	Scope  	Type  	  Description
+-----------------------------------------------------
+name 	    public 	none 	string 	  The method's descriptive name.
+
+uri 	    public 	none 	string 	  The method's URI pattern.
+                                          Parameters are marked with a leading colon.
+
+params 	    public 	none 	ParamList An array of method parameters and types.
+
+defaults    public 	none 	ParamList An array of default values for parameters.
+                                          Parameters that lack a default are required.
+
+type 	    public 	none 	string 	  The resource type returned by the method.
+
+visibility  public 	none 	string 	  The method's visibility level.
+                                          Methods marked "private" require authentication.
+
+http_method public 	none 	string 	  The HTTP method used to call the API method. 
+
+|#
+
 (in-package #:cl-etsy)
 
 (api-call "http://openapi.etsy.com/v2/"
