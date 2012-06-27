@@ -93,7 +93,7 @@
 
 (defvar *lisp-keyword-dictionary* (make-hash-table :test #'eq))
 
-(defun estabilish-list-keyword-mapping (symbol1 symbol2)
+(defun establish-list-keyword-mapping (symbol1 symbol2)
   (setf (gethash symbol1 *lisp-keyword-dictionary*) symbol2)
   (setf (gethash symbol2 *lisp-keyword-dictionary*) symbol1))
 

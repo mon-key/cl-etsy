@@ -196,4 +196,4 @@
                          :detail-level ',level) build-api-slot-descriptions)
    (push `(,name :documentation ,doc) class-fields)
    (push `(setf (gethash ',name x) ',(build-symbol "DEMARSHALL" type)) functions-for-demarshall)
-   (push `(estabilish-list-keyword-mapping ',name ,json-key) stms))))
+   (push `(establish-list-keyword-mapping ',name ,json-key) stms))))
