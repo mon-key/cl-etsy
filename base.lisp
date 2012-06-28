@@ -81,14 +81,13 @@
 
 ;;;; Utilities
 
+;; :MOVED *base-url* and *api-key* to file cl-etsy/specials.lisp
 ;; v1
 ;; (defparameter *base-url* "http://beta-api.etsy.com/v1")
-
 ;; v2
-(defparameter *base-url* "http://openapi.etsy.com/v2")
-  
-
-(defvar *api-key* "you need to set your *API-KEY*")
+;; (defparameter *base-url* "http://openapi.etsy.com/v2")
+;; 
+;; (defvar *api-key* "you need to set your *API-KEY*")
 
 ;; :NOTE Should the following be providing a package to `intern':
 ;; `build-symbol', `camel-to-lisp', `lisp-to-json-keyword',
@@ -103,11 +102,14 @@
       (maphash #'copy hash-table)
       result)))
 
+;; :NOTE What happens if STRING is the empty-string or becomes so after the replacement?
+;; :TODO Need to verify the likelyhood of this happening possibly building some guards/traps to recover/bail
 (defun camel-to-lisp (string)
   (intern (nstring-upcase
            (cl-ppcre:regex-replace-all "([A-Z])" string "-\\1"))))
 
-(defvar *lisp-keyword-dictionary* (make-hash-table :test #'eq))
+;; :MOVED  *lisp-keyword-dictionary* to file cl-etsy/specials.lisp
+;; (defvar *lisp-keyword-dictionary* (make-hash-table :test #'eq))
 
 (defun establish-list-keyword-mapping (symbol1 symbol2)
   (setf (gethash symbol1 *lisp-keyword-dictionary*) symbol2)
