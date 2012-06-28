@@ -20,7 +20,7 @@
     (t 
      (underscore-to-dash type-string))))
 
-(defun build-methods ()
+(defun build-methods (&key (method-output-file *build-methods-default-output-pathname*))
   (flet ((url-builder (url-template parameters)
            (let* ((required-args)
                   (url-bits
@@ -42,10 +42,10 @@
            (json:decode-json-from-string
             (flexi-streams:octets-to-string
              (drakma:http-request (concatenate 'string *base-url* "/")
-                                    :parameters `(("api_key" . ,*api-key*)))))))
+                                    :parameters `(("api_key" . ,cl-etsy:*api-key*)))))))
       (with-json-bindings (results) json
         (let ((*package* (symbol-package 'build-methods)))
-          (with-open-file  (*standard-output* "methods.lisp"
+          (with-open-file  (*standard-output* cl-etsy::*build-methods-default-output-pathname* ; :WAS "methods.lisp"
                                               :direction :output
                                               :if-exists :rename-and-delete)
             (let ((*print-case* :downcase))
@@ -79,7 +79,7 @@
 
 
 (defmacro with-api-call ((&rest url-bits) &rest optional-parameters)
-  `(let ((cgi-args (list (cons "api_key" cl-etsy::*api-key*))))
+  `(let ((cgi-args (list (cons "api_key" cl-etsy:*api-key*))))
      ,@(loop
           for (name type) in optional-parameters
           collect `(when ,name
@@ -123,6 +123,13 @@
 
 (defclass etsy-object ()
   ((functions-for-demarshall
+    ;; :NOTE why is allocation :class?
+    ;;  When/where is functions-for-demarshall slot-value mutated?
+    ;;  - Apparently from within expansions of `def-api-class' there is punning
+    ;;    on the loop var FUNCTIONS-FOR-DEMARSHALL which holds a sequence of
+    ;;    existing class allocated slot-value of functions-for-demarshall such
+    ;;    that each new `def-api-class' can update the allocation at runtime.
+    ;;  - We should pay attention to this an perhaps consider using a global variable instead???
     :allocation :class
     :initform (make-hash-table))))
 
@@ -195,9 +202,8 @@
             (setf (api-class-info ',name) api-class-info))
           (defclass ,name (,superclass)
             ((functions-for-demarshall
-              :initform (let ((x (copy-hash-table
-                                  (slot-value (make-instance ',superclass)
-                                              'functions-for-demarshall))))
+              :initform (let ((x (copy-hash-table (slot-value (make-instance ',superclass)
+                                                              'functions-for-demarshall))))
                           ,@functions-for-demarshall
                           x))
              ,@(nreverse class-fields))
