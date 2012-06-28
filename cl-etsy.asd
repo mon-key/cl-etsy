@@ -15,6 +15,7 @@
                ) 
   :serial t
   :components ((:file "packages")
+               (:file "specials")
                (:file "base")
                (:file "api-utils")
                (:file "types")
@@ -26,3 +27,12 @@
                #+5am (:file "tests")
                ))
 
+(defmethod asdf:perform :after ((op asdf:load-op) (system (eql (asdf:find-system :mon))))
+  (when (cl:member :IS-MON cl:*features*)
+    (let ((maybe-loadtime-bind-file 
+            (probe-file (merge-pathnames (make-pathname
+                                          :name "loadtime-bind"
+                                          :type "lisp")
+                                         (asdf:system-source-directory system))))) 
+      (when maybe-loadtime-bind-file
+        (load maybe-loadtime-bind-file :verbose t :print t)))))
