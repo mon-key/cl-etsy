@@ -617,6 +617,7 @@ available at all times."
     ;; doc "The method's descriptive name."
     :doc "The name for this Method")
    ;; not in v2
+   ;;  was this even present in the v1???
    (description
     :level :low
     :type string
@@ -628,10 +629,9 @@ available at all times."
     ;; :doc "The method's URI pattern.
     ;;       Parameters are marked with a leading colon."
     :doc "A template for the URL")
-   ;; params    public 	        none 	                ParamList 
    (params
     :level :low
-    :type method-parameter-table
+    :type method-parameter-table ; ParamList
     ;; v2
     ;; :doc "An array of method parameters and types."
     :doc "A json dictionary of parameter names and their types.")
@@ -657,7 +657,7 @@ available at all times."
    ;; v2
    ;; (defaults
    ;;  :level :low  ; ???
-   ;;  :type  method-parameter-table
+   ;;  :type  method-parameter-table ; ParamList
    ;; :doc "An array of default values for parameters.
    ;;      Parameters that lack a default are required.")
    ))
