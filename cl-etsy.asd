@@ -1,4 +1,6 @@
 
+;; (cl:in-package #:cl-user)
+
 ;; (cl:defpackage #:cl-etsy-build-system (:use #:common-lisp #:asdf))
 
 ;; (cl:in-package #:cl-etsy-build-system)
@@ -14,7 +16,7 @@
                ;; #:flexi-streams see `api-call'
                ) 
   :serial t
-  :components ((:file "packages")
+  :components ((:file "package")
                (:file "specials")
                (:file "base")
                (:file "api-utils")
@@ -28,7 +30,7 @@
                ))
 
 (defmethod asdf:perform :after ((op asdf:load-op) (system (eql (asdf:find-system :mon))))
-  (when (cl:member :IS-MON cl:*features*)
+  (when (member :IS-MON cl:*features*)
     (let ((maybe-loadtime-bind-file 
             (probe-file (merge-pathnames (make-pathname :name "loadtime-bind" :type "lisp")
                                          (asdf:system-source-directory system))))) 
