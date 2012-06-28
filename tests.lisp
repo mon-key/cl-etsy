@@ -42,8 +42,9 @@
   (let ((users (get-users-by-name "bhyde" :limit 100 :detail-level :high)))
     (is
      (and (list-of-p 'user users)
-          (loop for user in users
-             when (equal '("a_warm_zephyr") (slot-value user 'materials))
+          (loop
+            for user in users
+            when (equal '("a_warm_zephyr") (slot-value user 'materials))
              return user)))))
 
 (test get-listings-by-color

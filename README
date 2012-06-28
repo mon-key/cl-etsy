@@ -51,7 +51,7 @@ create a "application"[4] so you have an an API KEY.  Then store that into
 
   (setf esty:*api-key* "thisreallyisnotanapikey")
 
-CL-Etsy requires cl-ppcre, drakma, and cl-json.
+CL-Etsy requires cl-json, cl-ppcre, drakma, and and transitively flexi-streams.
 
 If you have the testing utlity FiveAM[5] loaded when you load the system then you get a modicum of
 testing as defined in the tests.lisp file; you can run these by doing: (fiveam:run! etsy::etsy-api).
