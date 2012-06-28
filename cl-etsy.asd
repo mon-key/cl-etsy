@@ -1,17 +1,17 @@
 
-(cl:defpackage #:cl-etsy-build-system (:use #:common-lisp #:asdf))
+;; (cl:defpackage #:cl-etsy-build-system (:use #:common-lisp #:asdf))
 
-(cl:in-package #:cl-etsy-build-system)
+;; (cl:in-package #:cl-etsy-build-system)
 
 (asdf:defsystem #:cl-etsy
   :version "0.2"
   :author "Ben Hyde <bhyde@pobox.com>"
   :maintainer "MON KEY"
   :licence "Apache 2.0"
-  :depends-on (:cl-ppcre
-               :cl-json
-               :drakma
-               ;; :flexi-streams see `api-call'
+  :depends-on (#:cl-ppcre
+               #:cl-json
+               #:drakma
+               ;; #:flexi-streams see `api-call'
                ) 
   :serial t
   :components ((:file "packages")
@@ -30,9 +30,8 @@
 (defmethod asdf:perform :after ((op asdf:load-op) (system (eql (asdf:find-system :mon))))
   (when (cl:member :IS-MON cl:*features*)
     (let ((maybe-loadtime-bind-file 
-            (probe-file (merge-pathnames (make-pathname
-                                          :name "loadtime-bind"
-                                          :type "lisp")
+            (probe-file (merge-pathnames (make-pathname :name "loadtime-bind" :type "lisp")
                                          (asdf:system-source-directory system))))) 
       (when maybe-loadtime-bind-file
         (load maybe-loadtime-bind-file :verbose t :print t)))))
+

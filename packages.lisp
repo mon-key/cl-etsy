@@ -1,15 +1,19 @@
-;; -*- mode: lisp; syntax: common-lisp; -*-
 
-(cl:in-package #:common-lisp-user)
+;; (cl:in-package #:common-lisp-user)
 
 (cl:defpackage #:cl-etsy
-  (:nicknames "ETSY" "etsy" "CL-ESTY")
+  ;; (:nicknames "ETSY" "etsy" "CL-ESTY")
+  (:nicknames :etsy)
   (:documentation "A bridge from common lisp to API of etsy.com.")
-  (:use "COMMON-LISP" #+5am "FIVEAM")
+  (:use #:common-lisp #+5am "FIVEAM")
   (:export 
+   ;;
    ;; Globals
-   #:*API-KEY*
+   ;;
+   #:*API-KEY* ; :NOTE why would/should *api-key* be exported???
+   ;;
    ;; Api Methods
+   ;;
    #:GET-USER-DETAILS
    #:GET-FAVORERS-OF-SHOP
    #:GET-FAVORERS-OF-LISTING
@@ -44,7 +48,9 @@
    #:GET-METHOD-TABLE
    #:GET-SERVER-EPOCH
    #:PING
+   ;;
    ;; Api Data Structures
+   ;;
    #:USER
    #:USER-NAME
    #:USER-ID
@@ -72,7 +78,9 @@
    #:FEEDBACK-PERCENT-POSITIVE
    #:FAVORITE-CREATION-EPOCH
    #:STATUS
+   ;;
    ;; Shop
+   ;;
    #:SHOP
    #:BANNER-IMAGE-URL
    #:LAST-UPDATED-EPOCH
@@ -91,10 +99,16 @@
    #:POLICY-REFUNDS
    #:POLICY-ADDITIONAL
    #:SECTIONS
+   ;;
    ;; Shop Section
+   ;;
    #:SHOP-SECTION
-   #:SECTION-ID TITLE LISTING-COUNT
+   #:SECTION-ID
+   #:TITLE
+   #:LISTING-COUNT
+   ;;
    ;; Listing
+   ;;
    #:LISTING
    #:LISTING-ID
    #:STATE
@@ -126,7 +140,9 @@
    #:SECTION-TITLE
    #:FAVORITE-CREATION-EPOCH
    #:USER-IMAGE-ID
+   ;;
    ;; Gift Guide
+   ;;
    #:GIFT-GUIDE
    #:GUIDE-ID
    #:CREATION-TSZ-EPOCH
@@ -135,7 +151,9 @@
    #:DISPLAY-ORDER
    #:GUIDE-SECTION-ID
    #:GUIDE-SECTION-TITLE
+   ;;
    ;; Feedback
+   ;;
    #:FEEDBACK
    #:FEEDBACK-ID
    #:LISTING-ID
@@ -151,7 +169,9 @@
    #:VALUE
    #:IMAGE-URL-25X25
    #:IMAGE-URL-FULLXFULL
+   ;;
    ;; API Method
+   ;;
    #:API-METHOD
    #:NAME
    #:DESCRIPTION
@@ -159,7 +179,9 @@
    #:PARAMS
    #:TYPE
    #:HTTP-METHOD
+   ;;
    ;; API Meta
+   ;;
    #:API-CLASS-INFO
    #:SLOT-DESCRIPTION
    #:API-SLOT-DESCRIPTION
