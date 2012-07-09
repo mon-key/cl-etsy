@@ -24,6 +24,163 @@ visibility  public 	none 	string 	  The method's visibility level.
 
 http_method public 	none 	string 	  The HTTP method used to call the API method. 
 
+----
+:TYPES
+
+ApiMethod
+Int
+String
+
+Avatar
+ - "uploadAvatar", "getAvatarImgSrc"
+
+BillCharge
+ - "findAllUserCharges"
+
+BillPayment
+ - "findAllUserPayments"
+
+BillingOverview
+ - "getUserBillingOverview"
+
+Cart
+ - "getAllUserCarts", "addToCart", "updateCartListingQuantity",
+   "removeCartListing", "getUserCart", "updateCart", "deleteCart"
+
+Category
+ - "getCategory", "getSubCategory", "getSubSubCategory", "findAllTopCategory",
+   "findAllTopCategoryChildren", "findAllSubCategoryChildren"
+
+Country
+ - "findAllCountry", "getCountry"
+
+Coupon
+ - "findAllShopCoupons", "createCoupon", "findCoupon", "updateCoupon",
+   "deleteCoupon"
+
+DataType
+ - "describeOccasionEnum", "describeRecipientEnum", "describeWhenMadeEnum",
+   "describeWhoMadeEnum"
+
+FavoriteListing
+ - "findAllListingFavoredBy", "findAllUserFavoriteListings",
+   "findUserFavoriteListings", "createUserFavoriteListings",
+   "deleteUserFavoriteListings"
+
+FavoriteUser
+ - "findAllUserFavoredBy", "findAllUserFavoriteUsers", "findUserFavoriteUsers",
+   "createUserFavoriteUsers", "deleteUserFavoriteUsers"
+
+FeaturedTreasury
+ - "findAllFeaturedTreasuries", "getFeaturedTreasuryById",
+   "findAllListingsForFeaturedTreasuryId",
+   "findAllActiveListingsForFeaturedTreasuryId",
+   "findAllFeaturedTreasuriesByOwner"
+
+Feedback
+ - "findAllUserFeedbackAsAuthor", "findAllUserFeedbackAsSeller",
+   "findAllUserFeedbackAsSubject", "findAllFeedbackFromBuyers",
+   "findAllFeedbackFromSellers"
+
+ForumPost
+ - "findTreasuryComments", "postTreasuryComment", "deleteTreasuryComment"
+
+Ledger
+ - "findLedger"
+
+LedgerEntry
+ - "findLedgerEntries"
+
+Listing
+ - "createListing", "getListing", "updateListing", "deleteListing"
+   "findAllListingActive", "findAllListingsForFeaturedTreasuryId",
+   "findAllActiveListingsForFeaturedTreasuryId", "findAllFeaturedListings",
+   "findAllCurrentFeaturedListings", "findAllReceiptListings",
+   "findAllShopListingsActive", "findAllShopListingsDraft",
+   "findAllShopListingsExpired", "getShopListingExpired",
+   "findAllShopListingsFeatured", "findAllShopListingsInactive",
+   "getShopListingInactive", "findAllShopSectionListings",
+   "findAllShopSectionListingsActive", "findAllCartListings"
+
+ListingImage
+ - "findAllListingImages", "uploadListingImage", "getImage_Listing", "deleteListingImage",
+
+ListingTranslation
+ - "getListingTranslation", 
+
+Order
+ - "getOrder", "findAllUserOrders"
+
+Payment
+ - "findPayment"
+
+PaymentAdjustment
+ - "findPaymentAdjustments", "findPaymentAdjustment", 
+
+PaymentAdjustmentItem
+ - "findPaymentAdjustmentItem"
+
+PaymentTemplate
+ - "createPaymentTemplate", "getPaymentTemplate", "updatePaymentTemplate",
+   "findAllUserPaymentTemplates"
+
+Receipt
+ - "findAllOrderReceipts", "createReceiptOnSandbox", "updateReceipt",
+   "findAllShopReceipts", "findAllShopReceiptsByStatus",
+   "findAllUserBuyerReceipts"
+
+Region
+ - "findAllRegion", "getRegion"
+
+ShippingInfo
+ - "createShippingInfo", "getShippingInfo", "updateShippingInfo",
+   "deleteShippingInfo", "findAllListingShippingInfo",
+
+ShippingTemplate
+ - "createShippingTemplate", "getShippingTemplate", "updateShippingTemplate",
+   "deleteShippingTemplate", "findAllUserShippingTemplates"
+
+ShippingTemplateEntry
+ - "findAllShippingTemplateEntries", "createShippingTemplateEntry",
+   "getShippingTemplateEntry", "updateShippingTemplateEntry",
+   "deleteShippingTemplateEntry"
+
+Shop
+ - "getShop", "updateShop", "findAllUserShops", "findAllShops",
+   "uploadShopBanner", "deleteShopBanner"
+
+ShopSection
+ - "findAllShopSections", "createShopSection", "getShopSection",
+   "updateShopSection", "deleteShopSection",
+   "getShopSectionTranslationShopSection"
+
+ShopSectionTranslation
+ - "getShopTranslation"
+
+ShopTranslation
+ - "getShopTranslation"
+
+Style
+ - "findSuggestedStyles"
+
+Tag
+ - "findPopularTags", "findAllRelatedTags"
+
+Team
+ - "findAllTeams", "findTeams", "findAllTeamsForUser", 
+
+Transaction
+ - "findAllUserBuyerTransactions", "findAllReceiptTransactions", "findAllShopTransactions", "getTransaction", 
+
+Treasury
+ - "findAllTreasuries", "createTreasury", "getTreasury", "deleteTreasury"
+
+User
+ - "findAllUsersForTeam", "findAllUsers", "getUser"
+
+UserAddress
+ - "findAllUserAddresses", "createUserAddress", "getUserAddress", "deleteUserAddress"
+
 
 |#
 
@@ -76,7 +233,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "findAllCountry") 
+  ((:NAME        . "findAllCountry")
    (:DESCRIPTION . "Finds all Country.")
    (:URI         . "/countries")
    (:PARAMS)
@@ -85,7 +242,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "getCountry") 
+  ((:NAME        . "getCountry")
    (:DESCRIPTION . "Retrieves a Country by id.")
    (:URI         . "/countries/:country_id")
    (:PARAMS
@@ -186,12 +343,12 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "createListing") 
+  ((:NAME        . "createListing")
    (:DESCRIPTION . "Creates a new Listing")
    (:URI         . "/listings")
    (:PARAMS
     (:QUANTITY               . "int")
-    (:TITLE                  . "string") 
+    (:TITLE                  . "string")
     (:DESCRIPTION            . "text")
     (:PRICE                  . "float")
     (:MATERIALS              . "array(string)")
@@ -223,7 +380,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "POST"))
      
-  ((:NAME        . "getListing") 
+  ((:NAME        . "getListing")
    (:DESCRIPTION . "Retrieves a Listing by id.")
    (:URI         . "/listings/:listing_id")
    (:PARAMS
@@ -233,7 +390,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "updateListing") 
+  ((:NAME        . "updateListing")
    (:DESCRIPTION . "Updates a Listing")
    (:URI         . "/listings/:listing_id")
    (:PARAMS
@@ -260,7 +417,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
     (:STYLE . "array(string)"))
    (:DEFAULTS
     (:QUANTITY)
-    (:TITLE) 
+    (:TITLE)
     (:DESCRIPTION)
     (:PRICE)
     (:MATERIALS)
@@ -280,7 +437,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "PUT"))
      
-  ((:NAME        . "deleteListing") 
+  ((:NAME        . "deleteListing")
    (:DESCRIPTION . "Deletes a Listing")
    (:URI         . "/listings/:listing_id")
    (:PARAMS
@@ -316,7 +473,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "uploadListingImage") 
+  ((:NAME        . "uploadListingImage")
    (:DESCRIPTION . "Upload a new listing image")
    (:URI         . "/listings/:listing_id/images")
    (:PARAMS
@@ -340,7 +497,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "deleteListingImage") 
+  ((:NAME        . "deleteListingImage")
    (:DESCRIPTION . "Deletes a listing image")
    (:URI         . "/listings/:listing_id/images/:listing_image_id")
    (:PARAMS
@@ -440,7 +597,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "getOrder") 
+  ((:NAME        . "getOrder")
    (:DESCRIPTION . "Retrieves a Order by id.")
    (:URI         . "/orders/:order_id")
    (:PARAMS
@@ -466,7 +623,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "findPayment") 
+  ((:NAME        . "findPayment")
    (:DESCRIPTION . "Get a Direct Checkout Payment")
    (:URI         . "/payments/:payment_id")
    (:PARAMS
@@ -522,8 +679,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
      
   ((:NAME        . "findPaymentAdjustmentItem")
    (:DESCRIPTION . "Get a Direct Checkout Payment Adjustment Item")
-   (:URI
-    . "/payments/:payment_id/adjustments/:payment_adjustment_id/items/:payment_adjustment_item_id")
+   (:URI         . "/payments/:payment_id/adjustments/:payment_adjustment_id/items/:payment_adjustment_item_id")
    (:PARAMS
     (:PAYMENT--ID                   . "int")
     (:PAYMENT--ADJUSTMENT--ID       . "int")
@@ -625,7 +781,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "POST"))
      
-  ((:NAME        . "getReceipt") 
+  ((:NAME        . "getReceipt")
    (:DESCRIPTION . "Retrieves a Receipt by id.")
    (:URI         . "/receipts/:receipt_id")
    (:PARAMS
@@ -635,7 +791,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "updateReceipt") 
+  ((:NAME        . "updateReceipt")
    (:DESCRIPTION . "Updates a Receipt")
    (:URI         . "/receipts/:receipt_id")
    (:PARAMS
@@ -688,7 +844,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "findAllRegion") 
+  ((:NAME        . "findAllRegion")
    (:DESCRIPTION . "Finds all Region.")
    (:URI         . "/regions")
    (:PARAMS)
@@ -697,7 +853,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "getRegion") 
+  ((:NAME        . "getRegion")
    (:DESCRIPTION . "Retrieves a Region by id.")
    (:URI         . "/regions/:region_id")
    (:PARAMS
@@ -716,7 +872,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "ping") 
+  ((:NAME        . "ping")
    (:DESCRIPTION . "Check that the server is alive.")
    (:URI         . "/server/ping")
    (:PARAMS)
@@ -912,7 +1068,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "getShop") 
+  ((:NAME        . "getShop")
    (:DESCRIPTION . "Retrieves a Shop by id.")
    (:URI         . "/shops/:shop_id")
    (:PARAMS
@@ -922,7 +1078,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "updateShop") 
+  ((:NAME        . "updateShop")
    (:DESCRIPTION . "Updates a Shop")
    (:URI         . "/shops/:shop_id")
    (:PARAMS
@@ -965,7 +1121,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "POST"))
      
-  ((:NAME        . "deleteShopBanner") 
+  ((:NAME        . "deleteShopBanner")
    (:DESCRIPTION . "Deletes a shop banner image")
    (:URI         . "/shops/:shop_id/appearance/banner")
    (:PARAMS
@@ -985,7 +1141,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "createCoupon") 
+  ((:NAME        . "createCoupon")
    (:DESCRIPTION . "Creates a new Coupon.")
    (:URI         . "/shops/:shop_id/coupons")
    (:PARAMS
@@ -1015,7 +1171,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "GET"))
      
-  ((:NAME        . "updateCoupon") 
+  ((:NAME        . "updateCoupon")
    (:DESCRIPTION . "Updates a coupon")
    (:URI         . "/shops/:shop_id/coupons/:coupon_id")
    (:PARAMS
@@ -1028,7 +1184,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "PUT"))
      
-  ((:NAME        . "deleteCoupon") 
+  ((:NAME        . "deleteCoupon")
    (:DESCRIPTION . "Deletes a coupon")
    (:URI         . "/shops/:shop_id/coupons/:coupon_id")
    (:PARAMS
@@ -1039,7 +1195,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "DELETE"))
      
-  ((:NAME        . "findLedger") 
+  ((:NAME        . "findLedger")
    (:DESCRIPTION . "Get a Shop Payment Account Ledger")
    (:URI         . "/shops/:shop_id/ledger/")
    (:PARAMS
@@ -1240,7 +1396,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "createShopSection") 
+  ((:NAME        . "createShopSection")
    (:DESCRIPTION . "Creates a new ShopSection.")
    (:URI         . "/shops/:shop_id/sections")
    (:PARAMS
@@ -1332,9 +1488,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "getShopTranslation")
-      
-   (:DESCRIPTION
-    . "Retrieves a ShopSectionTranslation by shop_id and language")
+   (:DESCRIPTION . "Retrieves a ShopSectionTranslation by shop_id and language")
    (:URI         . "/shops/:shop_id/sections/:shop_section_id/translations/:language")
    (:PARAMS
     (:SHOP--ID          . "shop_id_or_name")
@@ -1346,9 +1500,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "findAllShopTransactions")
-      
-   (:DESCRIPTION
-    . "Retrieves a set of Transaction objects associated to a Shop.")
+   (:DESCRIPTION . "Retrieves a set of Transaction objects associated to a Shop.")
    (:URI         . "/shops/:shop_id/transactions")
    (:PARAMS
     (:SHOP--ID . "shop_id_or_name")
@@ -1375,9 +1527,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "getShopSectionTranslationShopSection")
-      
-   (:DESCRIPTION
-    . "Retrieves a set of ShopSection objects associated to a ShopSectionTranslation.")
+   (:DESCRIPTION . "Retrieves a set of ShopSection objects associated to a ShopSectionTranslation.")
    (:URI         . "/shopsectiontranslations/:shop_section_id/shopsection")
    (:PARAMS
     (:SHOP--SECTION--ID . "int"))
@@ -1406,9 +1556,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "findAllSubCategoryChildren")
-      
-   (:DESCRIPTION
-    . "Retrieves children of a second-level Category by tag and subtag.")
+   (:DESCRIPTION . "Retrieves children of a second-level Category by tag and subtag.")
    (:URI         . "/taxonomy/categories/:tag/:subtag")
    (:PARAMS
     (:TAG    . "string")
@@ -1428,9 +1576,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "findPopularTags")
-      
-   (:DESCRIPTION
-    . "DEPRECATED - Retrieves all related tags for the given tag set.")
+   (:DESCRIPTION . "DEPRECATED - Retrieves all related tags for the given tag set.")
    (:URI         . "/taxonomy/tags")
    (:PARAMS
     (:LIMIT . "int"))
@@ -1441,8 +1587,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "findAllRelatedTags")
-   (:DESCRIPTION
-    . "DEPRECATED - Retrieves all related tags for the given tag set.")
+   (:DESCRIPTION . "DEPRECATED - Retrieves all related tags for the given tag set.")
    (:URI         . "/taxonomy/tags/:tags")
    (:PARAMS
     (:TAGS  . "array(string)")
@@ -1453,7 +1598,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "findAllTeams") 
+  ((:NAME        . "findAllTeams")
    (:DESCRIPTION . "Returns all Teams")
    (:URI         . "/teams")
    (:PARAMS
@@ -1496,7 +1641,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "getTransaction") 
+  ((:NAME        . "getTransaction")
    (:DESCRIPTION . "Retrieves a Transaction by id.")
    (:URI         . "/transactions/:transaction_id")
    (:PARAMS
@@ -1527,11 +1672,11 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "createTreasury") 
+  ((:NAME        . "createTreasury")
    (:DESCRIPTION . "Create a Treasury")
    (:URI         . "/treasuries")
    (:PARAMS
-    (:TITLE        . "treasury_title") 
+    (:TITLE        . "treasury_title")
     (:DESCRIPTION  . "treasury_description")
     (:LISTING--IDS . "array(int)")
     (:TAGS         . "array(string)")
@@ -1543,7 +1688,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "POST"))
 
-  ((:NAME        . "getTreasury") 
+  ((:NAME        . "getTreasury")
    (:DESCRIPTION . "Get a Treasury")
    (:URI         . "/treasuries/:treasury_key")
    (:PARAMS
@@ -1553,7 +1698,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "deleteTreasury") 
+  ((:NAME        . "deleteTreasury")
    (:DESCRIPTION . "Delete a Treasury")
    (:URI         . "/treasuries/:treasury_key")
    (:PARAMS)
@@ -1652,7 +1797,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "public")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "getUser") 
+  ((:NAME        . "getUser")
    (:DESCRIPTION . "Retrieves a User by id.")
    (:URI         . "/users/:user_id")
    (:PARAMS
@@ -1663,9 +1808,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "findAllUserAddresses")
-      
-   (:DESCRIPTION
-    . "Retrieves a set of UserAddress objects associated to a User.")
+   (:DESCRIPTION . "Retrieves a set of UserAddress objects associated to a User.")
    (:URI         . "/users/:user_id/addresses")
    (:PARAMS
     (:USER--ID . "user_id_or_name")
@@ -1680,7 +1823,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "createUserAddress") 
+  ((:NAME        . "createUserAddress")
    (:DESCRIPTION . "Creates a new UserAddress.")
    (:URI         . "/users/:user_id/addresses/")
    (:PARAMS
@@ -1699,7 +1842,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "POST"))
 
-  ((:NAME        . "getUserAddress") 
+  ((:NAME        . "getUserAddress")
    (:DESCRIPTION . "Retrieves a UserAddress by id.")
    (:URI         . "/users/:user_id/addresses/:user_address_id")
    (:PARAMS
@@ -1719,7 +1862,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "DELETE"))
 
-  ((:NAME        . "uploadAvatar") 
+  ((:NAME        . "uploadAvatar")
    (:DESCRIPTION . "Upload a new user avatar image")
    (:URI         . "/users/:user_id/avatar")
    (:PARAMS
@@ -1734,7 +1877,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "POST"))
 
-  ((:NAME        . "getAvatarImgSrc") 
+  ((:NAME        . "getAvatarImgSrc")
    (:DESCRIPTION . "Get avatar image source")
    (:URI         . "/users/:user_id/avatar/src")
    (:PARAMS
@@ -1755,7 +1898,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "getAllUserCarts") 
+  ((:NAME        . "getAllUserCarts")
    (:DESCRIPTION . "Get a user's Carts")
    (:URI         . "/users/:user_id/carts")
    (:PARAMS
@@ -1765,7 +1908,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "addToCart") 
+  ((:NAME        . "addToCart")
    (:DESCRIPTION . "Add a listing to a cart")
    (:URI         . "/users/:user_id/carts")
    (:PARAMS
@@ -1801,7 +1944,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "DELETE"))
 
-  ((:NAME        . "getUserCart") 
+  ((:NAME        . "getUserCart")
    (:DESCRIPTION . "Get a cart")
    (:URI         . "/users/:user_id/carts/:cart_id")
    (:PARAMS
@@ -1812,7 +1955,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "GET"))
 
-  ((:NAME        . "updateCart") 
+  ((:NAME        . "updateCart")
    (:DESCRIPTION . "Update a cart")
    (:URI         . "/users/:user_id/carts/:cart_id")
    (:PARAMS
@@ -1829,7 +1972,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:VISIBILITY   . "private")
    (:HTTP--METHOD . "PUT"))
 
-  ((:NAME        . "deleteCart") 
+  ((:NAME        . "deleteCart")
    (:DESCRIPTION . "Delete a cart")
    (:URI         . "/users/:user_id/carts/:cart_id")
    (:PARAMS
@@ -1875,8 +2018,7 @@ http_method public 	none 	string 	  The HTTP method used to call the API method.
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "findAllUserFavoredBy")
-   (:DESCRIPTION
-    . "Retrieves a set of FavoriteUser objects associated to a User.")
+   (:DESCRIPTION . "Retrieves a set of FavoriteUser objects associated to a User.")
    (:URI         . "/users/:user_id/favored-by")
    (:PARAMS
     (:USER--ID . "user_id_or_name")
