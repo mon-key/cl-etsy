@@ -2,19 +2,29 @@
 ;;; :FILE cl-etsy/api-class/etsy-param-list-class.lisp
 ;;; ==============================
 
+
 ;; (URL `http://www.etsy.com/developers/documentation/reference/paramlist')
 ;; This is an associative array (an alist) that maps parameter names to types. 
 ;; It has a varying number of fields with differing names.
 
 (in-package #:cl-etsy)
 
-(def-api-class param-list ()
-  (;param_name
+;; ParamList
+(defclass param-list (base-etsy)
+  (;; param_name
    (param-name
-    :type string
-    :doc "Each field in the record represents an Etsy API method parameter. 
-          The value corresponds to one of the documented data or resource types.")
-   ))
+    :initarg :param-name
+    :accessor param-name
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type string
+    :documentation "Each field in the record represents an Etsy API method parameter.
+The value corresponds to one of the documented data or resource types."))
+  ;; (:default-initargs :param-name nil)
+  (:documentation "
+Each field in the record represents an Etsy API method parameter. 
+The value corresponds to one of the documented data or resource types. 
+ (URL `http://www.etsy.com/developers/documentation/reference/paramlist')"))
 
 ;; (defmethod print-object ((x param-list) stream)
 ;;   (dumb-printing stream x "~~A" param-name))
