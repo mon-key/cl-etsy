@@ -24,6 +24,18 @@
 ;;  brightness is-black-and-white url views num-favorers who-made is-supply
 ;;  when-made recipient occasion style)
 
+;; param-list
+;; (param-name)
+
+;; shop
+;; (shop-id shop-name first-line second-line city state zip country-id user-id
+;;  creation-tsz title announcement currency-code is-vacation vacation-message
+;;  sale-message last-updated-tsz listing-active-count login-name lat lon
+;;  alchemy-message is-refusing-alchemy policy-welcome policy-payment
+;;  policy-shipping policy-refunds policy-additional policy-seller-info
+;;  policy-updated-tsz vacation-autoreply ga-code name url image-url-760x100
+;;  num-favorers languages)
+
 ;; tag
 ;; (tag name num-listings weight)
 
