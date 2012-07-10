@@ -52,7 +52,7 @@ API-METHODS
 
 (in-package #:cl-etsy)
 
-(defclass  (base-etsy)
+(defclass transaction (base-etsy)
     (
      ;; transaction_id
      (transaction-id
