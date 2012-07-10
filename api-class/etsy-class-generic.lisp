@@ -2,9 +2,33 @@
 ;;; :FILE cl-etsy/api-class/etsy-class-generic.lisp
 ;;; ==============================
 
+;; category
+;; (category-id name meta-title meta-keywords meta-description page-description
+;;  page-title category-name short-name long-name num-children)
+
+;; data-type
+;; (type data-type-values)
+
+;; feedback
+;; (feedback-id transaction-id creator-user-id target-user-id seller-user-id
+;;  buyer-user-id creation-tsz message value image-feedback-id image-url-25x25
+;;  image-url-155x125 image-url-fullxfull)
+
+;; feedback-info
+;; (count score)
+
+;; listing
+;; (listing-id state user-id category-id title description creation-tsz ending-tsz
+;;  original-creation-tsz last-modified-tsz price currency-code quantity tags
+;;  category-path materials shop-section-id featured-rank state-tsz hue saturation
+;;  brightness is-black-and-white url views num-favorers who-made is-supply
+;;  when-made recipient occasion style)
 
 ;; tag
 ;; (tag name num-listings weight)
+
+;; user
+;; (user-id login-name primary-email creation-tsz referred-by-user-id  feedback-info) 
 
 ;; user-profile
 ;; (user-profile-id user-id login-name bio gender birth-month birth-day birth-year
@@ -33,6 +57,7 @@
 ;;  paid-tsz shipped-tsz price currency-code quantity tags materials
 ;;  image-listing-id receipt-id shipping-cost listing-id seller-feedback-id
 ;;  buyer-feedback-id transaction-type url)
+
 
 (in-package #:cl-etsy)
 
