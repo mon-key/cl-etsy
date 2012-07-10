@@ -3,6 +3,22 @@
 ;;; ==============================
 
 #|
+
+----
+Regexp for converting the fields table from the Etsy documentation URL:
+ http://www.etsy.com/developers/documentation/reference/<FOO>
+
+\(.*\) 	\(.*\) 	\(.*\) 	\(.*\) 	\(.*\)
+;; \1
+(\1
+:initarg :
+:accessor 
+;; :visibility \2
+;; :perm-scope \3
+;; :type \4
+:documentation "\5")
+
+----
  (URL `http://www.etsy.com/developers/documentation/reference/apimethod')
 
 Field  	    Visibility 	Scope  	Type  	  Description
@@ -24,6 +40,140 @@ visibility  public 	none 	string 	  The method's visibility level.
 
 http_method public 	none 	string 	  The HTTP method used to call the API method. 
 
+
+
+----
+ (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_parameter_types')
+
+:Parameter-Types
+
+Many API methods take one or more parameters, either as query parameters of the
+URL itself, or as POST parameters. The documentation for each method references
+these standard types:
+
+string
+"Any string (up to 255 characters)."
+
+int
+"A whole number value."
+
+epoch
+"A whole number value representing UNIX epoch time, or any string accepted by
+PHP's strtotime() function."
+
+float
+"A number with or without a decimal point. 
+Represented in output as a string, to avoid precision errors."
+
+boolean
+"A logical true or false value. 
+May be passed to API requests as the strings "true" or "false" or "1" and "0".
+In JSON output, symbolic constants are used."
+
+user_id_or_name
+"Either a user's numeric ID or login name."
+
+shop_id_or_name
+"Either a shop's numeric ID or login name. 
+ (Note: shop IDs are not interchangeable with user IDs.)"
+
+team_id_or_name
+"Either a teams's numeric ID or full name, including spaces and punctuation. 
+ (Note: Team captains may change the name of a team.)"
+
+treasury_description
+"A string 255 characters long or less."
+
+treasury_id
+"A string that uniquely identifies a treasury."
+
+treasury_search_string
+"In the general case, this can be any string. However, there are four special
+prefixes that can be used.
+ shop:    will look for lists where one of the shop's listings is included.
+ curator: will find all the lists created by the person specified.
+ title:  will find lists with a specific title. 
+ tags:, listing_title:, listing_tags: follow the same pattern.
+Because the colon ":" is used as a special character to separate the special
+prefixes, you may only have 1 colon in your search string, and the text that
+comes before the colon must match one of the prefixes stated above."
+
+treasury_title
+"A string 127 characters long or less"
+
+enum(values)
+"A predefined list of string values, for example true and false.
+Any value not in the list will result in an error."
+
+array(type)
+"A list of values, separated by commas (#\,).
+Do not include parentheses or brackets. 
+Each value must be a valid instance of <TYPE>."
+
+color_triplet
+"Either an HSV color specified as an array in the range [0;0;0 , 360;100;100] or an
+RGB color specified in hexadecimal notation in the range [#000000 , #FFFFFF].
+:NOTE RGB colors are converted to HSV internally, which may result in small
+rounding errors.  They may omit the leading "#", or use the three-digit form."
+
+color_wiggle
+"Specify the degree of tolerance for color matching where 0 is the most accurate, and 30 is the least."
+
+latitude
+"A valid numeric latitude, between -90.0 and 90.0"
+
+longitude
+"A valid numeric longitude, between -180.0 and 180.0"
+
+image
+"An image file; see Uploading Images"
+
+region
+"An ISO 3166-1 alpha 2 country code. Currently supported values: US, CA, AU, GB, DE, FR, NL"
+
+currency
+"A 3-letter ISO 4217 code."
+
+language
+"An IETF language code. Currently supported values: en, de, fr"
+
+----
+:STANARD-PARAMETERS
+ (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_standard_parameters')
+
+Here is a list of standard parameters that are accepted by many or all API methods:
+Parameter,Type,Meaning
+
+api_key
+type string
+Your API key. Required for all public entry point calls
+
+method
+string
+Used to specify a custom HTTP method for method overloading.
+
+limit
+int
+Specifies the maximum number of records to return.
+
+offset
+int
+Skips the first N records before returning results. 
+Combine with limit for pagination.
+
+fields
+array(string)
+Used to limit the fields in a response object; fields not listed will not be
+returned. Separate multiple fields with commas.
+
+includes
+array(string)
+Used to include associated objects in a response. See Working with Resources below.
+
+callback
+string
+Used in conjunction with the JSONP output format to specify a callback function name.
+
 ----
 :TYPES
 
@@ -31,85 +181,14 @@ ApiMethod
 Int
 String
 
-Avatar
- - "uploadAvatar", "getAvatarImgSrc"
-
-BillCharge
- - "findAllUserCharges"
-
-BillPayment
- - "findAllUserPayments"
-
-BillingOverview
- - "getUserBillingOverview"
-
-Cart
- - "getAllUserCarts", "addToCart", "updateCartListingQuantity",
-   "removeCartListing", "getUserCart", "updateCart", "deleteCart"
-
-Category
- - "getCategory", "getSubCategory", "getSubSubCategory", "findAllTopCategory",
-   "findAllTopCategoryChildren", "findAllSubCategoryChildren"
-
 Country
  - "findAllCountry", "getCountry"
-
-Coupon
- - "findAllShopCoupons", "createCoupon", "findCoupon", "updateCoupon",
-   "deleteCoupon"
-
-DataType
- - "describeOccasionEnum", "describeRecipientEnum", "describeWhenMadeEnum",
-   "describeWhoMadeEnum"
-
-FavoriteListing
- - "findAllListingFavoredBy", "findAllUserFavoriteListings",
-   "findUserFavoriteListings", "createUserFavoriteListings",
-   "deleteUserFavoriteListings"
-
-FavoriteUser
- - "findAllUserFavoredBy", "findAllUserFavoriteUsers", "findUserFavoriteUsers",
-   "createUserFavoriteUsers", "deleteUserFavoriteUsers"
-
-FeaturedTreasury
- - "findAllFeaturedTreasuries", "getFeaturedTreasuryById",
-   "findAllListingsForFeaturedTreasuryId",
-   "findAllActiveListingsForFeaturedTreasuryId",
-   "findAllFeaturedTreasuriesByOwner"
-
-Feedback
- - "findAllUserFeedbackAsAuthor", "findAllUserFeedbackAsSeller",
-   "findAllUserFeedbackAsSubject", "findAllFeedbackFromBuyers",
-   "findAllFeedbackFromSellers"
-
-ForumPost
- - "findTreasuryComments", "postTreasuryComment", "deleteTreasuryComment"
 
 Ledger
  - "findLedger"
 
 LedgerEntry
  - "findLedgerEntries"
-
-Listing
- - "createListing", "getListing", "updateListing", "deleteListing"
-   "findAllListingActive", "findAllListingsForFeaturedTreasuryId",
-   "findAllActiveListingsForFeaturedTreasuryId", "findAllFeaturedListings",
-   "findAllCurrentFeaturedListings", "findAllReceiptListings",
-   "findAllShopListingsActive", "findAllShopListingsDraft",
-   "findAllShopListingsExpired", "getShopListingExpired",
-   "findAllShopListingsFeatured", "findAllShopListingsInactive",
-   "getShopListingInactive", "findAllShopSectionListings",
-   "findAllShopSectionListingsActive", "findAllCartListings"
-
-ListingImage
- - "findAllListingImages", "uploadListingImage", "getImage_Listing", "deleteListingImage",
-
-ListingTranslation
- - "getListingTranslation", 
-
-Order
- - "getOrder", "findAllUserOrders"
 
 Payment
  - "findPayment"
@@ -124,62 +203,271 @@ PaymentTemplate
  - "createPaymentTemplate", "getPaymentTemplate", "updatePaymentTemplate",
    "findAllUserPaymentTemplates"
 
-Receipt
- - "findAllOrderReceipts", "createReceiptOnSandbox", "updateReceipt",
-   "findAllShopReceipts", "findAllShopReceiptsByStatus",
-   "findAllUserBuyerReceipts"
-
-Region
- - "findAllRegion", "getRegion"
-
-ShippingInfo
- - "createShippingInfo", "getShippingInfo", "updateShippingInfo",
-   "deleteShippingInfo", "findAllListingShippingInfo",
-
-ShippingTemplate
- - "createShippingTemplate", "getShippingTemplate", "updateShippingTemplate",
-   "deleteShippingTemplate", "findAllUserShippingTemplates"
-
-ShippingTemplateEntry
- - "findAllShippingTemplateEntries", "createShippingTemplateEntry",
-   "getShippingTemplateEntry", "updateShippingTemplateEntry",
-   "deleteShippingTemplateEntry"
-
-Shop
- - "getShop", "updateShop", "findAllUserShops", "findAllShops",
-   "uploadShopBanner", "deleteShopBanner"
-
-ShopSection
- - "findAllShopSections", "createShopSection", "getShopSection",
-   "updateShopSection", "deleteShopSection",
-   "getShopSectionTranslationShopSection"
-
-ShopSectionTranslation
- - "getShopTranslation"
-
-ShopTranslation
- - "getShopTranslation"
-
-Style
- - "findSuggestedStyles"
-
-Tag
- - "findPopularTags", "findAllRelatedTags"
-
-Team
- - "findAllTeams", "findTeams", "findAllTeamsForUser", 
-
-Transaction
- - "findAllUserBuyerTransactions", "findAllReceiptTransactions", "findAllShopTransactions", "getTransaction", 
-
-Treasury
- - "findAllTreasuries", "createTreasury", "getTreasury", "deleteTreasury"
-
-User
- - "findAllUsersForTeam", "findAllUsers", "getUser"
 
 UserAddress
  - "findAllUserAddresses", "createUserAddress", "getUserAddress", "deleteUserAddress"
+
+
+(with-output-to-string (v)
+  (format v ":API-CLASSES")
+  (dolist (i '("Avatar" "BillCharge" "BillingOverview" "BillPayment" "Cart" "CartListing"
+               "Category" "Country" "Coupon" "DataType" "FavoriteListing" "FavoriteUser"
+               "FeaturedTreasury" "Feedback" "FeedbackInfo" "ForumPost" "Listing"
+               "ListingImage" "ListingTranslation" "Order" "ParamList" "PaymentTemplate"
+               "Receipt" "Region" "ShippingInfo" "ShippingTemplate" "ShippingTemplateEntry"
+               "Shop" "ShopSection" "ShopSectionTranslation" "ShopTranslation" "Style" "Tag"
+               "Team" "Transaction" "Treasury" "TreasuryCounts" "TreasuryListing"
+               "TreasuryListingData" "User" "UserAddress" "UserProfile")
+             v)
+    (format v "~2%:API  ~A~%:LISP ~A~%:DOC  (url `http://www.etsy.com/developers/documentation/reference/~(~A~)')~%:METHODS" 
+            i
+            (nstring-downcase
+             (nsubstitute #\- #\_ 
+                          (cl-ppcre:regex-replace-all "(?<!^)((?<!_)([A-Z]))" i "-\\1")))
+            i)))
+
+:API-CLASSES
+
+:API  Avatar
+:LISP avatar
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/avatar')
+:METHODS "uploadAvatar" "getAvatarImgSrc"
+
+:API  BillCharge
+:LISP bill-charge
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/billcharge')
+:METHODS "findAllUserCharges"
+
+:API  BillingOverview
+:LISP billing-overview
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/billingoverview')
+:METHODS "getUserBillingOverview"
+
+:API  BillPayment
+:LISP bill-payment
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/billpayment')
+:METHODS "findAllUserPayments"
+
+:API  Cart
+:LISP cart
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/cart')
+:METHODS "getAllUserCarts" "addToCart" "updateCartListingQuantity"
+         "removeCartListing" "getUserCart" "updateCart" "deleteCart"
+
+:API  CartListing
+:LISP cart-listing
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/cartlisting')
+:METHODS
+
+:API  Category
+:LISP category
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/category')
+:METHODS "getCategory" "getSubCategory" "getSubSubCategory" "findAllTopCategory"
+         "findAllTopCategoryChildren" "findAllSubCategoryChildren"
+
+:API  Country
+:LISP country
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/country')
+:METHODS "findAllCountry" "getCountry"
+
+:API  Coupon
+:LISP coupon
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/coupon')
+:METHODS "findAllShopCoupons" "createCoupon" "findCoupon" "updateCoupon" "deleteCoupon"
+
+:API  DataType
+:LISP data-type
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/datatype')
+:METHODS "describeOccasionEnum" "describeRecipientEnum"
+         "describeWhenMadeEnum" "describeWhoMadeEnum"
+
+:API  FavoriteListing
+:LISP favorite-listing
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/favoritelisting')
+:METHODS "findAllListingFavoredBy" "findAllUserFavoriteListings"
+         "findUserFavoriteListings" "createUserFavoriteListings"
+         "deleteUserFavoriteListings"
+
+:API  FavoriteUser
+:LISP favorite-user
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/favoriteuser')
+:METHODS "findAllUserFavoredBy" "findAllUserFavoriteUsers" "findUserFavoriteUsers"
+         "createUserFavoriteUsers" "deleteUserFavoriteUsers"
+
+:API  FeaturedTreasury
+:LISP featured-treasury
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/featuredtreasury')
+:METHODS "findAllFeaturedTreasuries" "getFeaturedTreasuryById"
+         "findAllListingsForFeaturedTreasuryId"
+         "findAllActiveListingsForFeaturedTreasuryId"
+         "findAllFeaturedTreasuriesByOwner"
+
+:API  Feedback
+:LISP feedback
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/feedback')
+:METHODS "findAllUserFeedbackAsAuthor" "findAllUserFeedbackAsSeller"
+         "findAllUserFeedbackAsSubject" "findAllFeedbackFromBuyers"
+         "findAllFeedbackFromSellers"
+
+:API  FeedbackInfo
+:LISP feedback-info
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/feedbackinfo')
+:METHODS
+
+:API  ForumPost
+:LISP forum-post
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/forumpost')
+:METHODS "findTreasuryComments" "postTreasuryComment" "deleteTreasuryComment"
+
+:API  Listing
+:LISP listing
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/listing')
+:METHODS "createListing" "getListing" "updateListing" "deleteListing"
+         "findAllListingActive" "findAllListingsForFeaturedTreasuryId"
+         "findAllActiveListingsForFeaturedTreasuryId" "findAllFeaturedListings"
+         "findAllCurrentFeaturedListings" "findAllReceiptListings"
+         "findAllShopListingsActive" "findAllShopListingsDraft"
+         "findAllShopListingsExpired" "getShopListingExpired"
+         "findAllShopListingsFeatured" "findAllShopListingsInactive"
+         "getShopListingInactive" "findAllShopSectionListings"
+         "findAllShopSectionListingsActive" "findAllCartListings"
+
+:API  ListingImage
+:LISP listing-image
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/listingimage')
+:METHODS "findAllListingImages" "uploadListingImage" "getImage_Listing" "deleteListingImage"
+
+
+:API  ListingTranslation
+:LISP listing-translation
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/listingtranslation')
+:METHODS "getListingTranslation"
+
+:API  Order
+:LISP order
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/order')
+:METHODS "getOrder" "findAllUserOrders"
+
+:API  ParamList
+:LISP param-list
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/paramlist')
+:METHODS
+
+:API  PaymentTemplate
+:LISP payment-template
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/paymenttemplate')
+:METHODS "createPaymentTemplate" "getPaymentTemplate" "updatePaymentTemplate"
+         "findAllUserPaymentTemplates"
+
+:API  Receipt
+:LISP receipt
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/receipt')
+:METHODS "findAllOrderReceipts" "createReceiptOnSandbox" "updateReceipt"
+         "findAllShopReceipts" "findAllShopReceiptsByStatus"
+         "findAllUserBuyerReceipts"
+
+:API  Region
+:LISP region
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/region')
+:METHODS "findAllRegion" "getRegion"
+
+:API  ShippingInfo
+:LISP shipping-info
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/shippinginfo')
+:METHODS "createShippingInfo" "getShippingInfo" "updateShippingInfo"
+         "deleteShippingInfo" "findAllListingShippingInfo"
+
+:API  ShippingTemplate
+:LISP shipping-template
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/shippingtemplate')
+:METHODS "createShippingTemplate" "getShippingTemplate" "updateShippingTemplate"
+         "deleteShippingTemplate" "findAllUserShippingTemplates"
+
+:API  ShippingTemplateEntry
+:LISP shipping-template-entry
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/shippingtemplateentry')
+:METHODS "findAllShippingTemplateEntries" "createShippingTemplateEntry"
+         "getShippingTemplateEntry" "updateShippingTemplateEntry"
+         "deleteShippingTemplateEntry"
+
+:API  Shop
+:LISP shop
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/shop')
+:METHODS "getShop" "updateShop" "findAllUserShops" "findAllShops"
+         "uploadShopBanner" "deleteShopBanner"
+
+:API  ShopSection
+:LISP shop-section
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/shopsection')
+:METHODS "findAllShopSections" "createShopSection" "getShopSection"
+         "updateShopSection" "deleteShopSection"
+         "getShopSectionTranslationShopSection"
+
+:API  ShopSectionTranslation
+:LISP shop-section-translation
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/shopsectiontranslation')
+:METHODS "getShopTranslation"
+
+:API  ShopTranslation
+:LISP shop-translation
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/shoptranslation')
+:METHODS "getShopTranslation"
+
+:API  Style
+:LISP style
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/style')
+:METHODS "findSuggestedStyles"
+
+:API  Tag
+:LISP tag
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/tag')
+:METHODS "findPopularTags" "findAllRelatedTags"
+
+:API  Team
+:LISP team
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/team')
+:METHODS "findAllTeams" "findTeams" "findAllTeamsForUser" 
+
+:API  Transaction
+:LISP transaction
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/transaction')
+:METHODS "findAllUserBuyerTransactions" "findAllReceiptTransactions" "findAllShopTransactions"
+         "getTransaction" 
+
+:API  Treasury
+:LISP treasury
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/treasury')
+:METHODS "findAllTreasuries" "createTreasury" "getTreasury" "deleteTreasury"
+
+:API  TreasuryCounts
+:LISP treasury-counts
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/treasurycounts')
+:METHODS
+
+:API  TreasuryListing
+:LISP treasury-listing
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/treasurylisting')
+:METHODS
+
+:API  TreasuryListingData
+:LISP treasury-listing-data
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/treasurylistingdata')
+:METHODS
+
+:API  User
+:LISP user
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/user')
+:METHODS "findAllUsersForTeam" "findAllUsers" "getUser"
+
+:API  UserAddress
+:LISP user-address
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/useraddress')
+:METHODS "findAllUserAddresses" "createUserAddress" "getUserAddress" "deleteUserAddress"
+
+:API  UserProfile
+:LISP user-profile
+:DOC  (url `http://www.etsy.com/developers/documentation/reference/userprofile')
+:METHODS
 
 
 |#
@@ -509,8 +797,7 @@ UserAddress
    (:HTTP--METHOD . "DELETE"))
      
   ((:NAME        . "findAllListingShippingInfo")
-   (:DESCRIPTION
-    . "Retrieves a set of ShippingInfo objects associated to a Listing.")
+   (:DESCRIPTION . "Retrieves a set of ShippingInfo objects associated to a Listing.")
    (:URI         . "/listings/:listing_id/shipping/info")
    (:PARAMS
     (:LISTING--ID . "int")
@@ -554,8 +841,7 @@ UserAddress
    (:HTTP--METHOD . "GET"))
      
   ((:NAME        . "findAllListingActive")
-   (:DESCRIPTION
-    . "Finds all active Listings. (Note: the sort_on and sort_order options only work when combined with one of the search options: keywords, color, tags, materials, location, etc.)")
+   (:DESCRIPTION . "Finds all active Listings. (Note: the sort_on and sort_order options only work when combined with one of the search options: keywords, color, tags, materials, location, etc.)")
    (:URI         . "/listings/active")
    (:PARAMS
     (:LIMIT           . "int")
@@ -771,8 +1057,7 @@ UserAddress
    (:HTTP--METHOD . "PUT"))
      
   ((:NAME        . "createReceiptOnSandbox")
-   (:DESCRIPTION
-    . "Creates a purchase for the current OAuth user, including Order, Receipt and Transaction resources. This method is only available via the Sandbox API. Listing IDs must be active, and belong to the same seller user ID. The buyer must have at least one UserAddress record, or an error will be thrown.")
+   (:DESCRIPTION . "Creates a purchase for the current OAuth user, including Order, Receipt and Transaction resources. This method is only available via the Sandbox API. Listing IDs must be active, and belong to the same seller user ID. The buyer must have at least one UserAddress record, or an error will be thrown.")
    (:URI         . "/receipts")
    (:PARAMS
     (:LISTING--ID . "array(int)"))
@@ -828,8 +1113,7 @@ UserAddress
    (:HTTP--METHOD . "GET"))
      
   ((:NAME        . "findAllReceiptTransactions")
-   (:DESCRIPTION
-    . "Retrieves a set of Transaction objects associated to a Receipt.")
+   (:DESCRIPTION . "Retrieves a set of Transaction objects associated to a Receipt.")
    (:URI         . "/receipts/:receipt_id/transactions")
    (:PARAMS
     (:RECEIPT--ID . "int")
@@ -976,8 +1260,7 @@ UserAddress
    (:HTTP--METHOD . "DELETE"))
      
   ((:NAME        . "findAllShippingTemplateEntries")
-   (:DESCRIPTION
-    . "Retrieves a set of ShippingTemplateEntry objects associated to a ShippingTemplate.")
+   (:DESCRIPTION . "Retrieves a set of ShippingTemplateEntry objects associated to a ShippingTemplate.")
    (:URI         . "/shipping/templates/:shipping_template_id/entries")
    (:PARAMS
     (:SHIPPING--TEMPLATE--ID . "int")
@@ -1045,8 +1328,7 @@ UserAddress
    (:HTTP--METHOD . "DELETE"))
      
   ((:NAME        . "findAllShops")
-   (:DESCRIPTION
-    . "Finds all Shops.  If there is a keywords parameter, finds shops with shop_name starting with keywords.")
+   (:DESCRIPTION . "Finds all Shops.  If there is a keywords parameter, finds shops with shop_name starting with keywords.")
    (:URI         . "/shops")
    (:PARAMS
     (:SHOP--NAME    . "string (length >= 3)")
@@ -1368,8 +1650,7 @@ UserAddress
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "findAllShopReceiptsByStatus")
-   (:DESCRIPTION
-    . "Retrieves a set of Receipt objects associated to a Shop based on the status.")
+   (:DESCRIPTION . "Retrieves a set of Receipt objects associated to a Shop based on the status.")
    (:URI         . "/shops/:shop_id/receipts/:status")
    (:PARAMS
     (:SHOP--ID . "shop_id_or_name")
@@ -1386,8 +1667,7 @@ UserAddress
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "findAllShopSections")
-   (:DESCRIPTION
-    . "Retrieves a set of ShopSection objects associated to a Shop.")
+   (:DESCRIPTION . "Retrieves a set of ShopSection objects associated to a Shop.")
    (:URI         . "/shops/:shop_id/sections")
    (:PARAMS
     (:SHOP--ID . "shop_id_or_name"))
@@ -1779,9 +2059,7 @@ UserAddress
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "findAllUsers")
-      
-   (:DESCRIPTION
-    . "Finds all Users whose name or username match the keywords parameter.")
+   (:DESCRIPTION . "Finds all Users whose name or username match the keywords parameter.")
    (:URI         . "/users")
    (:PARAMS
     (:KEYWORDS . "string")
@@ -1995,8 +2273,7 @@ UserAddress
    (:HTTP--METHOD . "GET"))
 
   ((:NAME        . "findAllUserCharges")
-   (:DESCRIPTION
-    . "Retrieves a set of BillCharge objects associated to a User.")
+   (:DESCRIPTION . "Retrieves a set of BillCharge objects associated to a User.")
    (:URI         . "/users/:user_id/charges")
    (:PARAMS
     (:LIMIT        . "int")
@@ -2399,6 +2676,11 @@ NIL
             `(("api_key" . ,*API-KEY*)))
   "ApiMethod"
   'demarshall-method)
+
+---
+(api-call "http://openapi.etsy.com/v2/"
+          `(("api_key" . ,*API-KEY*)))
+
 
 |#
 
