@@ -26,21 +26,35 @@
 
 (in-package #:cl-etsy)
 
-
-(def-api-class data-type ()
+;; DataType
+(defclass data-type (base-etsy)
+  ;; data-type-type
   ((type
-    :level medium ;???
-    :type string
-    :doc "Base type of data.")
-   (values
-    :level medium ;???
-    :type "array(string)"
-    :doc "Allowable values (for an enum).")))
-   
+    :initarg :type
+    :accessor :type
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type string
+    :documentation "Base type of data")
 
-;; (defmethod print-object ((x data-type) stream)
-;;   (dumb-printing stream x "~A" type))
-
+   ;; :NOTE this is actually "values" but that symbol is extremely overloaded in CL
+   (data-type-values
+    :initarg :data-type-values
+    :accessor data-type-values
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type array(string)
+    :documentation "Allowable values (for an enum.) ")
+   ;; (:default-initargs :data-type-values nil :type nil)
+   )
+  (:documentation "Describes an input type.
+ The data-type who-made, when-made are so-called \"Marketplace Attributes\" that
+ help buyers locate a Listing under the headings Handmade, Vintage and Supplies.
+ When creating new Listings, these parameters are required. As of this
+ writing, not all Listings on Etsy have their Marketplace Attributes set. 
+ These Listings will return null in these fields.
+ (URL `http://www.etsy.com/developers/documentation/reference/listing#section_marketplace_attributes')
+ (URL `http://www.etsy.com/developers/documentation/reference/datatype')"))
 
 ;;; ==============================
 ;;; EOF
