@@ -273,7 +273,7 @@ A state may be editable or non-editable. A state may be reneable or non-renewabl
    ;; :visibility public
    ;; :perm-scope none
    ;; :type int
-   :documentation "Search relevancy score (only when sorting a search on "score").")
+   :documentation "Search relevancy score (only when sorting a search on \"score\").")
 
   ;; state_tsz
   (state-tsz
