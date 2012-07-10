@@ -114,7 +114,7 @@ API-METHODS
     ;; :perm-scope shops_rw
     ;; :type string
     :documentation "The state the shop is in. 
-DEPRECATED: use UserAddress.state instead.")
+[DEPRECATED] Use UserAddress.state instead.")
 
    (zip
     :initarg :zip
@@ -123,7 +123,7 @@ DEPRECATED: use UserAddress.state instead.")
     ;; :perm-scope shops_rw
     ;; :type string
     :documentation "The zip code the shop is in.
-DEPRECATED: use UserAddress.zip instead.")
+[DEPRECATED] Use UserAddress.zip instead.")
 
    ;; country_id
    (country-id
@@ -133,7 +133,7 @@ DEPRECATED: use UserAddress.zip instead.")
     ;; :perm-scope shops_rw
     ;; :type int
     :documentation "The numeric ID of the country the shop is in.
-DEPRECATED: use UserAddress.country_id instead.")
+[DEPRECATED] Use UserAddress.country_id instead.")
 
    ;; user_id
    (user-id
@@ -354,7 +354,7 @@ DEPRECATED: use UserAddress.country_id instead.")
     ;; :perm-scope shops_rw
     ;; :type string
     :documentation "The shop owner's real name.
-DEPRECATED: use UserAddress.name instead.")
+[DEPRECATED] Use UserAddress.name instead.")
 
    (url
     :initarg :url

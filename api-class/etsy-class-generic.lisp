@@ -2,6 +2,11 @@
 ;;; :FILE cl-etsy/api-class/etsy-class-generic.lisp
 ;;; ==============================
 
+
+;; avatar
+;; (avatar-id hex-code red green blue hue saturation brightness is-black-and-white
+;;  creation-tsz user-id)
+
 ;; category
 ;; (category-id name meta-title meta-keywords meta-description page-description
 ;;  page-title category-name short-name long-name num-children)
