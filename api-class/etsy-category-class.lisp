@@ -41,58 +41,118 @@
 
 (in-package #:cl-etsy)
 
-(def-api-class category ()
+;; Category
+(defclass category (base-etsy)
   (
    ;; category_id
    (category-id
-    :type int
-    :doc "The identifier for this category.")
-   ;; WTF, why isn't this category_name?
-   (name 
-    :type string
-    "The programmatic name for this category.")
+    :initarg :category-id
+    :accessor category-id
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type int
+    :documentation "The identifier for this category.")
+
+   (name
+    :initarg :name
+    :accessor name
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type string
+    :documentation "The programmatic name for this category.")
+
    ;; meta_title
    (meta-title
-    :type string ; or null
-    :doc "The \"title\" meta tag value for the category's landing page (may be null).")
+    :initarg :meta-title
+    :accessor meta-title
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type string ; or null
+    :documentation "The \"title\" meta tag value for the category's landing page (may be null).")
+
    ;; meta_keywords
    (meta-keywords
-    :type string ; or null
-    :doc "The \"keywords\" meta tag value for the category's landing page (may be null).")
+    :initarg :meta-keywords
+    :accessor meta-keywords
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type string ; or null
+    :documentation "The \"keywords\" meta tag value for the category's landing page (may be null).")
+
    ;; meta_description
    (meta-description
-    :type string ; or null
-    :doc "The \"description\" meta tag value for the category's landing page (may be null).")
+    :initarg :meta-description
+    :accessor meta-description
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type string ; or null
+    :documentation "The \"description\" meta tag value for the category's landing page (may be null).")
+
    ;; page_description
    (page-description
-    :type string ; or null
-    :doc "A short description of the category from the category' landing page (may be null).")
+    :initarg :page-description
+    :accessor page-description
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type string ; or null
+    :documentation "A short description of the category from the category' landing page (may be null).")
+
    ;; page_title
    (page-title
-    :type string ; or null
-    :doc "The title of the category's landing page (may be null).")
+    :initarg :page-title
+    :accessor page-title
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type string ; or null
+    :documentation "The title of the category's landing page (may be null).")
+
    ;; category_name
    (category-name
-    :type string
-    :doc "The category's string ID.")
-   ;; short_name 
-   (short-name 
-    :type string
-    :doc "A short display name for the category.")
+    :initarg :category-name
+
+    :accessor category-name
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type string
+    :documentation "The category's string ID.")
+
+   ;; short_name
+   (short-name
+    :initarg :short-name
+    :accessor short-name
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type string
+    :documentation "A short display name for the category.")
+
    ;; long_name
    (long-name
-    :type string
-    :doc "A longer display name for the category.")
+    :initarg :long-name
+    :accessor long-name
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type string
+    :documentation "A longer display name for the category.")
+
    ;; num_children
-   (num-children 
-    :type int
-    :doc "The number of subcategories below this one.
-Subcatgories append a new tag to the end of their parent's category-name."))
-  )
+   (num-children
+    :initarg :num-children
+    :accessor num-children
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type int
+    :documentation "The number of subcategories below this one. Subcatgories append a new tag to the end of their parent's category_name.")
+   )
+
+  ;; (:default-initargs :category-id nil :name nil :meta-title nil :meta-keywords nil
+  ;; :meta-description nil :page-description nil :page-title nil
+  ;; :category-name nil :short-name nil :long-name nil :num-children nil)
+  (:documentation "A category
+ (URL `http://www.etsy.com/developers/documentation/reference/category')"))
 
 
-(defmethod print-object ((x category) stream)
-  (dumb-printing stream x "~D: ~A" category-id name))
+;; (defmethod print-object ((x category) stream)
+;;   (dumb-printing stream x "~D: ~A" category-id name))
 
 
 ;;; ==============================
