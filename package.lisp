@@ -10,7 +10,7 @@
    ;;
    ;; Globals
    ;;
-   #:*API-KEY* ; :NOTE why would/should *api-key* be exported???
+   ;; #:*API-KEY* ; :NOTE why would/should *api-key* be exported???
    ;;
    ;; Api Methods
    ;;
