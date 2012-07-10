@@ -1,6 +1,7 @@
-CL-Etsy bridges from Common Lisp to version 1 of the Etsy.com API[2].  It is an
-asdf[1].  Once loaded the common lisp package "ETSY" exports one routine for
-each method in the API, and classes for user, shop, listing, and api-method.
+CL-Etsy bridged from Common Lisp to version 1 of the Etsy.com API[2] and is no
+longer compatible with the v2 API [6] It is an asdf[1].  Once loaded the common
+lisp package "ETSY" exports one routine for each method in the API, and classes
+for user, shop, listing, and api-method.
 
 The names used in the API specification use two spelling conventions.  Camel
 case is used for method names, e.g. getUserDescription.  In cl-etsy these are
@@ -61,3 +62,4 @@ testing as defined in the tests.lisp file; you can run these by doing: (fiveam:r
 [3] http://www.etsy.com/developers/register
 [4] https://www.etsy.com/developers/your-apps
 [5] http://common-lisp.net/project/bese/FiveAM.html
+[6] https://groups.google.com/forum/?fromgroups#!forum/etsy-api-v2

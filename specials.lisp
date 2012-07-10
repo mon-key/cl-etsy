@@ -4,11 +4,29 @@
 
 (in-package #:cl-etsy)
 
-;; v1
-;; (defparameter *base-url* "http://beta-api.etsy.com/v1")
+;; v1 "http://beta-api.etsy.com/v1"
+(defparameter *base-url* "http://openapi.etsy.com/v2" ; "http://sandbox.openapi.etsy.com/v2"
+  
+"Value should be a string referencing a URL for an Etsy API endpoint.
+Valid settings are either:
 
-;; v2
-(defparameter *base-url* "http://openapi.etsy.com/v2")
+ \"http://openapi.etsy.com/v2\"         - production endpoint
+ \"http://sandbox.openapi.etsy.com/v2\" - sandbox endpoint
+
+ \"The production entry point provides general access to public data using the
+  standard parameter api_key for authentication, or protected access to private
+  member data using OAuth for authentication. All fields and associations listed
+  below as \"private\" will be unavailable without OAuth authentication.
+
+  The sandbox entry point works similarly to the production entry point, but uses
+  an isolated database with no real Etsy data. The sandbox provides developers
+  with a way to test API methods that write data to Etsy, without disturbing real
+  Etsy data or incurring fees for listing on Etsy.
+
+  Developers will need to authenticate their OAuth-based apps separately against the sandbox API.
+  OAuth tokens obtained from the sandbox API will not work with the production API.\"
+
+:SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_entry_points')")
 
 ;; See macro `with-api-call' function `build-methods'.
 (defvar *api-key* "you need to set your *API-KEY*")
