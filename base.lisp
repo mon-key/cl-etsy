@@ -102,11 +102,24 @@
       (maphash #'copy hash-table)
       result)))
 
+;; consider using regex "(?<!^)((?<!_)([A-Z]))" with (nsubstitute #\- #\_  instead
+;; compare
+;; (cl-ppcre:regex-replace-all "([A-Z])" "TreasuryListingData" "-\\1")
+;; => "-Treasury-Listing-Data"
+;; (cl-ppcre:regex-replace-all "(?<!^)((?<!_)([A-Z]))" "TreasuryListingData" "-\\1")
+;; => "Treasury-Listing-Data"
+(defun %camel-to-lisp (string)
+  (nstring-upcase
+   (delete #\_ 
+           (cl-ppcre:regex-replace-all "([A-Z])" string "-\\1"))))
+
 ;; :NOTE What happens if STRING is the empty-string or becomes so after the replacement?
 ;; :TODO Need to verify the likelyhood of this happening possibly building some guards/traps to recover/bail
+;; NOTE this fails creates ugly methods for "getImage_Listing" returning "GET-IMAGE_-LISTING"
 (defun camel-to-lisp (string)
-  (intern (nstring-upcase
-           (cl-ppcre:regex-replace-all "([A-Z])" string "-\\1"))))
+  ;; (intern (nstring-upcase
+  ;;          (cl-ppcre:regex-replace-all "([A-Z])" string "-\\1")))
+  (intern (%camel-to-lisp string)))
 
 ;; :MOVED  *lisp-keyword-dictionary* to file cl-etsy/specials.lisp
 ;; (defvar *lisp-keyword-dictionary* (make-hash-table :test #'eq))
@@ -132,24 +145,43 @@
   (setf (gethash lisp *lisp-keyword-dictionary*) json-keyword)
   (setf (gethash json-keyword *lisp-keyword-dictionary*) lisp ))
 
+(defun %underscore-to-dash (string)
+  (nstring-upcase
+   (cl-ppcre:regex-replace-all "_" string "-")))
+
 (defun underscore-to-dash (string)
-  (intern (nstring-upcase
-           (cl-ppcre:regex-replace-all "_" string "-"))))
+  ;; (intern (nstring-upcase
+  ;;          (cl-ppcre:regex-replace-all "_" string "-")))
+  (intern (%underscore-to-dash string)))
 
 (defun lisp-to-cgi (symbol)
   (nstring-downcase (substitute #\_ #\- (symbol-name symbol))))
 
+;; 
+;; cl-json package holds cl-json:*json-identifier-name-to-lisp* which defaults as 'camel-case-to-lisp
+;; and cl-json:*lisp-identifier-name-to-json* defaluts as 'lisp-to-camel-case
+;; see also cl-json:*identifier-name-to-key*
+;; :NOTE this macro does not appear to have any callers.
+;; :WAS
+;; (defmacro with-json-symbol-mapping (() &body body)
+;;   `(let ((*json-identifier-name-to-lisp* )
+;;          (*lisp-identifier-name-to-json* ))
+;;      ,@body))
+;;
 (defmacro with-json-symbol-mapping (() &body body)
-  `(let ((*json-identifier-name-to-lisp* )
-         (*lisp-identifier-name-to-json* ))
+  `(let (
+         ;; (JSON:CAMEL-CASE-TO-LISP "foo-bar")
+         (json:*json-identifier-name-to-lisp* nil)
+         ;; json:lisp-to-camel-case
+         (json:*lisp-identifier-name-to-json* nil))
      ,@body))
 
 
 (defmacro with-json-bindings ((&rest vars) json &body body)
   `(let* ((#1=json ,json)
           ,@(loop
-               for var in vars
-               collect `(,var (cdr (assoc ,(lisp-to-json-keyword var) #1#)))))
+              for var in vars
+              collect `(,var (cdr (assoc ,(lisp-to-json-keyword var) #1#)))))
      ,@body))
 
 

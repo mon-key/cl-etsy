@@ -1,42 +1,107 @@
 
 (in-package #:cl-etsy)
 
+;; some :PARAM types
+;; "int", "string", "boolean", "float", "text"
+;;
+;; "latitude", "longitude", "category"
+;; "epoch", "color_triplet", "color_wiggle", "forum_post",
+;; "image", "language", "region",  
+;; 
+;; "user_id_or_name", "shop_id_or_name", "cart_id"
+;; "treasury_id", "treasury_search_string", "treasury_title", "treasury_description"
+;; 
+;;
+;; "string (length >= 3)" 
+;;
+;; arrays
+;; "array(int)"
+;; "array(string)"
+;; "array(shop_id_or_name)" ; "getShop" 
+;; "array(team_id_or_name)" ; "findTeams"
+;; "array(user_id_or_name)" ; "getUser"
+;;
+;; enums
+;; "enum(active, draft)"                                       ; "createListing"
+;; "enum(active, inactive, draft)"                             ; "updateListing"
+;; "enum(i_did, collective, someone_else)"                     ; "createListing", "updateListing", 
+;; "enum(active, invited, pending)"                            ; "findAllUsersForTeam"
+;; "enum(hotness, created)"                                    ; "findAllTreasuries", "findAllUserTreasuries"
+;; "enum(up, down)"                                            ; "findAllListingActive", "findAllShopListingsActive", "findAllShopSectionListingsActive",
+;;                                                             ; "findAllTreasuries", "findAllUserTreasuries", "findAllUserCharges", "findAllUserPayments"
+;; "enum(city, state, country)"                                ; "findAllListingActive"
+;; "enum(created, price, score)"                               ; "findAllListingActive", "findAllShopListingsActive"
+;; "enum(created, price)"                                      ; "findAllShopSectionListingsActive"
+;; "enum(open, unshipped, unpaid, completed, processing, all)" ; "findAllShopReceiptsByStatus"
+;;
+;; "createListing", updateListing
+;; "enum(made_to_order, 2010_2012, 2000_2009, 1993_1999, before_1993, 1990_1992, 1980s, 1970s, 1960s, 1950s, 1940s, 1930s, 1920s, 1910s, 1900s, 1800s, 1700s, before_1700)"
+;; "enum(men, women, unisex_adults, teen_boys, teen_girls, teens, boys, girls, children, baby_boys, baby_girls, babies, birds, cats, dogs, pets)"
+;; "enum(anniversary, baptism, bar_or_bat_mitzvah, birthday, canada_day, chinese_new_year, cinco_de_mayo, confirmation, christmas, day_of_the_dead, easter, eid, engagement, fathers_day, get_well, graduation, halloween, hanukkah, housewarming, kwanza, prom, july_4th, mothers_day, new_baby, new_years, quinceanera, retirement, st_patricks_day, sweet_16, sympathy, thanksgiving, valentines, wedding)"
+
+
+;; :NOTE see `demarshall-enum-to-keyword' in cl-etsy/types.lisp
 (defun api-type-to-our-type (type-string)
   (cond
-    ((string= type-string "enum(low, medium, high)")
-     'detail-level)
-    ((string= type-string "enum(up, down)")
+    ;; :ADDED
+    ;; "findAllListingActive", "findAllShopListingsActive"
+    ;; (string= type-string "enum(created, price, score)")
+    ;;  'sort-order)
+    ;;
+    ;; "findAllUserTreasuries"
+    ;; (string= type-string "enum(hotness, created)")
+    ;; 'sort-order)
+    ;;
+    ;; "findAllListingActive", "findAllShopListingsActive",
+    ;; "findAllShopSectionListingsActive", 
+    ;; "findAllTreasuries", "findAllUserTreasuries"
+    ;; "findAllUserCharges", "findAllUserPayments",
+    ((string= type-string "enum(up, down)") 
      'sort-order)
-    ((string= type-string "enum(created, ending)")
-     'sort-on-a)
+    ;; "findAllShopSectionListingsActive"
     ((string= type-string "enum(created, price)")
      'sort-on-b)
-    ((string= type-string "enum(true, false)")
-     'boolean)
+    ;; "findAllFeaturedTreasuriesByOwner", "getListing", "findAllListingActive",
+    ;; "findAllShopListingsActive", "findAllRelatedTags", "createTreasury", "createListing", "updateListing"
     ((string= type-string "array(string)")
      'array-of-strings)
+    ;; "getCountry", "getListing", "getImage_Listing", "getOrder",
+    ;; "getPaymentTemplate", "getReceipt", "createReceiptOnSandbox",
+    ;; "getRegion", "getShippingInfo", "getShippingTemplate",
+    ;; "getShippingTemplateEntry", "getShopSection", "getTransaction",
+    ;; "createTreasury", "getUserAddress"
     ((string= type-string "array(int)")
      'array-of-ints)
+    ;; Not in output of getMethodTable
+    ((string= type-string "enum(low, medium, high)")
+     'detail-level)
+    ;; Not in output of getMethodTable
+    ((string= type-string "enum(created, ending)")
+     'sort-on-a)
+    ;; Not in output of getMethodTable
+    ((string= type-string "enum(true, false)")
+     'boolean)
     (t 
      (underscore-to-dash type-string))))
 
 (defun build-methods (&key (method-output-file *build-methods-default-output-pathname*))
   (flet ((url-builder (url-template parameters)
-           (let* ((required-args)
+           (let* (;; (required-args)
+                  (required-args ())
                   (url-bits
-                   (loop 
-                     for bit in (cl-ppcre:split "[{}]" url-template)
-                     as var = nil then (not var)
-                     collect (cond
-                               (var
-                                (let* ((v (underscore-to-dash bit))
-                                       (p (find v parameters :key #'car)))
-                                  (push p required-args)
-                                  `(marshall-type ,(second p) ,v)))
-                               (t
-                                bit))))
+                    (loop 
+                      for bit in (cl-ppcre:split "[{}]" url-template)
+                      as var = nil then (not var)
+                      collect (cond
+                                (var
+                                 (let* ((v (underscore-to-dash bit))
+                                        (p (find v parameters :key #'car)))
+                                   (push p required-args)
+                                   `(marshall-type ,(second p) ,v)))
+                                (t
+                                 bit))))
                   (optional-args 
-                   (set-difference parameters required-args :test #'equal)))
+                    (set-difference parameters required-args :test #'equal)))
              (values url-bits required-args optional-args))))
     (let ((json
            (json:decode-json-from-string
@@ -44,6 +109,7 @@
              (drakma:http-request (concatenate 'string *base-url* "/")
                                     :parameters `(("api_key" . ,cl-etsy:*api-key*)))))))
       (with-json-bindings (results) json
+        ;; (let ((*package* (symbol-package 'cl-etsy::build-methods)))
         (let ((*package* (symbol-package 'build-methods)))
           (with-open-file  (*standard-output* cl-etsy::*build-methods-default-output-pathname* ; :WAS "methods.lisp"
                                               :direction :output
@@ -55,13 +121,15 @@
               (format t "~&(in-package #:cl-etsy)")
               (loop
                  for method in results
+                ;; do (name description uri params defaults type visibility http-method) method
                  do (with-json-bindings (name description uri params type) method
-                      (let ((parameters (loop for (key . type1) in params
-                                           as type = (api-type-to-our-type type1)
-                                           collect (list (underscore-to-dash (symbol-name key))
-                                                         type))))
-                        (multiple-value-bind (url-bits required-parameters optional-parameters) 
-                            (url-builder uri parameters)
+                      (let ((parameters (loop
+                                          for (key . type1) in params
+                                          as type = (api-type-to-our-type type1)
+                                          collect (list (underscore-to-dash (symbol-name key))
+                                                        type))))
+                        (multiple-value-bind (url-bits required-parameters optional-parameters) (url-builder uri parameters) 
+                            
                           (format t "~&")
                           (pprint
                            `(defun ,(camel-to-lisp name)
@@ -77,6 +145,25 @@
                                ,type
                                ',(build-symbol "DEMARSHALL" type)))))))))))))))
 
+
+;; (url-builder (url-template parameters)
+;;              (let* (;; (required-args)
+;;                     (required-args ())
+;;                     (url-bits
+;;                       (loop 
+;;                         for bit in (cl-ppcre:split "[{}]" url-template)
+;;                         as var = nil then (not var)
+;;                         collect (cond
+;;                                   (var
+;;                                    (let* ((v (underscore-to-dash bit))
+;;                                           (p (find v parameters :key #'car)))
+;;                                      (push p required-args)
+;;                                      `(marshall-type ,(second p) ,v)))
+;;                                   (t
+;;                                    bit))))
+;;                     (optional-args 
+;;                       (set-difference parameters required-args :test #'equal)))
+;;                (values url-bits required-args optional-args)))
 
 (defmacro with-api-call ((&rest url-bits) &rest optional-parameters)
   `(let ((cgi-args (list (cons "api_key" cl-etsy:*api-key*))))
@@ -191,30 +278,32 @@
      with build-api-slot-descriptions = ()
      with class-fields
      finally
-     (return
-       `(progn
-          (let ((api-class-info (make-instance 'api-class-description)))
-            (with-slots (name documentation superclass slot-descriptions) api-class-info
-              (setf name ',name)
-              (setf superclass ',superclass)
-              (setf documentation ,doc)
-              (setf slot-descriptions (list ,@(nreverse build-api-slot-descriptions))))
-            (setf (api-class-info ',name) api-class-info))
-          (defclass ,name (,superclass)
-            ((functions-for-demarshall
-              :initform (let ((x (copy-hash-table (slot-value (make-instance ',superclass)
-                                                              'functions-for-demarshall))))
-                          ,@functions-for-demarshall
-                          x))
-             ,@(nreverse class-fields))
-            (:documentation ,doc))
-          ,@stms
-          (defun ,(build-symbol "DEMARSHALL" name) (x)
-            (fill-out-etsy-object-from-json (make-instance ',name) x))))
+       (return
+         `(progn
+            (let ((api-class-info (make-instance 'api-class-description)))
+              (with-slots (name documentation superclass slot-descriptions) api-class-info
+                (setf name ',name)
+                (setf superclass ',superclass)
+                (setf documentation ,doc)
+                (setf slot-descriptions (list ,@(nreverse build-api-slot-descriptions))))
+              (setf (api-class-info ',name) api-class-info))
+            (defclass ,name (,superclass)
+              ((functions-for-demarshall
+                :initform (let ((x (copy-hash-table (slot-value (make-instance ',superclass)
+                                                                'functions-for-demarshall))))
+                            ,@functions-for-demarshall
+                            x))
+               ,@(nreverse class-fields))
+              (:documentation ,doc))
+            ,@stms
+            (defun ,(build-symbol "DEMARSHALL" name) (x)
+              (fill-out-etsy-object-from-json (make-instance ',name) x))))
 
      for field in fields
      do
      (destructuring-bind (name &key level type doc json-key) field
+       ;; if json-key does not map to a value in *lisp-keyword-dictionary*
+       ;; ensure that it does and while doing so replace "--" with "-"
        (unless json-key
          (setf json-key (lisp-to-json-keyword name)))
        (push `(make-instance 'api-slot-description
@@ -224,4 +313,7 @@
                              :detail-level ',level) build-api-slot-descriptions)
        (push `(,name :documentation ,doc) class-fields)
        (push `(setf (gethash ',name x) ',(build-symbol "DEMARSHALL" type)) functions-for-demarshall)
+       ;; set key/value pairs mapping in hash-table *lisp-keyword-dictionary* 
+       ;;  name     -> json-key
+       ;;  json-key -> name
        (push `(establish-list-keyword-mapping ',name ,json-key) stms))))
