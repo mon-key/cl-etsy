@@ -4,10 +4,11 @@
 
 #|
 
-(URL `http://www.etsy.com/developers/documentation/reference/avatar')
+ (URL `http://www.etsy.com/developers/documentation/reference/avatar')
 
 ----
 API-METHODS
+
 "getAvatarImgSrc"
 "uploadAvatar"
 
@@ -17,8 +18,7 @@ API-METHODS
 
 ;; Avatar
 (defclass avatar (base-etsy)
-  (
-   ;; avatar_id
+  (;; avatar_id
    (avatar-id
     :initarg :avatar-id
     :accessor avatar-id
@@ -109,11 +109,13 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The numeric ID of the user who owns the avatar. "))
+    :documentation "The numeric ID of the user who owns the avatar."))
+
   ;; (:default-initargs
   ;;  :avatar-id nil :hex-code nil :red nil :green nil :blue nil
   ;;  :hue nil :saturation nil :brightness nil :is-black-and-white nil
   ;;  :creation-tsz nil :user-id nil)
+
   (:documentation "An Etsy member's avatar image.
  (URL `http://www.etsy.com/developers/documentation/reference/avatar')"))
 

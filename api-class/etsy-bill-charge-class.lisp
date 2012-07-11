@@ -1,9 +1,10 @@
 ;;; :FILE-CREATED <Timestamp: #{2012-07-10T18:33:33-04:00Z}#{12282} - by MON>
-;;; :FILE /home/sp/HG-Repos/CL-repo-HG/CL-MON-CODE/cl-etsy/api-class/etsy-bill-charge-class.lisp
+;;; :FILE cl-etsy/api-class/etsy-bill-charge-class.lisp
 ;;; ==============================
 
 #|
-(URL `http://www.etsy.com/developers/documentation/reference/billcharge')
+
+ (URL `http://www.etsy.com/developers/documentation/reference/billcharge')
 
 ----
 API-METHODS
@@ -15,8 +16,7 @@ API-METHODS
 
 ;; Billcharge
 (defclass bill-charge (base-etsy)
-  (
-   ;; bill_charge_id
+  (;; bill_charge_id
    (bill-charge-id
     :initarg :bill-charge-id
     :accessor bill-charge-id
@@ -102,14 +102,29 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope billing_r
     ;; :type float
-    :documentation "Time when charge was last modified.")
-   ) 
+    :documentation "Time when charge was last modified.")) 
 
   ;; (:default-initargs 
   ;;  :bill-charge-id nil :creation-tsz nil :type nil :type-id nil :user-id nil
   ;;  :amount nil :currency-code nil :creation-year nil :creation-month nil
   ;;  :last-modified-tsz nil)
-  (:documentation ""))
+
+  (:documentation "Represents a charge to an Etsy member's account.
+The type slot of bill-charge indicates the nature of the charge.
+Following table outlines the types of charges for a bill-charge:
+
+ listing 	   Seller fee for listing an item.
+ edit 	           Seller fee if listing quantity increased.
+ renew 	           Seller fee for renewing active listing.
+ renew_sold 	   Seller fee for renewing sold listing.
+ renew_expired 	   Seller fee for renewing expired listing.
+ transaction 	   Seller fee for sold item.
+ showcase_category Seller fee for current Showcase feature.
+ showcase 	   Seller fee for original Showcase feature. [DEPRECATED]
+ alchemy 	   Seller fee for Alchemy feature. [DEPRECATED]
+
+ (URL `http://www.etsy.com/developers/documentation/reference/billcharge')"))
+
 
 ;;; ==============================
 ;;; EOF
