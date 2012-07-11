@@ -6,20 +6,23 @@
 ;; (cl:in-package #:cl-etsy-build-system)
 
 (asdf:defsystem #:cl-etsy
-  :version "0.2"
-  :author "Ben Hyde <bhyde@pobox.com>"
+  :version "0.1"
+  :author "MON KEY" ; thanks to "Ben Hyde <bhyde@pobox.com>" for the a CL interface to the Etsy v1 API
   :maintainer "MON KEY"
-  :licence "Apache 2.0"
+  :licence "MIT"
   :depends-on (#:cl-ppcre
-               #:cl-json
                #:drakma
                ;; #:flexi-streams see `api-call'
+               ;;
+               ;; #:cl-json
+               #:yason ; the conversion to the v2 API uses yason not cl-json
                ) 
   :serial t
   :components (
                (:file "package")
                (:file "specials")
-               ;; (:file "base")
+               ;; v1 files
+               ;; (:file "base") 
                ;; (:file "api-utils")
                ;; (:file "types")
                ;; (:file "methods")
@@ -46,7 +49,7 @@
                              (:file "etsy-treasury-counts-class")
                              (:file "etsy-treasury-listing-class")
                              (:file "etsy-treasury-listing-data-class")
-                             ;; (:file "etsy-bill-charge-class")
+                             (:file "etsy-bill-charge-class")
                              (:file "etsy-billing-overview-class")
                              (:file "etsy-bill-payment-class")
                              (:file "etsy-cart-class")
