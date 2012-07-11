@@ -7,6 +7,10 @@
 ;; (avatar-id hex-code red green blue hue saturation brightness is-black-and-white
 ;;  creation-tsz user-id)
 
+;; bill-charge
+;; (bill-charge-id creation-tsz type type-id user-id amount currency-code
+;;  creation-year creation-month last-modified-tsz)
+
 ;; billing-overview
 ;; (is-overdue currency-code overdue-balance balance-due total-balance date-due  date-overdue)
 
