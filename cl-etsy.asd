@@ -29,7 +29,7 @@
                #+5am (:file "tests")
                ))
 
-(defmethod asdf:perform :after ((op asdf:load-op) (system (eql (asdf:find-system :mon))))
+(defmethod asdf:perform :after ((op asdf:load-op) (system (eql (asdf:find-system :cl-etsy))))
   (when (member :IS-MON cl:*features*)
     (let ((maybe-loadtime-bind-file 
             (probe-file (merge-pathnames (make-pathname :name "loadtime-bind" :type "lisp")
