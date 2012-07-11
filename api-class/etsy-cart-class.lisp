@@ -51,7 +51,7 @@ API-METHODS
     ;; :visibility private 
     ;; :perm-scope cart_rw 
     ;; :type int 
-    :documentation "The numeric ID of the cart")
+    :documentation "The numeric ID of the cart.")
 
    ;; shop_name
    (shop-name
@@ -60,7 +60,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The shop name")
+    :documentation "The shop name.")
 
    ;; message_to_seller
    (message-to-seller
@@ -69,7 +69,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The message to the seller")
+    :documentation "The message to the seller.")
 
    ;; destination_country_id
    (destination-country-id
@@ -78,7 +78,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type int
-    :documentation "The numeric ID of the destination country")
+    :documentation "The numeric ID of the destination country.")
 
    ;; coupon_code
    (coupon-code
@@ -87,7 +87,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The alphanumeric coupon code applied to the cart")
+    :documentation "The alphanumeric coupon code applied to the cart.")
 
    ;; currency_code
    (currency-code
@@ -96,7 +96,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The ISO (alphabetic) code for the currency")
+    :documentation "The ISO (alphabetic) code for the currency.")
 
    ;; total
    (total
@@ -105,7 +105,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The total price")
+    :documentation "The total price.")
 
    ;; subtotal
    (subtotal
@@ -114,7 +114,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The subtotal price")
+    :documentation "The subtotal price.")
 
    ;; shipping_cost
    (shipping-cost
@@ -123,7 +123,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The shipping cost")
+    :documentation "The shipping cost.")
 
    ;; tax_cost
    (tax-cost
@@ -132,7 +132,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The tax cost")
+    :documentation "The tax cost.")
 
    ;; discount_amount
    (discount-amount
@@ -141,7 +141,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The line-item discount amount (does not include tax or shipping)")
+    :documentation "The line-item discount amount (does not include tax or shipping).")
 
    ;; shipping_discount_amount
    (shipping-discount-amount
@@ -150,7 +150,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The shipping discount amount")
+    :documentation "The shipping discount amount.")
 
    ;; tax_discount_amount
    (tax-discount-amount
@@ -159,7 +159,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The tax discount amount")
+    :documentation "The tax discount amount.")
 
    ;; url
    (url
@@ -168,7 +168,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type string
-    :documentation "The full URL to the cart page on Etsy")
+    :documentation "The full URL to the cart page on Etsy.")
 
    ;; listings
    (listings
@@ -177,7 +177,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type array(CartListing)
-    :documentation "An array of purchase information for the listings")
+    :documentation "An array of purchase information for the listings.")
    )
   ;; (:default-initargs 
   ;;  :cart-id nil :shop-name nil :message-to-seller nil :destination-country-id nil

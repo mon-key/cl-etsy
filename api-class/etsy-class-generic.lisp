@@ -18,6 +18,9 @@
 ;;  currency-code total subtotal shipping-cost tax-cost discount-amount
 ;;  shipping-discount-amount tax-discount-amount url listings)
 
+;; cart-listing
+;; (listing-id purchase-quantity purchase-state)
+
 ;; category
 ;; (category-id name meta-title meta-keywords meta-description page-description
 ;;  page-title category-name short-name long-name num-children)

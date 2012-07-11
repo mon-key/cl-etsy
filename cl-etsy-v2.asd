@@ -50,6 +50,7 @@
                              (:file "etsy-billing-overview-class")
                              (:file "etsy-bill-payment-class")
                              (:file "etsy-cart-class")
+                             (:file "etsy-cart-listing-class")
                              ))
                                      
                ;; (:module "misc" 
