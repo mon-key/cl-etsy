@@ -32,6 +32,28 @@
                   "\n;; :visibility \\2\n;; :perm-scope \\3\n;; :type \\4\n:documentation \"\\5\")\n") t))))
             (widen)))))
 
+(defun etsy-class-insert ()
+  (interactive)
+  (save-excursion
+    (insert "\n\n#|\n\n----\nAPI-ASSOCIATIONS\n\n----\nAPI-METHODS\n\n|#\n
+(in-package #:cl-etsy)\n
+;;
+(defclass  (base-etsy)
+  (
+   )
+  ;; (:default-initargs )
+  (:documentation \"\"))")))
+
+;; (funcall #'(lambda (x) 
+;;              (loop 
+;;                 for init in x
+;;                 for sym in x
+;;                 nconcing (list (caddr init) nil) into gthr
+;;                 collecting (car sym) into syms
+;;                 finally (return (values syms gthr))))
+
+
+
 ;;; ==============================
 ;;; EOF
 
