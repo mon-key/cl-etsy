@@ -4,19 +4,6 @@
 
 #|
 
-----
-Regexp for converting the fields table from the Etsy documentation URL:
- http://www.etsy.com/developers/documentation/reference/<FOO>
-
-\(.*\) 	\(.*\) 	\(.*\) 	\(.*\) 	\(.*\)
-;; \1
-(\1
-:initarg :
-:accessor 
-;; :visibility \2
-;; :perm-scope \3
-;; :type \4
-:documentation "\5")
 
 ----
  (URL `http://www.etsy.com/developers/documentation/reference/apimethod')
@@ -225,6 +212,7 @@ UserAddress
              (nsubstitute #\- #\_ 
                           (cl-ppcre:regex-replace-all "(?<!^)((?<!_)([A-Z]))" i "-\\1")))
             i)))
+
 
 :API-CLASSES
 

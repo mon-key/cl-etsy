@@ -1,7 +1,7 @@
 CL-Etsy was originally authored by Ben Hyde and provided a bridge from Common
 Lisp to version 1 of the Etsy.com API[1]. The v1 API was deprecated in November
 of 2010 and such that much of the original source is no longer compatible with
-the v2 API. [1] [2] [3] [4]
+the v2 API[1][2][3][4].
 
 After some initial investigation it does not seam reasonable to try make a
 wholesale migration of Hyde's existing v1 related source. With the introduction
@@ -11,7 +11,7 @@ return. Additionally the v2 API allows "associations" via an "includes"
 parameter which does not appear to be present at all in the original v1 source.
 Some of the original v1 source is available beneath directory cl-etsy/api-v1.
 
-As part of the conversion we've decided to use yason [5] instead of cl-json [6] .
+As part of the conversion we've decided to use yason[5] instead of cl-json[6].
 Much of the original v1 source rolled out of macrology in the form of
 DEF-API-CLASS some of which in turn depended on the output of a hairy function
 BUILD-METHODS which snarfed the output of the "getMethodTable" method call from
