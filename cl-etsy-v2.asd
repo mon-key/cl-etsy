@@ -49,6 +49,7 @@
                              ;; (:file "etsy-bill-charge-class")
                              (:file "etsy-billing-overview-class")
                              (:file "etsy-bill-payment-class")
+                             (:file "etsy-cart-class")
                              ))
                                      
                ;; (:module "misc" 

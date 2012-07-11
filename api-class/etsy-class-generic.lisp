@@ -13,6 +13,11 @@
 ;; bill-payment
 ;; (bill-payment-id creation-tsz type type-id user-id amount currency-code creation-month creation-year)
 
+;; cart
+;; (cart-id shop-name message-to-seller destination-country-id coupon-code
+;;  currency-code total subtotal shipping-cost tax-cost discount-amount
+;;  shipping-discount-amount tax-discount-amount url listings)
+
 ;; category
 ;; (category-id name meta-title meta-keywords meta-description page-description
 ;;  page-title category-name short-name long-name num-children)
