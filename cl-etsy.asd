@@ -21,12 +21,6 @@
   :components (
                (:file "package")
                (:file "specials")
-               ;; v1 files
-               ;; (:file "base") 
-               ;; (:file "api-utils")
-               ;; (:file "types")
-               ;; (:file "methods")
-               ;; (:file "main")
                (:module "api-class"
                 :components (
                              (:file "etsy-types")
@@ -55,12 +49,18 @@
                              (:file "etsy-cart-class")
                              (:file "etsy-cart-listing-class")
                              ))
-                                     
-               ;; (:module "misc" 
-               ;;          :components ((:file "categories")
-               ;;                       (:file "tags")))
-               #+5am (:file "tests")
-               ))
+               ;; v1 files
+               (:module "api-v1"
+                :components ((:file "base") 
+                             (:file "api-utils")
+                             (:file "types")
+                             (:file "methods")
+                             (:file "main")
+                             (:module "misc" 
+                              :components ((:file "categories")
+                                           (:file "tags")))
+                             #+5am (:file "tests"))))
+               )
 
 (defmethod asdf:perform :after ((op asdf:load-op) (system (eql (asdf:find-system :cl-etsy))))
   (when (member :IS-MON cl:*features*)
