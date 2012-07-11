@@ -10,6 +10,9 @@
 ;; billing-overview
 ;; (is-overdue currency-code overdue-balance balance-due total-balance date-due  date-overdue)
 
+;; bill-payment
+;; (bill-payment-id creation-tsz type type-id user-id amount currency-code creation-month creation-year)
+
 ;; category
 ;; (category-id name meta-title meta-keywords meta-description page-description
 ;;  page-title category-name short-name long-name num-children)

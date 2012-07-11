@@ -48,6 +48,7 @@
                              (:file "etsy-treasury-listing-data-class")
                              ;; (:file "etsy-bill-charge-class")
                              (:file "etsy-billing-overview-class")
+                             (:file "etsy-bill-payment-class")
                              ))
                                      
                ;; (:module "misc" 
