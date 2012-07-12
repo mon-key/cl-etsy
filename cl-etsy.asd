@@ -28,6 +28,7 @@
                              (:file "etsy-class-generic")
                              (:file "etsy-epoch")
                              (:file "etsy-base-class")
+                             (:file "etsy-api-method-class")
                              (:file "etsy-avatar-class")
                              (:file "etsy-bill-charge-class")
                              (:file "etsy-billing-overview-class")
