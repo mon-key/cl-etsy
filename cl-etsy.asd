@@ -21,6 +21,7 @@
   :components (
                (:file "package")
                (:file "specials")
+               (:file "environment")
                (:module "api-class"
                 :components (
                              (:file "etsy-types")

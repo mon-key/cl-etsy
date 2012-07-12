@@ -5,7 +5,7 @@
 (in-package #:cl-etsy)
 
 ;; v1 "http://beta-api.etsy.com/v1"
-(defparameter *base-url* "http://openapi.etsy.com/v2" ; "http://sandbox.openapi.etsy.com/v2"
+(defvar *base-url* "http://openapi.etsy.com/v2" ; "http://sandbox.openapi.etsy.com/v2"
   
 "Value should be a string referencing a URL for an Etsy API endpoint.
 Valid settings are either:
