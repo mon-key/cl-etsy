@@ -4,6 +4,8 @@
 
 #|
 
+:NOTE 
+
 
 ----
  (URL `http://www.etsy.com/developers/documentation/reference/apimethod')
@@ -474,7 +476,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ApiMethod")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getCategory")
    (:DESCRIPTION . "Retrieves a top-level Category by tag.")
@@ -484,7 +486,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Category")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getSubCategory")
    (:DESCRIPTION . "Retrieves a second-level Category by tag and subtag.")
@@ -495,7 +497,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Category")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getSubSubCategory")
    (:DESCRIPTION . "Retrieves a third-level Category by tag, subtag and subsubtag.")
@@ -507,7 +509,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Category")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllCountry")
    (:DESCRIPTION . "Finds all Country.")
@@ -516,7 +518,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Country")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getCountry")
    (:DESCRIPTION . "Retrieves a Country by id.")
@@ -526,7 +528,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Country")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllFeaturedTreasuries")
    (:DESCRIPTION . "Finds all FeaturedTreasuries.")
@@ -543,7 +545,7 @@ UserAddress
     (:REGION . "__ALL_REGIONS__"))
    (:TYPE         . "FeaturedTreasury")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getFeaturedTreasuryById")
    (:DESCRIPTION . "Finds FeaturedTreasury by numeric ID.")
@@ -553,7 +555,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "FeaturedTreasury")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllListingsForFeaturedTreasuryId")
    (:DESCRIPTION . "Finds all listings for a certain FeaturedTreasury.")
@@ -563,7 +565,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Listing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllActiveListingsForFeaturedTreasuryId")
    (:DESCRIPTION . "Finds all active listings for a certain FeaturedTreasury.")
@@ -573,7 +575,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Listing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllFeaturedListings")
    (:DESCRIPTION . "Finds all FeaturedTreasury listings.")
@@ -590,7 +592,7 @@ UserAddress
     (:REGION . "__ALL_REGIONS__"))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllCurrentFeaturedListings")
    (:DESCRIPTION  . "Finds FeaturedTreasury listings that are currently displayed on a regional homepage.")
@@ -601,7 +603,7 @@ UserAddress
     (:REGION . "US"))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "findAllFeaturedTreasuriesByOwner")
    (:DESCRIPTION . "Finds all FeaturedTreasury by numeric owner_id.")
@@ -617,7 +619,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "FeaturedTreasury")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "createListing")
    (:DESCRIPTION . "Creates a new Listing")
@@ -654,7 +656,7 @@ UserAddress
     (:STYLE))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
      
   ((:NAME        . "getListing")
    (:DESCRIPTION . "Retrieves a Listing by id.")
@@ -664,7 +666,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Listing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "updateListing")
    (:DESCRIPTION . "Updates a Listing")
@@ -711,7 +713,7 @@ UserAddress
     (:STYLE))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "PUT"))
+   (:HTTP-METHOD  . "PUT"))
      
   ((:NAME        . "deleteListing")
    (:DESCRIPTION . "Deletes a Listing")
@@ -721,7 +723,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Listing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
      
   ((:NAME        . "findAllListingFavoredBy")
    (:DESCRIPTION . "Retrieves a set of FavoriteListing objects associated to a Listing.")
@@ -737,7 +739,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "FavoriteListing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "findAllListingImages")
    (:DESCRIPTION . "Retrieves a set of ListingImage objects associated to a Listing.")
@@ -747,7 +749,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ListingImage")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "uploadListingImage")
    (:DESCRIPTION . "Upload a new listing image")
@@ -760,7 +762,7 @@ UserAddress
     (:RANK . 1))
    (:TYPE         . "ListingImage")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
      
   ((:NAME        . "getImage_Listing")
    (:DESCRIPTION . "Retrieves a Image_Listing by id.")
@@ -771,7 +773,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ListingImage")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "deleteListingImage")
    (:DESCRIPTION . "Deletes a listing image")
@@ -782,7 +784,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ListingImage")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
      
   ((:NAME        . "findAllListingShippingInfo")
    (:DESCRIPTION . "Retrieves a set of ShippingInfo objects associated to a Listing.")
@@ -798,7 +800,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "ShippingInfo")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "createShippingInfo")
    (:DESCRIPTION . "Creates a new ShippingInfo.")
@@ -815,7 +817,7 @@ UserAddress
     (:REGION-ID))
    (:TYPE         . "ShippingInfo")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
      
   ((:NAME        . "getListingTranslation")
    (:DESCRIPTION . "Retrieves a ListingTranslation by listing_id and language")
@@ -826,7 +828,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ListingTranslation")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "findAllListingActive")
    (:DESCRIPTION . "Finds all active Listings. (Note: the sort_on and sort_order options only work when combined with one of the search options: keywords, color, tags, materials, location, etc.)")
@@ -869,23 +871,23 @@ UserAddress
     (:GEO-LEVEL      . "city"))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "getOrder")
    (:DESCRIPTION . "Retrieves a Order by id.")
    (:URI         . "/orders/:order_id")
    (:PARAMS
-    (:ORDER-ID . "array(int)"))
+    (:ORDER-ID    . "array(int)"))
    (:DEFAULTS)
    (:TYPE         . "Order")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "findAllOrderReceipts")
    (:DESCRIPTION . "Retrieves a set of Receipt objects associated to a Order.")
    (:URI         . "/orders/:order_id/receipts")
    (:PARAMS
-    (:ORDER-ID . "int")
+    (:ORDER-ID  . "int")
     (:LIMIT     . "int")
     (:OFFSET    . "int")
     (:PAGE      . "int"))
@@ -895,7 +897,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Receipt")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ;; !!!!     
   ((:NAME        . "findPayment")
@@ -906,7 +908,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Payment")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ;; !!!!  
   ((:NAME        . "findPaymentAdjustments")
@@ -923,7 +925,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "PaymentAdjustment")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
   
   ;; !!!!     
   ((:NAME        . "findPaymentAdjustment")
@@ -935,7 +937,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "PaymentAdjustment")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ;; !!!!  
   ((:NAME        . "findPaymentAdjustmentItem")
@@ -953,7 +955,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "PaymentAdjustmentItem")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ;; !!!!
   ((:NAME        . "findPaymentAdjustmentItem")
@@ -966,7 +968,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "PaymentAdjustmentItem")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "createPaymentTemplate")
    (:DESCRIPTION . "Creates a new PaymentTemplate")
@@ -1001,7 +1003,7 @@ UserAddress
     (:COUNTRY-ID))
    (:TYPE         . "PaymentTemplate")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
      
   ((:NAME        . "getPaymentTemplate")
    (:DESCRIPTION . "Retrieves a PaymentTemplate by id.")
@@ -1011,7 +1013,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "PaymentTemplate")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "updatePaymentTemplate")
    (:DESCRIPTION . "Updates a PaymentTemplate")
@@ -1047,7 +1049,7 @@ UserAddress
     (:COUNTRY-ID))
    (:TYPE         . "PaymentTemplate")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "PUT"))
+   (:HTTP-METHOD  . "PUT"))
 
      
   ((:NAME        . "createReceiptOnSandbox")
@@ -1058,7 +1060,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Receipt")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
      
   ((:NAME        . "getReceipt")
    (:DESCRIPTION . "Retrieves a Receipt by id.")
@@ -1068,7 +1070,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Receipt")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "updateReceipt")
    (:DESCRIPTION . "Updates a Receipt")
@@ -1086,7 +1088,7 @@ UserAddress
     (:MESSAGE-FROM-BUYER))
    (:TYPE         . "Receipt")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "PUT"))
+   (:HTTP-METHOD  . "PUT"))
      
   ((:NAME        . "findAllReceiptListings")
    (:DESCRIPTION . "Finds all listings in a receipt")
@@ -1104,13 +1106,13 @@ UserAddress
     (:DATA-VERSION))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "findAllReceiptTransactions")
    (:DESCRIPTION . "Retrieves a set of Transaction objects associated to a Receipt.")
    (:URI         . "/receipts/:receipt_id/transactions")
    (:PARAMS
-    (:RECEIPT-ID . "int")
+    (:RECEIPT-ID  . "int")
     (:LIMIT       . "int")
     (:OFFSET      . "int")
     (:PAGE        . "int"))
@@ -1120,7 +1122,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Transaction")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "findAllRegion")
    (:DESCRIPTION . "Finds all Region.")
@@ -1129,7 +1131,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Region")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "getRegion")
    (:DESCRIPTION . "Retrieves a Region by id.")
@@ -1139,7 +1141,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Region")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ;; !!!!
   ((:NAME        . "getServerEpoch")
@@ -1149,7 +1151,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Int")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ;; !!!!     
   ((:NAME        . "ping")
@@ -1159,7 +1161,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "String")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "getShippingInfo")
    (:DESCRIPTION . "Retrieves a ShippingInfo by id.")
@@ -1169,7 +1171,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShippingInfo")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "updateShippingInfo")
    (:DESCRIPTION . "Updates a ShippingInfo with the given id.")
@@ -1192,7 +1194,7 @@ UserAddress
     (:LISTING-ID))
    (:TYPE         . "ShippingInfo")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "PUT"))
+   (:HTTP-METHOD  . "PUT"))
      
   ((:NAME        . "deleteShippingInfo")
    (:DESCRIPTION . "Deletes the ShippingInfo with the given id.")
@@ -1202,7 +1204,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShippingInfo")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
      
   ((:NAME        . "createShippingTemplate")
    (:DESCRIPTION . "Creates a new ShippingTemplate")
@@ -1219,7 +1221,7 @@ UserAddress
     (:DESTINATION-REGION-ID))
    (:TYPE         . "ShippingTemplate")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
      
   ((:NAME        . "getShippingTemplate")
    (:DESCRIPTION . "Retrieves a ShippingTemplate by id.")
@@ -1229,7 +1231,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShippingTemplate")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "updateShippingTemplate")
    (:DESCRIPTION . "Updates a ShippingTemplate")
@@ -1243,7 +1245,7 @@ UserAddress
     (:ORIGIN-COUNTRY-ID))
    (:TYPE         . "ShippingTemplate")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "PUT"))
+   (:HTTP-METHOD  . "PUT"))
      
   ((:NAME        . "deleteShippingTemplate")
    (:DESCRIPTION . "Deletes the ShippingTemplate with the given id.")
@@ -1253,7 +1255,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShippingTemplate")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
      
   ((:NAME        . "findAllShippingTemplateEntries")
    (:DESCRIPTION . "Retrieves a set of ShippingTemplateEntry objects associated to a ShippingTemplate.")
@@ -1269,7 +1271,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "ShippingTemplateEntry")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "createShippingTemplateEntry")
    (:DESCRIPTION . "Creates a new ShippingTemplateEntry")
@@ -1277,15 +1279,15 @@ UserAddress
    (:PARAMS
     (:SHIPPING-TEMPLATE-ID   . "int")
     (:DESTINATION-COUNTRY-ID . "int")
-    (:PRIMARY-COST            . "float")
-    (:SECONDARY-COST          . "float")
+    (:PRIMARY-COST           . "float")
+    (:SECONDARY-COST         . "float")
     (:DESTINATION-REGION-ID  . "int"))
    (:DEFAULTS
     (:DESTINATION-COUNTRY-ID)
     (:DESTINATION-REGION-ID))
    (:TYPE         . "ShippingTemplateEntry")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
      
   ((:NAME        . "getShippingTemplateEntry")
    (:DESCRIPTION . "Retrieves a ShippingTemplateEntry by id.")
@@ -1295,7 +1297,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShippingTemplateEntry")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "updateShippingTemplateEntry")
    (:DESCRIPTION . "Updates a ShippingTemplateEntry")
@@ -1311,7 +1313,7 @@ UserAddress
     (:SECONDARY-COST))
    (:TYPE         . "ShippingTemplateEntry")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "PUT"))
+   (:HTTP-METHOD  . "PUT"))
      
   ((:NAME        . "deleteShippingTemplateEntry")
    (:DESCRIPTION . "Deletes a ShippingTemplateEntry")
@@ -1321,7 +1323,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShippingTemplateEntry")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
      
   ((:NAME        . "findAllShops")
    (:DESCRIPTION . "Finds all Shops.  If there is a keywords parameter, finds shops with shop_name starting with keywords.")
@@ -1344,7 +1346,7 @@ UserAddress
     (:DISTANCE-MAX . 35))
    (:TYPE         . "Shop")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "getShop")
    (:DESCRIPTION . "Retrieves a Shop by id.")
@@ -1354,7 +1356,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Shop")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "updateShop")
    (:DESCRIPTION . "Updates a Shop")
@@ -1386,7 +1388,7 @@ UserAddress
     (:POLICY-SELLER-INFO))
    (:TYPE         . "Shop")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "PUT"))
+   (:HTTP-METHOD  . "PUT"))
      
   ((:NAME        . "uploadShopBanner")
    (:DESCRIPTION . "Upload a new shop banner image")
@@ -1397,7 +1399,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Shop")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
      
   ((:NAME        . "deleteShopBanner")
    (:DESCRIPTION . "Deletes a shop banner image")
@@ -1407,7 +1409,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Shop")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
      
   ((:NAME        . "findAllShopCoupons")
    (:DESCRIPTION . "Retrieves all Shop_Coupons by shop_id")
@@ -1417,7 +1419,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Coupon")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "createCoupon")
    (:DESCRIPTION . "Creates a new Coupon.")
@@ -1436,7 +1438,7 @@ UserAddress
     (:DOMESTIC-ONLY . "false"))
    (:TYPE         . "Coupon")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
      
   ((:NAME        . "findCoupon")
    (:DESCRIPTION . "Retrieves a Shop_Coupon by id and shop_id")
@@ -1447,7 +1449,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Coupon")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "updateCoupon")
    (:DESCRIPTION . "Updates a coupon")
@@ -1460,7 +1462,7 @@ UserAddress
     (:SELLER-ACTIVE . "false"))
    (:TYPE         . "Coupon")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "PUT"))
+   (:HTTP-METHOD  . "PUT"))
      
   ((:NAME        . "deleteCoupon")
    (:DESCRIPTION . "Deletes a coupon")
@@ -1471,7 +1473,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Coupon")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
 
   ;; !!!!     
   ((:NAME        . "findLedger")
@@ -1482,7 +1484,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Ledger")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ;; !!!!
   ((:NAME        . "findLedgerEntries")
@@ -1499,7 +1501,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "LedgerEntry")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllShopListingsActive")
    (:DESCRIPTION . "Finds all active Listings associated with a Shop")
@@ -1535,7 +1537,7 @@ UserAddress
     (:CATEGORY))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllShopListingsDraft")
    (:DESCRIPTION . "Finds all of a Shop's draft listings")
@@ -1551,7 +1553,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllShopListingsExpired")
    (:DESCRIPTION . "Retrieves Listings associated to a Shop that are expired")
@@ -1567,7 +1569,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getShopListingExpired")
    (:DESCRIPTION . "Retrieves a Listing associated to a Shop that is inactive")
@@ -1578,7 +1580,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Listing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllShopListingsFeatured")
    (:DESCRIPTION . "Retrieves Listings associated to a Shop that are featured")
@@ -1594,7 +1596,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllShopListingsInactive")
    (:DESCRIPTION . "Retrieves Listings associated to a Shop that are inactive")
@@ -1610,7 +1612,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getShopListingInactive")
    (:DESCRIPTION . "Retrieves a Listing associated to a Shop that is inactive")
@@ -1621,7 +1623,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Listing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllShopReceipts")
    (:DESCRIPTION . "Retrieves a set of Receipt objects associated to a Shop.")
@@ -1645,7 +1647,7 @@ UserAddress
     (:WAS-SHIPPED))
    (:TYPE         . "Receipt")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllShopReceiptsByStatus")
    (:DESCRIPTION . "Retrieves a set of Receipt objects associated to a Shop based on the status.")
@@ -1662,7 +1664,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Receipt")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllShopSections")
    (:DESCRIPTION . "Retrieves a set of ShopSection objects associated to a Shop.")
@@ -1672,7 +1674,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShopSection")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "createShopSection")
    (:DESCRIPTION . "Creates a new ShopSection.")
@@ -1686,7 +1688,7 @@ UserAddress
     (:USER-ID))
    (:TYPE         . "ShopSection")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
 
   ((:NAME        . "getShopSection")
    (:DESCRIPTION . "Retrieves a ShopSection by id and shop_id")
@@ -1697,7 +1699,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShopSection")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "updateShopSection")
    (:DESCRIPTION . "Updates a ShopSection with the given id.")
@@ -1714,7 +1716,7 @@ UserAddress
     (:RANK))
    (:TYPE         . "ShopSection")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "PUT"))
+   (:HTTP-METHOD  . "PUT"))
 
   ((:NAME        . "deleteShopSection")
    (:DESCRIPTION . "Deletes the ShopSection with the given id.")
@@ -1725,7 +1727,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShopSection")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
 
   ((:NAME        . "findAllShopSectionListings")
    (:DESCRIPTION . "Finds all listings within a shop section")
@@ -1742,7 +1744,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllShopSectionListingsActive")
    (:DESCRIPTION . "Finds all listings within a shop section")
@@ -1763,7 +1765,7 @@ UserAddress
     (:SORT-ORDER . "down"))
    (:TYPE         . "Listing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getShopTranslation")
    (:DESCRIPTION . "Retrieves a ShopSectionTranslation by shop_id and language")
@@ -1775,7 +1777,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShopSectionTranslation")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllShopTransactions")
    (:DESCRIPTION . "Retrieves a set of Transaction objects associated to a Shop.")
@@ -1791,7 +1793,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Transaction")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getShopTranslation")
    (:DESCRIPTION . "Retrieves a ShopTranslation by shop_id and language")
@@ -1802,7 +1804,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShopTranslation")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getShopSectionTranslationShopSection")
    (:DESCRIPTION . "Retrieves a set of ShopSection objects associated to a ShopSectionTranslation.")
@@ -1812,7 +1814,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ShopSection")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllTopCategory")
    (:DESCRIPTION . "Retrieves all top-level Categories.")
@@ -1821,7 +1823,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Category")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllTopCategoryChildren")
    (:DESCRIPTION . "Retrieves children of a top-level Category by tag.")
@@ -1831,7 +1833,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Category")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllSubCategoryChildren")
    (:DESCRIPTION . "Retrieves children of a second-level Category by tag and subtag.")
@@ -1842,7 +1844,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Category")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findSuggestedStyles")
    (:DESCRIPTION . "Retrieve all suggested styles.")
@@ -1851,7 +1853,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Style")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findPopularTags")
    (:DESCRIPTION . "DEPRECATED - Retrieves all related tags for the given tag set.")
@@ -1862,7 +1864,7 @@ UserAddress
     (:LIMIT . 25))
    (:TYPE         . "Tag")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllRelatedTags")
    (:DESCRIPTION . "DEPRECATED - Retrieves all related tags for the given tag set.")
@@ -1874,7 +1876,7 @@ UserAddress
     (:LIMIT . 25))
    (:TYPE         . "Tag")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllTeams")
    (:DESCRIPTION . "Returns all Teams")
@@ -1889,7 +1891,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Team")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUsersForTeam")
    (:DESCRIPTION . "Returns a list of users for a specific team")
@@ -1907,7 +1909,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "User")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findTeams")
    (:DESCRIPTION . "Returns specified team by ID or team name")
@@ -1917,7 +1919,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Team")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getTransaction")
    (:DESCRIPTION . "Retrieves a Transaction by id.")
@@ -1927,7 +1929,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Transaction")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllTreasuries")
    (:DESCRIPTION . "Search Treasuries or else List all Treasuries")
@@ -1948,7 +1950,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Treasury")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "createTreasury")
    (:DESCRIPTION . "Create a Treasury")
@@ -1964,7 +1966,7 @@ UserAddress
     (:PRIVATE . 0))
    (:TYPE         . "Treasury")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
 
   ((:NAME        . "getTreasury")
    (:DESCRIPTION . "Get a Treasury")
@@ -1974,7 +1976,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Treasury")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "deleteTreasury")
    (:DESCRIPTION . "Delete a Treasury")
@@ -1983,7 +1985,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Treasury")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
 
   ((:NAME        . "findTreasuryComments")
    (:DESCRIPTION . "Get a Treasury's Comments")
@@ -1999,7 +2001,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "ForumPost")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "postTreasuryComment")
    (:DESCRIPTION . "Leave a comment on a Treasury List")
@@ -2009,7 +2011,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ForumPost")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
 
   ((:NAME        . "deleteTreasuryComment")
    (:DESCRIPTION . "Delete a given comment on a Treasury List")
@@ -2018,7 +2020,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "ForumPost")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
 
   ((:NAME        . "describeOccasionEnum")
    (:DESCRIPTION . "Describes the legal values for Listing.occasion.")
@@ -2027,7 +2029,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "DataType")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "describeRecipientEnum")
    (:DESCRIPTION . "Describes the legal values for Listing.recipient.")
@@ -2036,7 +2038,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "DataType")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "describeWhenMadeEnum")
    (:DESCRIPTION . "Describes the legal values for Listing.when_made.")
@@ -2045,7 +2047,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "DataType")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "describeWhoMadeEnum")
    (:DESCRIPTION . "Describes the legal values for Listing.who_made.")
@@ -2054,7 +2056,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "DataType")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUsers")
    (:DESCRIPTION . "Finds all Users whose name or username match the keywords parameter.")
@@ -2071,7 +2073,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "User")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getUser")
    (:DESCRIPTION . "Retrieves a User by id.")
@@ -2081,7 +2083,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "User")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserAddresses")
    (:DESCRIPTION . "Retrieves a set of UserAddress objects associated to a User.")
@@ -2097,7 +2099,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "UserAddress")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "createUserAddress")
    (:DESCRIPTION . "Creates a new UserAddress.")
@@ -2116,7 +2118,7 @@ UserAddress
     (:STATE))
    (:TYPE         . "UserAddress")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
 
   ((:NAME        . "getUserAddress")
    (:DESCRIPTION . "Retrieves a UserAddress by id.")
@@ -2126,7 +2128,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "UserAddress")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "deleteUserAddress")
    (:DESCRIPTION . "Deletes the UserAddress with the given id.")
@@ -2136,7 +2138,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "UserAddress")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
 
   ((:NAME        . "uploadAvatar")
    (:DESCRIPTION . "Upload a new user avatar image")
@@ -2151,7 +2153,7 @@ UserAddress
     (:IMAGE))
    (:TYPE         . "Avatar")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
 
   ((:NAME        . "getAvatarImgSrc")
    (:DESCRIPTION . "Get avatar image source")
@@ -2162,7 +2164,7 @@ UserAddress
     (:USER-ID))
    (:TYPE         . "Avatar")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getUserBillingOverview")
    (:DESCRIPTION . "Retrieves the user's current balance.")
@@ -2172,7 +2174,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "BillingOverview")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "getAllUserCarts")
    (:DESCRIPTION . "Get a user's Carts")
@@ -2182,7 +2184,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Cart")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "addToCart")
    (:DESCRIPTION . "Add a listing to a cart")
@@ -2195,7 +2197,7 @@ UserAddress
     (:QUANTITY . 1))
    (:TYPE         . "Cart")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
 
   ((:NAME        . "updateCartListingQuantity")
    (:DESCRIPTION . "Update a cart listing purchase quantity")
@@ -2207,7 +2209,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Cart")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "PUT"))
+   (:HTTP-METHOD  . "PUT"))
 
   ((:NAME        . "removeCartListing")
    (:DESCRIPTION . "Remove a listing from a cart")
@@ -2218,7 +2220,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Cart")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
 
   ((:NAME        . "getUserCart")
    (:DESCRIPTION . "Get a cart")
@@ -2229,7 +2231,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Cart")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "updateCart")
    (:DESCRIPTION . "Update a cart")
@@ -2246,7 +2248,7 @@ UserAddress
     (:COUPON-CODE))
    (:TYPE         . "Cart")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "PUT"))
+   (:HTTP-METHOD  . "PUT"))
 
   ((:NAME        . "deleteCart")
    (:DESCRIPTION . "Delete a cart")
@@ -2257,7 +2259,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Cart")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
 
   ((:NAME        . "findAllCartListings")
    (:DESCRIPTION . "Finds all listings in a given Cart")
@@ -2268,7 +2270,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "Listing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserCharges")
    (:DESCRIPTION . "Retrieves a set of BillCharge objects associated to a User.")
@@ -2290,7 +2292,7 @@ UserAddress
     (:MAX-CREATED))
    (:TYPE         . "BillCharge")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserFavoredBy")
    (:DESCRIPTION . "Retrieves a set of FavoriteUser objects associated to a User.")
@@ -2306,7 +2308,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "FavoriteUser")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserFavoriteListings")
    (:DESCRIPTION . "Finds all favorite listings for a user")
@@ -2322,7 +2324,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "FavoriteListing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findUserFavoriteListings")
    (:DESCRIPTION . "Finds a favorite listing for a user")
@@ -2333,7 +2335,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "FavoriteListing")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "createUserFavoriteListings")
    (:DESCRIPTION . "Creates a new favorite listing for a user")
@@ -2344,7 +2346,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "FavoriteListing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
 
   ((:NAME        . "deleteUserFavoriteListings")
    (:DESCRIPTION . "Delete a favorite listing for a user")
@@ -2355,7 +2357,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "FavoriteListing")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
 
   ((:NAME        . "findAllUserFavoriteUsers")
    (:DESCRIPTION . "Finds all favorite users for a user")
@@ -2371,7 +2373,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "FavoriteUser")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findUserFavoriteUsers")
    (:DESCRIPTION . "Finds a favorite user for a user")
@@ -2382,7 +2384,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "FavoriteUser")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "createUserFavoriteUsers")
    (:DESCRIPTION . "Creates a new favorite listing for a user")
@@ -2393,7 +2395,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "FavoriteUser")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "POST"))
+   (:HTTP-METHOD  . "POST"))
 
   ((:NAME        . "deleteUserFavoriteUsers")
    (:DESCRIPTION . "Delete a favorite listing for a user")
@@ -2404,7 +2406,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "FavoriteUser")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "DELETE"))
+   (:HTTP-METHOD  . "DELETE"))
 
   ((:NAME        . "findAllUserFeedbackAsAuthor")
    (:DESCRIPTION . "Retrieves a set of Feedback objects associated to a User.")
@@ -2420,7 +2422,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Feedback")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserFeedbackAsBuyer")
    (:DESCRIPTION . "Retrieves a set of Feedback objects associated to a User.")
@@ -2436,7 +2438,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Feedback")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserFeedbackAsSeller")
    (:DESCRIPTION . "Retrieves a set of Feedback objects associated to a User.")
@@ -2452,7 +2454,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Feedback")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserFeedbackAsSubject")
    (:DESCRIPTION . "Retrieves a set of Feedback objects associated to a User.")
@@ -2468,7 +2470,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Feedback")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllFeedbackFromBuyers")
    (:DESCRIPTION . "Returns a set of FeedBack objects associated to a User.
@@ -2487,7 +2489,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Feedback")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
   
   ((:NAME        . "findAllFeedbackFromSellers")
    (:DESCRIPTION . "Returns a set of FeedBack objects associated to a User.
@@ -2506,7 +2508,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Feedback")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserOrders")
    (:DESCRIPTION . "Retrieves a set of Order objects associated to a User.")
@@ -2526,7 +2528,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Order")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserPayments")
    (:DESCRIPTION . "Retrieves a set of BillPayment objects associated to a User.")
@@ -2548,7 +2550,7 @@ UserAddress
     (:MAX-CREATED))
    (:TYPE         . "BillPayment")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserPaymentTemplates")
    (:DESCRIPTION . "Retrieves a set of PaymentTemplate objects associated to a User.")
@@ -2558,7 +2560,7 @@ UserAddress
    (:DEFAULTS)
    (:TYPE         . "PaymentTemplate")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserBuyerReceipts")
    (:DESCRIPTION . "Retrieves a set of Receipt objects associated to a User.")
@@ -2574,7 +2576,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Receipt")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserShippingTemplates")
    (:DESCRIPTION . "Retrieves a set of ShippingTemplate objects associated to a User.")
@@ -2590,7 +2592,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "ShippingTemplate")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserShops")
    (:DESCRIPTION . "Retrieves a set of Shop objects associated to a User.")
@@ -2606,7 +2608,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Shop")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllTeamsForUser")
    (:DESCRIPTION . "Returns a list of teams for a specific user")
@@ -2622,7 +2624,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Team")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserBuyerTransactions")
    (:DESCRIPTION . "Retrieves a set of Transaction objects associated to a User.")
@@ -2638,7 +2640,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Transaction")
    (:VISIBILITY   . "private")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "findAllUserTreasuries")
    (:DESCRIPTION . "Get a user's Treasuries")
@@ -2658,7 +2660,7 @@ UserAddress
     (:PAGE))
    (:TYPE         . "Treasury")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET")))
+   (:HTTP-METHOD  . "GET")))
 
  (:PARAMS)
  (:TYPE         . "ApiMethod")
