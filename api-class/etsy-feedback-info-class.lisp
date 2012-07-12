@@ -3,7 +3,8 @@
 ;;; ==============================
 
 #|
-(URL `http://www.etsy.com/developers/documentation/reference/feedbackinfo')
+
+ (URL `http://www.etsy.com/developers/documentation/reference/feedbackinfo')
 
 |#
 
@@ -11,28 +12,29 @@
 
 ;; FeedbackInfo
 (defclass feedback-info (base-etsy)
- (
-  (count
-   :initarg :count
-   :accessor count
-   ;; :visibility public
-   ;; :perm-scope none
-   ;; :type int
-   :documentation "The number of feedbacks.")
+  (;; :NOTE This symbol conflicts with CL:COUNT
+   ;; Consider feedback-count or feedback-info-count instead???
+   (count
+    :initarg :count
+    :accessor count
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type int
+    :documentation "The number of feedbacks.")
 
-  (score
-   :initarg :score
-   :accessor score
-   ;; :visibility public
-   ;; :perm-scope none
-   ;; :type int
-   :documentation "The feedback score percentage.")
-  )
+   (score
+    :initarg :score
+    :accessor score
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type int
+    :documentation "The feedback score percentage."))
+
   ;; (:default-initargs :count nil :score nil)
+
   (:documentation "An array representing the percentage of positive feedback this user has earned. 
 This is returned in the feedback_info field of the User resource.
  (URL `http://www.etsy.com/developers/documentation/reference/feedbackinfo')"))
-
 
 
 

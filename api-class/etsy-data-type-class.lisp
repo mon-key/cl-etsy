@@ -27,25 +27,30 @@ API-METHODS
 
 ;; DataType
 (defclass data-type (base-etsy)
-  ;; data-type-type
-  ((type
+  (
+   ;; :NOTE This symbol conflicts with CL:TYPE
+   ;; Consider using data-type-type instead?
+   ;; esp. as none of the api-methods accept a TYPE parameter
+   (type
     :initarg :type
     :accessor :type
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "Base type of data")
+    :documentation "Base type of data.")
 
    ;; :NOTE this is actually "values" but that symbol is extremely overloaded in CL
+   ;; and we're not ready to shadow CL:VALUES just yet.
    (data-type-values
     :initarg :data-type-values
     :accessor data-type-values
     ;; :visibility public
     ;; :perm-scope none
     ;; :type array(string)
-    :documentation "Allowable values (for an enum.) ")
+    :documentation "Allowable values (for an enum)."))
+
    ;; (:default-initargs :data-type-values nil :type nil)
-   )
+   
   (:documentation "Describes an input type.
  The data-type who-made, when-made are so-called \"Marketplace Attributes\" that
  help buyers locate a Listing under the headings Handmade, Vintage and Supplies.
@@ -65,7 +70,7 @@ API-METHODS
   (:DEFAULTS)
   (:TYPE         . "DataType")
   (:VISIBILITY   . "public")
-  (:HTTP-METHOD . "GET"))
+  (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "describeRecipientEnum")
    (:DESCRIPTION . "Describes the legal values for Listing.recipient.")
@@ -74,7 +79,7 @@ API-METHODS
    (:DEFAULTS)
    (:TYPE         . "DataType")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "describeWhenMadeEnum")
    (:DESCRIPTION . "Describes the legal values for Listing.when_made.")
@@ -83,7 +88,7 @@ API-METHODS
    (:DEFAULTS)
    (:TYPE         . "DataType")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
   ((:NAME        . "describeWhoMadeEnum")
    (:DESCRIPTION . "Describes the legal values for Listing.who_made.")
@@ -92,8 +97,10 @@ API-METHODS
    (:DEFAULTS)
    (:TYPE         . "DataType")
    (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+   (:HTTP-METHOD  . "GET"))
 
+---
+ 
 |#
 
 

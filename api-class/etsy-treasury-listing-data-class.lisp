@@ -14,23 +14,22 @@
 
 ;; TreasuryListingData
 (defclass treasury-listing-data (base-etsy)
-  '(
-    ;; user_id
+  (;; user_id
    (user-id
     :initarg :user-id
     :accessor user-id
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The numeric ID of the user who posted the item")
-
+    :documentation "The numeric ID of the user who posted the item.")
+ 
    (title
     :initarg :title
     :accessor title
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The listing's title")
+    :documentation "The listing's title.")
 
    (price
     :initarg :price
@@ -38,7 +37,7 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type float
-    :documentation "The item's price (private for sold listings)")
+    :documentation "The item's price (private for sold listings).")
 
    ;; listing_id
    (listing-id
@@ -47,7 +46,7 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The ID of the listing")
+    :documentation "The ID of the listing.")
 
    (state
     :initarg :state
@@ -55,7 +54,7 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "Whether the listing is active or not")
+    :documentation "Whether the listing is active or not.")
 
    ;; shop_name
    (shop-name
@@ -64,7 +63,7 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The shop to which the listing belongs")
+    :documentation "The shop to which the listing belongs.")
 
    ;; image_id
    (image-id
@@ -73,10 +72,12 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The ID of the image of the listing "))
+    :documentation "The ID of the image of the listing."))
+
   ;; (:default-initargs :user-id nil :title nil :price nil :listing-id nil :state nil :shop-name nil :image-id nil) 
-  ;;  
-  (:documentation "The detailed fields of a TreasuryListing."))
+
+  (:documentation "The detailed fields of a TreasuryListing.
+ (URL `http://www.etsy.com/developers/documentation/reference/treasurylistingdata')"))
 
 
 ;;; ==============================

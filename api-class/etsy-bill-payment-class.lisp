@@ -8,6 +8,7 @@
 
 ----
 API-METHODS
+
 "findAllUserPayments"
 
 |#
@@ -34,6 +35,8 @@ API-METHODS
     ;; :type float
     :documentation "Creation time, in epoch seconds.")
 
+   ;; :NOTE This symbol conflicts with CL:TYPE
+   ;; Consider using payment-type or bill-payment-type instead???
    (type
     :initarg :type
     :accessor type

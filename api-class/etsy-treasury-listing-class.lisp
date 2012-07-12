@@ -3,6 +3,7 @@
 ;;; ==============================
 
 #|
+
  (URL `http://www.etsy.com/developers/documentation/reference/treasurylisting')
 
 |#
@@ -11,25 +12,26 @@
 
 ;; TreasuryListing
 (defclass treasury-listing (base-etsy)
- ((data
-   :initarg :data
-   :accessor data
-   ;; :visibility public
-   ;; :perm-scope none
-   ;; :type treasury-listing-data
-   :documentation "The detailed fields of the listing")
+  ((data
+    :initarg :data
+    :accessor data
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type treasury-listing-data
+    :documentation "The detailed fields of the listing")
 
-  ;; creation_tsz
-  (creation-tsz
-   :initarg :creation-tsz
-   :accessor creation-tsz
-   ;; :visibility public
-   ;; :perm-scope none
-   ;; :type int
-   :documentation "Time the listing was added to this Treasury, in epoch seconds ")
-  )
+   ;; creation_tsz
+   (creation-tsz
+    :initarg :creation-tsz
+    :accessor creation-tsz
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type int
+    :documentation "Time the listing was added to this Treasury, in epoch seconds."))
+
   ;; (:default-initargs :data nil :creation-tsz nil)
-  (:documentation "A subset of the Listing resource stored in a Treasury"))
+  
+  (:documentation "A subset of the Listing resource stored in a Treasury."))
 
 
 ;;; ==============================

@@ -2,6 +2,22 @@
 ;;; :FILE cl-etsy/api-class/etsy-class-generic.lisp
 ;;; ==============================
 
+#|
+
+Following are some ugly symbol-names we should consider adding interspersing #\- charaters to:
+image-url-155x125
+image-url-25x25
+image-url-75x75
+image-url-760x100
+image-url-fullxfull
+
+url-170x135
+url-570xn
+url-75x75
+url-fullxfull
+
+|#
+
 (in-package #:cl-etsy)
 
 ;; 1 classes: featured-treasury
@@ -128,6 +144,7 @@
 (defgeneric comment-count (object))
 (defgeneric (setf comment-count) (comment-count object))
 
+;; We shadow CL:COUNT symbol
 ;; 1 classes: feedback-info
 (defgeneric count (object))
 (defgeneric (setf count) (count object))
@@ -856,7 +873,12 @@
 (defgeneric treasury-owner-id (object))
 (defgeneric (setf treasury-owner-id) (treasury-owner-id object))
 
+;; A we shadow CL:TYPE 
 ;; 3 classes: bill-charge bill-payment data-type
+;; Possible variant names:
+;; bill-charge  - charge-type bill-charge-type
+;; bill-payment - payment-type bill-payment-type
+;; data-type    - data-type-type
 (defgeneric type (object))
 (defgeneric (setf type) (type object))
 
