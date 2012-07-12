@@ -43,5 +43,29 @@ API-METHODS
   (:documentation "Represents a collection of countries to which an item ships.
  (URL `http://www.etsy.com/developers/documentation/reference/region')"))
 
+#|
+
+ ((:NAME        . "findAllRegion")
+   (:DESCRIPTION . "Finds all Region.")
+   (:URI         . "/regions")
+   (:PARAMS)
+   (:DEFAULTS)
+   (:TYPE         . "Region")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+     
+  ((:NAME        . "getRegion")
+   (:DESCRIPTION . "Retrieves a Region by id.")
+   (:URI         . "/regions/:region_id")
+   (:PARAMS
+    (:REGION-ID . "array(int)"))
+   (:DEFAULTS)
+   (:TYPE         . "Region")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+|#
+
+
 ;;; ==============================
 ;;; EOF

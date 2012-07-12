@@ -43,8 +43,7 @@ API-METHODS
 
 ;; Cart
 (defclass cart (base-etsy)
-  (
-   ;; cart_id 
+  (;; cart_id 
    (cart-id 
     :initarg :cart-id 
     :accessor cart-id 
@@ -98,7 +97,6 @@ API-METHODS
     ;; :type string
     :documentation "The ISO (alphabetic) code for the currency.")
 
-   ;; total
    (total
     :initarg :total
     :accessor total
@@ -161,7 +159,6 @@ API-METHODS
     ;; :type string
     :documentation "The tax discount amount.")
 
-   ;; url
    (url
     :initarg :url
     :accessor url
@@ -170,22 +167,112 @@ API-METHODS
     ;; :type string
     :documentation "The full URL to the cart page on Etsy.")
 
-   ;; listings
    (listings
     :initarg :listings
     :accessor listings
     ;; :visibility private
     ;; :perm-scope cart_rw
     ;; :type array(CartListing)
-    :documentation "An array of purchase information for the listings.")
-   )
+    :documentation "An array of purchase information for the listings."))
+
   ;; (:default-initargs 
   ;;  :cart-id nil :shop-name nil :message-to-seller nil :destination-country-id nil
   ;;  :coupon-code nil :currency-code nil :total nil :subtotal nil :shipping-cost nil
   ;;  :tax-cost nil :discount-amount nil :shipping-discount-amount nil
   ;;  :tax-discount-amount nil :url nil :listings nil)
-  (:documentation "
+
+  (:documentation "Represents a shopping cart on Etsy. Users have one cart per shop.
  (URL `http://www.etsy.com/developers/documentation/reference/cart')"))
+
+#|
+
+ ((:NAME        . "getAllUserCarts")
+  (:DESCRIPTION . "Get a user's Carts")
+  (:URI         . "/users/:user_id/carts")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name"))
+  (:DEFAULTS)
+  (:TYPE         . "Cart")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "addToCart")
+  (:DESCRIPTION . "Add a listing to a cart")
+  (:URI         . "/users/:user_id/carts")
+  (:PARAMS
+   (:USER-ID    . "user_id_or_name")
+   (:LISTING-ID . "int")
+   (:QUANTITY    . "int"))
+  (:DEFAULTS
+   (:QUANTITY . 1))
+  (:TYPE         . "Cart")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "POST"))
+
+ ((:NAME        . "updateCartListingQuantity")
+  (:DESCRIPTION . "Update a cart listing purchase quantity")
+  (:URI         . "/users/:user_id/carts")
+  (:PARAMS
+   (:USER-ID    . "user_id_or_name")
+   (:LISTING-ID . "int")
+   (:QUANTITY    . "int"))
+  (:DEFAULTS)
+  (:TYPE         . "Cart")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "PUT"))
+
+ ((:NAME        . "removeCartListing")
+  (:DESCRIPTION . "Remove a listing from a cart")
+  (:URI         . "/users/:user_id/carts")
+  (:PARAMS
+   (:USER-ID    . "user_id_or_name")
+   (:LISTING-ID . "int"))
+  (:DEFAULTS)
+  (:TYPE         . "Cart")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "DELETE"))
+
+ ((:NAME        . "getUserCart")
+  (:DESCRIPTION . "Get a cart")
+  (:URI         . "/users/:user_id/carts/:cart_id")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:CART-ID . "cart_id"))
+  (:DEFAULTS)
+  (:TYPE         . "Cart")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "updateCart")
+  (:DESCRIPTION . "Update a cart")
+  (:URI         . "/users/:user_id/carts/:cart_id")
+  (:PARAMS
+   (:USER-ID                 . "user_id_or_name")
+   (:CART-ID                 . "cart_id")
+   (:DESTINATION-COUNTRY-ID . "int")
+   (:MESSAGE-TO-SELLER      . "text")
+   (:COUPON-CODE             . "string"))
+  (:DEFAULTS
+   (:DESTINATION-COUNTRY-ID)
+   (:MESSAGE-TO-SELLER)
+   (:COUPON-CODE))
+  (:TYPE         . "Cart")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "PUT"))
+
+ ((:NAME        . "deleteCart")
+  (:DESCRIPTION . "Delete a cart")
+  (:URI         . "/users/:user_id/carts/:cart_id")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:CART-ID . "cart_id"))
+  (:DEFAULTS)
+  (:TYPE         . "Cart")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "DELETE"))
+
+|#
+
 
 
 ;;; ==============================

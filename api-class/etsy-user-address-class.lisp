@@ -4,7 +4,7 @@
 
 #|
 
-(URL `http://www.etsy.com/developers/documentation/reference/useraddress')
+ (URL `http://www.etsy.com/developers/documentation/reference/useraddress')
 
 ---
 API-ASSOCIATIONS
@@ -34,10 +34,8 @@ API-METHODS
 (in-package #:cl-etsy)
 
 ;; UserAddress
-
 (defclass user-address (base-etsy)
-  (
-   ;; user_address_id
+  (;; user_address_id
    (user-address-id
     :initarg :user-address-id
     :accessor user-address-id
@@ -123,11 +121,74 @@ API-METHODS
     ;; :type string
     :documentation "The name of the user's country"))
 
-  (:documentation "Represents a user's address.")
-  ;; (:default-initargs 
-  ;;  :user-address-id nil :user-id nil :name nil :first-line nil :second-line nil
-  ;;   :city nil :state nil :zip nil :country-id nil :country-name nil)
-  )
+ ;; (:default-initargs 
+ ;;  :user-address-id nil :user-id nil :name nil :first-line nil :second-line nil
+ ;;   :city nil :state nil :zip nil :country-id nil :country-name nil) 
+
+  (:documentation "Represents a user's address.
+ (URL `http://www.etsy.com/developers/documentation/reference/useraddress')"))
+
+
+#|
+
+ ((:NAME        . "findAllUserAddresses")
+  (:DESCRIPTION . "Retrieves a set of UserAddress objects associated to a User.")
+  (:URI         . "/users/:user_id/addresses")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "UserAddress")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "createUserAddress")
+  (:DESCRIPTION . "Creates a new UserAddress.")
+  (:URI         . "/users/:user_id/addresses/")
+  (:PARAMS
+   (:USER-ID     . "user_id_or_name")
+   (:NAME         . "string")
+   (:FIRST-LINE  . "string")
+   (:SECOND-LINE . "string")
+   (:CITY         . "string")
+   (:STATE        . "string")
+   (:ZIP          . "string")
+   (:COUNTRY-ID  . "int"))
+  (:DEFAULTS
+   (:SECOND-LINE)
+   (:STATE))
+  (:TYPE         . "UserAddress")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "POST"))
+
+ ((:NAME        . "getUserAddress")
+  (:DESCRIPTION . "Retrieves a UserAddress by id.")
+  (:URI         . "/users/:user_id/addresses/:user_address_id")
+  (:PARAMS
+   (:USER-ADDRESS-ID . "array(int)"))
+  (:DEFAULTS)
+  (:TYPE         . "UserAddress")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "deleteUserAddress")
+  (:DESCRIPTION . "Deletes the UserAddress with the given id.")
+  (:URI         . "/users/:user_id/addresses/:user_address_id")
+  (:PARAMS
+   (:USER-ADDRESS-ID . "int"))
+  (:DEFAULTS)
+  (:TYPE         . "UserAddress")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "DELETE"))
+
+|#
+
+
 
 
 ;;; ==============================

@@ -79,6 +79,45 @@ API-METHODS
   (:documentation "A post from the forums.
  (URL `http://www.etsy.com/developers/documentation/reference/forumpost')"))
 
+#|
+
+ ((:NAME        . "findTreasuryComments")
+  (:DESCRIPTION . "Get a Treasury's Comments")
+  (:URI         . "/treasuries/:treasury_key/comments")
+  (:PARAMS
+   (:TREASURY-KEY . "treasury_id")
+   (:LIMIT         . "int")
+   (:OFFSET        . "int")
+   (:PAGE          . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "ForumPost")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "postTreasuryComment")
+  (:DESCRIPTION . "Leave a comment on a Treasury List")
+  (:URI         . "/treasuries/:treasury_key/comments")
+  (:PARAMS
+   (:MESSAGE . "forum_post"))
+  (:DEFAULTS)
+  (:TYPE         . "ForumPost")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "POST"))
+
+ ((:NAME        . "deleteTreasuryComment")
+  (:DESCRIPTION . "Delete a given comment on a Treasury List")
+  (:URI         . "/treasuries/:treasury_key/comments/:comment_id")
+  (:PARAMS)
+  (:DEFAULTS)
+  (:TYPE         . "ForumPost")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "DELETE"))
+
+|#
+
 
 ;;; ==============================
 ;;; EOF

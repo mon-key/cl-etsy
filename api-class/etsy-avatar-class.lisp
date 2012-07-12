@@ -120,6 +120,36 @@ API-METHODS
  (URL `http://www.etsy.com/developers/documentation/reference/avatar')"))
 
 
+#|
+
+ ((:NAME        . "uploadAvatar")
+  (:DESCRIPTION . "Upload a new user avatar image")
+  (:URI         . "/users/:user_id/avatar")
+  (:PARAMS
+   (:SRC      . "string")
+   (:USER-ID . "user_id_or_name")
+   (:IMAGE    . "image"))
+  (:DEFAULTS
+   (:SRC)
+   (:USER-ID)
+   (:IMAGE))
+  (:TYPE         . "Avatar")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "POST"))
+
+ ((:NAME        . "getAvatarImgSrc")
+  (:DESCRIPTION . "Get avatar image source")
+  (:URI         . "/users/:user_id/avatar/src")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name"))
+  (:DEFAULTS
+   (:USER-ID))
+  (:TYPE         . "Avatar")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+|#
+
 
 ;;; ==============================
 ;;; EOF

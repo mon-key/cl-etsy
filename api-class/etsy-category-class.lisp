@@ -155,5 +155,72 @@
 ;;   (dumb-printing stream x "~D: ~A" category-id name))
 
 
+#|
+ 
+ ((:NAME        . "getCategory")
+   (:DESCRIPTION . "Retrieves a top-level Category by tag.")
+   (:URI         . "/categories/:tag")
+   (:PARAMS
+    (:TAG . "string"))
+   (:DEFAULTS)
+   (:TYPE         . "Category")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+  ((:NAME        . "getSubCategory")
+   (:DESCRIPTION . "Retrieves a second-level Category by tag and subtag.")
+   (:URI         . "/categories/:tag/:subtag")
+   (:PARAMS
+    (:TAG    . "string")
+    (:SUBTAG . "string"))
+   (:DEFAULTS)
+   (:TYPE         . "Category")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+  ((:NAME        . "getSubSubCategory")
+   (:DESCRIPTION . "Retrieves a third-level Category by tag, subtag and subsubtag.")
+   (:URI         . "/categories/:tag/:subtag/:subsubtag")
+   (:PARAMS
+    (:TAG       . "string")
+    (:SUBTAG    . "string")
+    (:SUBSUBTAG . "string"))
+   (:DEFAULTS)
+   (:TYPE         . "Category")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+((:NAME        . "findAllTopCategory")
+   (:DESCRIPTION . "Retrieves all top-level Categories.")
+   (:URI         . "/taxonomy/categories")
+   (:PARAMS)
+   (:DEFAULTS)
+   (:TYPE         . "Category")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+  ((:NAME        . "findAllTopCategoryChildren")
+   (:DESCRIPTION . "Retrieves children of a top-level Category by tag.")
+   (:URI         . "/taxonomy/categories/:tag")
+   (:PARAMS
+    (:TAG . "string"))
+   (:DEFAULTS)
+   (:TYPE         . "Category")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+  ((:NAME        . "findAllSubCategoryChildren")
+   (:DESCRIPTION . "Retrieves children of a second-level Category by tag and subtag.")
+   (:URI         . "/taxonomy/categories/:tag/:subtag")
+   (:PARAMS
+    (:TAG    . "string")
+    (:SUBTAG . "string"))
+   (:DEFAULTS)
+   (:TYPE         . "Category")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+|#
+
 ;;; ==============================
 ;;; EOF

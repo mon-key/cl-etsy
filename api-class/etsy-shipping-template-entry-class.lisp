@@ -132,5 +132,77 @@ shipping-info shipping-template and shipping-template-entry.
  (URL `http://www.etsy.com/developers/documentation/reference/shippingtemplateentry')"))
 
 
+#|
+
+ ((:NAME        . "findAllShippingTemplateEntries")
+  (:DESCRIPTION . "Retrieves a set of ShippingTemplateEntry objects associated to a ShippingTemplate.")
+  (:URI         . "/shipping/templates/:shipping_template_id/entries")
+  (:PARAMS
+   (:SHIPPING-TEMPLATE-ID . "int")
+   (:LIMIT                  . "int")
+   (:OFFSET                 . "int")
+   (:PAGE                   . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "ShippingTemplateEntry")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+     
+  ((:NAME        . "createShippingTemplateEntry")
+   (:DESCRIPTION . "Creates a new ShippingTemplateEntry")
+   (:URI         . "/shipping/templates/entries")
+   (:PARAMS
+    (:SHIPPING-TEMPLATE-ID   . "int")
+    (:DESTINATION-COUNTRY-ID . "int")
+    (:PRIMARY-COST            . "float")
+    (:SECONDARY-COST          . "float")
+    (:DESTINATION-REGION-ID  . "int"))
+   (:DEFAULTS
+    (:DESTINATION-COUNTRY-ID)
+    (:DESTINATION-REGION-ID))
+   (:TYPE         . "ShippingTemplateEntry")
+   (:VISIBILITY   . "private")
+   (:HTTP-METHOD . "POST"))
+     
+  ((:NAME        . "getShippingTemplateEntry")
+   (:DESCRIPTION . "Retrieves a ShippingTemplateEntry by id.")
+   (:URI         . "/shipping/templates/entries/:shipping_template_entry_id")
+   (:PARAMS
+    (:SHIPPING-TEMPLATE-ENTRY-ID . "array(int)"))
+   (:DEFAULTS)
+   (:TYPE         . "ShippingTemplateEntry")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+     
+  ((:NAME        . "updateShippingTemplateEntry")
+   (:DESCRIPTION . "Updates a ShippingTemplateEntry")
+   (:URI         . "/shipping/templates/entries/:shipping_template_entry_id")
+   (:PARAMS
+    (:SHIPPING-TEMPLATE-ENTRY-ID . "int")
+    (:DESTINATION-COUNTRY-ID      . "int")
+    (:PRIMARY-COST                 . "float")
+    (:SECONDARY-COST               . "float"))
+   (:DEFAULTS
+    (:DESTINATION-COUNTRY-ID)
+    (:PRIMARY-COST)
+    (:SECONDARY-COST))
+   (:TYPE         . "ShippingTemplateEntry")
+   (:VISIBILITY   . "private")
+   (:HTTP-METHOD . "PUT"))
+     
+  ((:NAME        . "deleteShippingTemplateEntry")
+   (:DESCRIPTION . "Deletes a ShippingTemplateEntry")
+   (:URI         . "/shipping/templates/entries/:shipping_template_entry_id")
+   (:PARAMS
+    (:SHIPPING-TEMPLATE-ENTRY-ID . "int"))
+   (:DEFAULTS)
+   (:TYPE         . "ShippingTemplateEntry")
+   (:VISIBILITY   . "private")
+   (:HTTP-METHOD . "DELETE"))
+
+|#
+
 ;;; ==============================
 ;;; EOF

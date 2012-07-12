@@ -42,5 +42,19 @@ A user may either select from suggested styles, or create a custom style.
  (URL `http://www.etsy.com/developers/documentation/reference/style')"))
 
 
+#|
+
+ ((:NAME        . "findSuggestedStyles")
+  (:DESCRIPTION . "Retrieve all suggested styles.")
+  (:URI         . "/taxonomy/styles")
+  (:PARAMS)
+  (:DEFAULTS)
+  (:TYPE         . "Style")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+|#
+
+
 ;;; ==============================
 ;;; EOF

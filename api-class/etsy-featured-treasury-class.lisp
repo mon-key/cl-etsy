@@ -67,7 +67,52 @@ API-METHODS
   (:documentation "Represents a Treasury list featured on Etsy homepage.
  (URL `http://www.etsy.com/developers/documentation/reference/featuredtreasury')"))
 
+#|
 
+ ((:NAME        . "findAllFeaturedTreasuries")
+  (:DESCRIPTION . "Finds all FeaturedTreasuries.")
+  (:URI         . "/featured_treasuries")
+  (:PARAMS
+   (:LIMIT  . "int")
+   (:OFFSET . "int")
+   (:PAGE   . "int")
+   (:REGION . "region"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE)
+   (:REGION . "__ALL_REGIONS__"))
+  (:TYPE         . "FeaturedTreasury")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+  ((:NAME        . "getFeaturedTreasuryById")
+   (:DESCRIPTION . "Finds FeaturedTreasury by numeric ID.")
+   (:URI         . "/featured_treasuries/:featured_treasury_id")
+   (:PARAMS
+    (:FEATURED-TREASURY-ID . "int"))
+   (:DEFAULTS)
+   (:TYPE         . "FeaturedTreasury")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllFeaturedTreasuriesByOwner")
+  (:DESCRIPTION . "Finds all FeaturedTreasury by numeric owner_id.")
+  (:URI         . "/featured_treasuries/owner/:owner_id")
+  (:PARAMS
+   (:LIMIT     . "int")
+   (:OFFSET    . "int")
+   (:PAGE      . "int")
+   (:OWNER-ID . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "FeaturedTreasury")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+|#
 
 ;;; ==============================
 ;;; EOF

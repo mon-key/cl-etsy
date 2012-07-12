@@ -178,6 +178,84 @@ the listing with it.
 
  (URL `http://www.etsy.com/developers/documentation/reference/shippinginfo')"))
 
+#|
+
+ ((:NAME        . "findAllListingShippingInfo")
+  (:DESCRIPTION . "Retrieves a set of ShippingInfo objects associated to a Listing.")
+  (:URI         . "/listings/:listing_id/shipping/info")
+  (:PARAMS
+   (:LISTING-ID . "int")
+   (:LIMIT       . "int")
+   (:OFFSET      . "int")
+   (:PAGE        . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "ShippingInfo")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+     
+  ((:NAME        . "createShippingInfo")
+   (:DESCRIPTION . "Creates a new ShippingInfo.")
+   (:URI         . "/listings/:listing_id/shipping/info")
+   (:PARAMS
+    (:ORIGIN-COUNTRY-ID      . "int")
+    (:DESTINATION-COUNTRY-ID . "int")
+    (:PRIMARY-COST            . "float")
+    (:SECONDARY-COST          . "float")
+    (:REGION-ID               . "int")
+    (:LISTING-ID              . "int"))
+   (:DEFAULTS
+    (:DESTINATION-COUNTRY-ID)
+    (:REGION-ID))
+   (:TYPE         . "ShippingInfo")
+   (:VISIBILITY   . "private")
+   (:HTTP-METHOD . "POST"))
+
+ ((:NAME        . "getShippingInfo")
+  (:DESCRIPTION . "Retrieves a ShippingInfo by id.")
+  (:URI         . "/shipping/info/:shipping_info_id")
+  (:PARAMS
+   (:SHIPPING-INFO-ID . "array(int)"))
+  (:DEFAULTS)
+  (:TYPE         . "ShippingInfo")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "updateShippingInfo")
+  (:DESCRIPTION . "Updates a ShippingInfo with the given id.")
+  (:URI         . "/shipping/info/:shipping_info_id")
+  (:PARAMS
+   (:SHIPPING-INFO-ID       . "int")
+   (:ORIGIN-COUNTRY-ID      . "int")
+   (:DESTINATION-COUNTRY-ID . "int")
+   (:PRIMARY-COST            . "float")
+   (:SECONDARY-COST          . "float")
+   (:REGION-ID               . "int")
+   (:LISTING-ID              . "int"))
+  (:DEFAULTS
+   (:ORIGIN-COUNTRY-ID)
+   (:DESTINATION-COUNTRY-ID)
+   (:CURRENCY-CODE)
+   (:PRIMARY-COST)
+   (:SECONDARY-COST)
+   (:REGION-ID)
+   (:LISTING-ID))
+  (:TYPE         . "ShippingInfo")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "PUT"))
+     
+  ((:NAME        . "deleteShippingInfo")
+   (:DESCRIPTION . "Deletes the ShippingInfo with the given id.")
+   (:URI         . "/shipping/info/:shipping_info_id")
+   (:PARAMS
+    (:SHIPPING-INFO-ID . "int"))
+   (:DEFAULTS)
+   (:TYPE         . "ShippingInfo")
+   (:VISIBILITY   . "private")
+   (:HTTP-METHOD . "DELETE"))
+|#
 
 ;;; ==============================
 ;;; EOF

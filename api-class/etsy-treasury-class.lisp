@@ -9,6 +9,7 @@
 
 ---
  API-METHODS
+
 "findAllTreasuries"
 "createTreasury"
 "getTreasury"      
@@ -21,7 +22,8 @@
 
 ;; Treasury
 (defclass treasury (base-etsy)
-  ((id
+  (;; Really, `id'? WTF kinda symbol is that?
+   (id
     :initarg :id
     :accessor id
     ;; :visibility public
@@ -154,10 +156,12 @@
     ;; :perm-scope none
     ;; :type int
     :documentation "Time this collection was created, in epoch seconds."))
+
   ;; (:default-initargs :id nil :title nil :description nil :homepage nil :mature nil
   ;; :locale nil :comment-count nil :tags nil :counts nil :hotness nil
   ;; :hotness-color nil :user-id nil :user-name nil :user-avatar-id nil
   ;; :listings nil :creation-tsz nil)
+
   (:documentation 
    "The Treasury is an ever-changing, member-curated shopping gallery comprised of lists of items.
 The Etsy API allows you to retrieve, create, edit, and delete treasury lists.
@@ -165,10 +169,88 @@ When retrieving multiple lists with findAllTreasuries method, you are limited to
 the 25,000 sortable hottest lists in the Treasury at that time.
 If you need to retrieve a specific list, be sure to use the getTreasury method
 with the corresponding treasury key.
- (URL `http://www.etsy.com/developers/documentation/reference/treasury')
-"))
+ (URL `http://www.etsy.com/developers/documentation/reference/treasury')"))
 
 
+#|
+
+ ((:NAME        . "findAllTreasuries")
+  (:DESCRIPTION . "Search Treasuries or else List all Treasuries")
+  (:URI         . "/treasuries")
+  (:PARAMS
+   (:KEYWORDS    . "treasury_search_string")
+   (:SORT-ON    . "enum(hotness, created)")
+   (:SORT-ORDER . "enum(up, down)")
+   (:LIMIT       . "int")
+   (:OFFSET      . "int")
+   (:PAGE        . "int"))
+  (:DEFAULTS
+   (:KEYWORDS)
+   (:SORT-ON    . "hotness")
+   (:SORT-ORDER . "down")
+   (:LIMIT       . 25)
+   (:OFFSET      . 0)
+   (:PAGE))
+  (:TYPE         . "Treasury")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "createTreasury")
+  (:DESCRIPTION . "Create a Treasury")
+  (:URI         . "/treasuries")
+  (:PARAMS
+   (:TITLE        . "treasury_title")
+   (:DESCRIPTION  . "treasury_description")
+   (:LISTING-IDS . "array(int)")
+   (:TAGS         . "array(string)")
+   (:PRIVATE      . "boolean"))
+  (:DEFAULTS 
+   (:TAGS    . "")
+   (:PRIVATE . 0))
+  (:TYPE         . "Treasury")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "POST"))
+
+ ((:NAME        . "getTreasury")
+  (:DESCRIPTION . "Get a Treasury")
+  (:URI         . "/treasuries/:treasury_key")
+  (:PARAMS
+   (:TREASURY-KEY . "treasury_id"))
+  (:DEFAULTS)
+  (:TYPE         . "Treasury")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "deleteTreasury")
+  (:DESCRIPTION . "Delete a Treasury")
+  (:URI         . "/treasuries/:treasury_key")
+  (:PARAMS)
+  (:DEFAULTS)
+  (:TYPE         . "Treasury")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "DELETE"))
+
+ ((:NAME        . "findAllUserTreasuries")
+  (:DESCRIPTION . "Get a user's Treasuries")
+  (:URI         . "/users/:user_id/treasuries")
+  (:PARAMS
+   (:USER-ID    . "user_id_or_name")
+   (:SORT-ON    . "enum(hotness, created)")
+   (:SORT-ORDER . "enum(up, down)")
+   (:LIMIT       . "int")
+   (:OFFSET      . "int")
+   (:PAGE        . "int"))
+  (:DEFAULTS
+   (:SORT-ON    . "hotness")
+   (:SORT-ORDER . "down")
+   (:LIMIT       . 25)
+   (:OFFSET      . 0)
+   (:PAGE))
+  (:TYPE         . "Treasury")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+|#
 
 
 ;;; ==============================

@@ -8,7 +8,7 @@
 
 ----
 API-METHODS
-"findallusercharges"
+"findAllUserCharges"
 
 |#
 
@@ -124,6 +124,35 @@ Following table outlines the types of charges for a bill-charge:
  alchemy 	   Seller fee for Alchemy feature. [DEPRECATED]
 
  (URL `http://www.etsy.com/developers/documentation/reference/billcharge')"))
+
+
+#|
+
+ ((:NAME        . "findAllUserCharges")
+  (:DESCRIPTION . "Retrieves a set of BillCharge objects associated to a User.")
+  (:URI         . "/users/:user_id/charges")
+  (:PARAMS
+   (:LIMIT        . "int")
+   (:OFFSET       . "int")
+   (:PAGE         . "int")
+   (:USER-ID     . "user_id_or_name")
+   (:SORT-ORDER  . "enum(up, down)")
+   (:MIN-CREATED . "epoch")
+   (:MAX-CREATED . "epoch"))
+  (:DEFAULTS
+   (:LIMIT       . 25)
+   (:OFFSET      . 0)
+   (:PAGE)
+   (:SORT-ORDER . "up")
+   (:MIN-CREATED)
+   (:MAX-CREATED))
+  (:TYPE         . "BillCharge")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+|#
+
+
 
 
 ;;; ==============================

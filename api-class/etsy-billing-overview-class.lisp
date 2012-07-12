@@ -17,8 +17,7 @@ API-METHODS
 
 ;; BillingOverview
 (defclass billing-overview (base-etsy)
-  (
-   ;; is_overdue 
+  (;; is_overdue 
    (is-overdue 
     :initarg :is-overdue 
     :accessor is-overdue 
@@ -79,13 +78,31 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope billing_r
     ;; :type epoch
-    :documentation "The date on which the user's balance became overdue.")
-   )
+    :documentation "The date on which the user's balance became overdue."))
+
   ;; (:default-initargs 
   ;;  :is-overdue nil :currency-code nil :overdue-balance nil :balance-due nil
   ;;  :total-balance nil :date-due nil :date-overdue nil)
-  (:documentation "
+
+  (:documentation "A user's account balance on Etsy.
  (URL `http://www.etsy.com/developers/documentation/reference/billingoverview')"))
+
+
+#|
+
+ ((:NAME        . "getUserBillingOverview")
+  (:DESCRIPTION . "Retrieves the user's current balance.")
+  (:URI         . "/users/:user_id/billing/overview")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name"))
+  (:DEFAULTS)
+  (:TYPE         . "BillingOverview")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+|#
+
+
 
 ;;; ==============================
 ;;; EOF

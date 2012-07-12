@@ -67,6 +67,39 @@ API-METHODS
   (:documentation "Represents a collection of listings purchased by a user at a specific date and time.
  (URL `http://www.etsy.com/developers/documentation/reference/order')"))
 
+#|
+
+ ((:NAME        . "getOrder")
+  (:DESCRIPTION . "Retrieves a Order by id.")
+  (:URI         . "/orders/:order_id")
+  (:PARAMS
+   (:ORDER-ID . "array(int)"))
+  (:DEFAULTS)
+  (:TYPE         . "Order")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllUserOrders")
+  (:DESCRIPTION . "Retrieves a set of Order objects associated to a User.")
+  (:URI         . "/users/:user_id/orders")
+  (:PARAMS
+   (:USER-ID     . "user_id_or_name")
+   (:MIN-CREATED . "epoch")
+   (:MAX-CREATED . "epoch")
+   (:LIMIT        . "int")
+   (:OFFSET       . "int")
+   (:PAGE         . "int"))
+  (:DEFAULTS
+   (:MIN-CREATED)
+   (:MAX-CREATED)
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Order")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+|#
 
 ;;; ==============================
 ;;; EOF

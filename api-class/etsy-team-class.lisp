@@ -74,5 +74,69 @@ Using OAuth, a team captain may see pending or invited team members using the fi
  (URL `http://www.etsy.com/developers/documentation/reference/team')"))
 
 
+#|
+
+ ((:NAME        . "findAllTeams")
+  (:DESCRIPTION . "Returns all Teams")
+  (:URI         . "/teams")
+  (:PARAMS
+   (:LIMIT  . "int")
+   (:OFFSET . "int")
+   (:PAGE   . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Team")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllUsersForTeam")
+  (:DESCRIPTION . "Returns a list of users for a specific team")
+  (:URI         . "/teams/:team_id/users/")
+  (:PARAMS
+   (:TEAM-ID . "int")
+   (:STATUS   . "enum(active, invited, pending)")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:STATUS . "active")
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "User")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findTeams")
+  (:DESCRIPTION . "Returns specified team by ID or team name")
+  (:URI         . "/teams/:team_ids/")
+  (:PARAMS
+   (:TEAM-IDS . "array(team_id_or_name)"))
+  (:DEFAULTS)
+  (:TYPE         . "Team")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllTeamsForUser")
+  (:DESCRIPTION . "Returns a list of teams for a specific user")
+  (:URI         . "/users/:user_id/teams")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Team")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+|#
+
+
 ;;; ==============================
 ;;; EOF

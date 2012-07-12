@@ -8,7 +8,9 @@
 
 ---
 API-METHODS
- "findPopularTags", "findAllRelatedTags"
+
+"findPopularTags"
+"findAllRelatedTags"
 
 |#
 
@@ -54,6 +56,32 @@ API-METHODS
 
 
 
+#|
+
+ ((:NAME        . "findPopularTags")
+  (:DESCRIPTION . "DEPRECATED - Retrieves all related tags for the given tag set.")
+  (:URI         . "/taxonomy/tags")
+  (:PARAMS
+   (:LIMIT . "int"))
+  (:DEFAULTS
+   (:LIMIT . 25))
+  (:TYPE         . "Tag")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllRelatedTags")
+  (:DESCRIPTION . "DEPRECATED - Retrieves all related tags for the given tag set.")
+  (:URI         . "/taxonomy/tags/:tags")
+  (:PARAMS
+   (:TAGS  . "array(string)")
+   (:LIMIT . "int"))
+  (:DEFAULTS
+   (:LIMIT . 25))
+  (:TYPE         . "Tag")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+|#
 
 
 ;;; ==============================

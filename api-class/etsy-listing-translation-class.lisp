@@ -63,5 +63,21 @@ API-METHODS
   (:documentation "Represents the translation data for a Listing.
  (URL `http://www.etsy.com/developers/documentation/reference/listingtranslation')"))
 
+
+#|
+
+ ((:NAME        . "getListingTranslation")
+  (:DESCRIPTION . "Retrieves a ListingTranslation by listing_id and language")
+  (:URI         . "/listings/:listing_id/translations/:language")
+  (:PARAMS
+   (:LISTING-ID . "int")
+   (:LANGUAGE    . "language"))
+  (:DEFAULTS)
+  (:TYPE         . "ListingTranslation")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+|#
+
 ;;; ==============================
 ;;; EOF

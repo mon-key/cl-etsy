@@ -58,5 +58,23 @@ API-METHODS
  (URL `http://www.etsy.com/developers/documentation/reference/shopsectiontranslation')"))
 
 
+#|
+
+ ;; :NOTE There is a duplicate/similiar method for shop-translation  
+ ((:NAME        . "getShopTranslation")
+  (:DESCRIPTION . "Retrieves a ShopSectionTranslation by shop_id and language")
+  (:URI         . "/shops/:shop_id/sections/:shop_section_id/translations/:language")
+  (:PARAMS
+   (:SHOP-ID          . "shop_id_or_name")
+   (:SHOP-SECTION-ID . "int")
+   (:LANGUAGE          . "language"))
+  (:DEFAULTS)
+  (:TYPE         . "ShopSectionTranslation")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+|#
+
+
 ;;; ==============================
 ;;; EOF

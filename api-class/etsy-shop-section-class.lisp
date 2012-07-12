@@ -92,5 +92,85 @@ API-METHODS
  (URL `http://www.etsy.com/developers/documentation/reference/shopsection')"))
 
 
+#|
+ 
+ ((:NAME        . "findAllShopSections")
+  (:DESCRIPTION . "Retrieves a set of ShopSection objects associated to a Shop.")
+  (:URI         . "/shops/:shop_id/sections")
+  (:PARAMS
+   (:SHOP-ID . "shop_id_or_name"))
+  (:DEFAULTS)
+  (:TYPE         . "ShopSection")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "createShopSection")
+  (:DESCRIPTION . "Creates a new ShopSection.")
+  (:URI         . "/shops/:shop_id/sections")
+  (:PARAMS
+   (:SHOP-ID . "shop_id_or_name")
+   (:TITLE    . "text")
+   (:USER-ID . "int"))
+  (:DEFAULTS
+   (:TITLE)
+   (:USER-ID))
+  (:TYPE         . "ShopSection")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "POST"))
+
+ ((:NAME        . "getShopSection")
+  (:DESCRIPTION . "Retrieves a ShopSection by id and shop_id")
+  (:URI         . "/shops/:shop_id/sections/:shop_section_id")
+  (:PARAMS
+   (:SHOP-ID          . "shop_id_or_name")
+   (:SHOP-SECTION-ID . "array(int)"))
+  (:DEFAULTS)
+  (:TYPE         . "ShopSection")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "updateShopSection")
+  (:DESCRIPTION . "Updates a ShopSection with the given id.")
+  (:URI         . "/shops/:shop_id/sections/:shop_section_id")
+  (:PARAMS
+   (:SHOP-ID          . "shop_id_or_name")
+   (:SHOP-SECTION-ID . "int")
+   (:TITLE             . "text")
+   (:USER-ID          . "int")
+   (:RANK              . "int"))
+  (:DEFAULTS
+   (:TITLE)
+   (:USER-ID)
+   (:RANK))
+  (:TYPE         . "ShopSection")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "PUT"))
+
+ ((:NAME        . "deleteShopSection")
+  (:DESCRIPTION . "Deletes the ShopSection with the given id.")
+  (:URI         . "/shops/:shop_id/sections/:shop_section_id")
+  (:PARAMS
+   (:SHOP-ID          . "shop_id_or_name")
+   (:SHOP-SECTION-ID . "int"))
+  (:DEFAULTS)
+  (:TYPE         . "ShopSection")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "DELETE"))
+
+ ;; :NOTE Shouldn't this be of :type shop-section-translation ???
+
+ ((:NAME        . "getShopSectionTranslationShopSection")
+   (:DESCRIPTION . "Retrieves a set of ShopSection objects associated to a ShopSectionTranslation.")
+   (:URI         . "/shopsectiontranslations/:shop_section_id/shopsection")
+   (:PARAMS
+    (:SHOP-SECTION-ID . "int"))
+   (:DEFAULTS)
+   (:TYPE         . "ShopSection")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+|#
+
+
 ;;; ==============================
 ;;; EOF

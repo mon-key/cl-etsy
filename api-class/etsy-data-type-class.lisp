@@ -2,27 +2,26 @@
 ;;; :FILE cl-etsy/api-class/etsy-data-type-class.lisp
 ;;; ==============================
 
-;; (URL `http://www.etsy.com/developers/documentation/reference/datatype')
-;;
-;; "describeOccasionEnum"
-;; - Describes the legal values for Listing.occasion.
-;;
-;; "describeRecipientEnum"
-;; - Describes the legal values for Listing.recipient.
-;;
-;; "describeWhenMadeEnum
-;; - Describes the legal values for Listing.when_made.
-;;
-;; "describeWhoMadeEnum"
-;; - Describes the legal values for Listing.who_made.
-;;
-;;
-;; The data-type who-made, when-made are so-called "Marketplace Attributes" that
-;; help buyers locate a Listing under the headings Handmade, Vintage and Supplies.
-;; When creating new Listings, these parameters are required. As of this
-;; writing, not all Listings on Etsy have their Marketplace Attributes set. 
-;; These Listings will return null in these fields.
-;; (URL `http://www.etsy.com/developers/documentation/reference/listing#section_marketplace_attributes')
+#|
+
+ (URL `http://www.etsy.com/developers/documentation/reference/datatype')
+
+----
+API-METHODS
+
+ "describeOccasionEnum"
+ - Describes the legal values for Listing.occasion.
+
+ "describeRecipientEnum"
+ - Describes the legal values for Listing.recipient.
+
+ "describeWhenMadeEnum
+ - Describes the legal values for Listing.when_made.
+
+ "describeWhoMadeEnum"
+ - Describes the legal values for Listing.who_made.
+
+|#
 
 (in-package #:cl-etsy)
 
@@ -55,6 +54,49 @@
  These Listings will return null in these fields.
  (URL `http://www.etsy.com/developers/documentation/reference/listing#section_marketplace_attributes')
  (URL `http://www.etsy.com/developers/documentation/reference/datatype')"))
+
+
+#|
+
+ ((:NAME        . "describeOccasionEnum")
+  (:DESCRIPTION . "Describes the legal values for Listing.occasion.")
+  (:URI         . "/types/enum/occasion")
+  (:PARAMS)
+  (:DEFAULTS)
+  (:TYPE         . "DataType")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+  ((:NAME        . "describeRecipientEnum")
+   (:DESCRIPTION . "Describes the legal values for Listing.recipient.")
+   (:URI         . "/types/enum/recipient")
+   (:PARAMS)
+   (:DEFAULTS)
+   (:TYPE         . "DataType")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+  ((:NAME        . "describeWhenMadeEnum")
+   (:DESCRIPTION . "Describes the legal values for Listing.when_made.")
+   (:URI         . "/types/enum/when_made")
+   (:PARAMS)
+   (:DEFAULTS)
+   (:TYPE         . "DataType")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+  ((:NAME        . "describeWhoMadeEnum")
+   (:DESCRIPTION . "Describes the legal values for Listing.who_made.")
+   (:URI         . "/types/enum/who_made")
+   (:PARAMS)
+   (:DEFAULTS)
+   (:TYPE         . "DataType")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+|#
+
+
 
 ;;; ==============================
 ;;; EOF

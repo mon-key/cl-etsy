@@ -102,11 +102,82 @@ Note: This field may be absent, depending on the user's privacy settings.")
     ;; :type int
     :documentation "The numeric ID of this favorite listing association.
 [DEPRECATED] do not use."))
+
   ;; (:default-initargs 
   ;;  :listing-id nil :user-id nil :listing-state nil :create-date nil 
   ;;  :state nil :creation-tsz nil :favorite-listing-id nil)
+
   (:documentation "Represents the association between a user and a listing they've marked as favorite.
  (URL `http://www.etsy.com/developers/documentation/reference/favoritelisting')"))
+
+#|
+ 
+ ((:NAME        . "findAllListingFavoredBy")
+  (:DESCRIPTION . "Retrieves a set of FavoriteListing objects associated to a Listing.")
+  (:URI         . "/listings/:listing_id/favored-by")
+  (:PARAMS
+   (:LISTING-ID . "int")
+   (:LIMIT       . "int")
+   (:OFFSET      . "int")
+   (:PAGE        . "int"))
+  (:DEFAULTS
+   (:LIMIT . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "FavoriteListing")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllUserFavoriteListings")
+  (:DESCRIPTION . "Finds all favorite listings for a user")
+  (:URI         . "/users/:user_id/favorites/listings")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "FavoriteListing")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findUserFavoriteListings")
+  (:DESCRIPTION . "Finds a favorite listing for a user")
+  (:URI         . "/users/:user_id/favorites/listings/:listing_id")
+  (:PARAMS
+   (:USER-ID    . "user_id_or_name")
+   (:LISTING-ID . "int"))
+  (:DEFAULTS)
+  (:TYPE         . "FavoriteListing")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "createUserFavoriteListings")
+  (:DESCRIPTION . "Creates a new favorite listing for a user")
+  (:URI         . "/users/:user_id/favorites/listings/:listing_id")
+  (:PARAMS
+   (:USER-ID    . "user_id_or_name")
+   (:LISTING-ID . "int"))
+  (:DEFAULTS)
+  (:TYPE         . "FavoriteListing")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "POST"))
+
+ ((:NAME        . "deleteUserFavoriteListings")
+  (:DESCRIPTION . "Delete a favorite listing for a user")
+  (:URI         . "/users/:user_id/favorites/listings/:listing_id")
+  (:PARAMS
+   (:USER-ID    . "user_id_or_name")
+   (:LISTING-ID . "int"))
+  (:DEFAULTS)
+  (:TYPE         . "FavoriteListing")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "DELETE"))
+
+|#
 
 ;;; ==============================
 ;;; EOF

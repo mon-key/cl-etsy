@@ -143,5 +143,22 @@ Primarily relevant if the is-vacation slot-value of a shop instance is true."))
  (URL `http://www.etsy.com/developers/documentation/reference/shoptranslation')"))
 
 
+#|
+
+ ;; :NOTE Ther is a duplicate/similiar method for shop-section-translation  
+ ((:NAME        . "getShopTranslation")
+  (:DESCRIPTION . "Retrieves a ShopTranslation by shop_id and language")
+  (:URI         . "/shops/:shop_id/translations/:language")
+  (:PARAMS
+   (:SHOP-ID . "shop_id_or_name")
+   (:LANGUAGE . "language"))
+  (:DEFAULTS)
+  (:TYPE         . "ShopTranslation")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+|#
+
+
 ;;; ==============================
 ;;; EOF

@@ -218,5 +218,44 @@ original artwork uploaded by the seller:
  (URL `http://www.etsy.com/developers/documentation/reference/listingimage')"))
 
 
+#|
+
+ ((:NAME        . "findAllListingImages")
+  (:DESCRIPTION . "Retrieves a set of ListingImage objects associated to a Listing.")
+  (:URI         . "/listings/:listing_id/images")
+  (:PARAMS
+   (:LISTING-ID . "int"))
+  (:DEFAULTS)
+  (:TYPE         . "ListingImage")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+     
+  ((:NAME        . "uploadListingImage")
+   (:DESCRIPTION . "Upload a new listing image")
+   (:URI         . "/listings/:listing_id/images")
+   (:PARAMS
+    (:LISTING-ID . "int")
+    (:IMAGE       . "image")
+    (:RANK        . "int"))
+   (:DEFAULTS
+    (:RANK . 1))
+   (:TYPE         . "ListingImage")
+   (:VISIBILITY   . "private")
+   (:HTTP-METHOD . "POST"))
+     
+  ((:NAME        . "getImage_Listing")
+   (:DESCRIPTION . "Retrieves a Image_Listing by id.")
+   (:URI         . "/listings/:listing_id/images/:listing_image_id")
+   (:PARAMS
+    (:LISTING-IMAGE-ID . "array(int)")
+    (:LISTING-ID        . "int"))
+   (:DEFAULTS)
+   (:TYPE         . "ListingImage")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+  
+
+|#
+
 ;;; ==============================
 ;;; EOF

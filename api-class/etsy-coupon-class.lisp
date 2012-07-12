@@ -81,6 +81,73 @@ API-METHODS
   (:documentation "Represents a shop coupon.
  (URL `http://www.etsy.com/developers/documentation/reference/coupon')"))
 
+#|
+ 
+ ((:NAME        . "findAllShopCoupons")
+  (:DESCRIPTION . "Retrieves all Shop_Coupons by shop_id")
+  (:URI         . "/shops/:shop_id/coupons")
+  (:PARAMS
+   (:SHOP-ID . "shop_id_or_name"))
+  (:DEFAULTS)
+  (:TYPE         . "Coupon")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+     
+  ((:NAME        . "createCoupon")
+   (:DESCRIPTION . "Creates a new Coupon.")
+   (:URI         . "/shops/:shop_id/coupons")
+   (:PARAMS
+    (:SHOP-ID       . "shop_id_or_name")
+    (:COUPON-CODE   . "string")
+    (:PCT-DISCOUNT  . "int")
+    (:SELLER-ACTIVE . "boolean")
+    (:FREE-SHIPPING . "boolean")
+    (:DOMESTIC-ONLY . "boolean"))
+   (:DEFAULTS
+    (:PCT-DISCOUNT)
+    (:SELLER-ACTIVE . "false")
+    (:FREE-SHIPPING . "false")
+    (:DOMESTIC-ONLY . "false"))
+   (:TYPE         . "Coupon")
+   (:VISIBILITY   . "private")
+   (:HTTP-METHOD . "POST"))
+     
+  ((:NAME        . "findCoupon")
+   (:DESCRIPTION . "Retrieves a Shop_Coupon by id and shop_id")
+   (:URI         . "/shops/:shop_id/coupons/:coupon_id")
+   (:PARAMS
+    (:SHOP-ID   . "shop_id_or_name")
+    (:COUPON-ID . "int"))
+   (:DEFAULTS)
+   (:TYPE         . "Coupon")
+   (:VISIBILITY   . "private")
+   (:HTTP-METHOD . "GET"))
+     
+  ((:NAME        . "updateCoupon")
+   (:DESCRIPTION . "Updates a coupon")
+   (:URI         . "/shops/:shop_id/coupons/:coupon_id")
+   (:PARAMS
+    (:SHOP-ID       . "shop_id_or_name")
+    (:COUPON-ID     . "int")
+    (:SELLER-ACTIVE . "boolean"))
+   (:DEFAULTS
+    (:SELLER-ACTIVE . "false"))
+   (:TYPE         . "Coupon")
+   (:VISIBILITY   . "private")
+   (:HTTP-METHOD . "PUT"))
+     
+  ((:NAME        . "deleteCoupon")
+   (:DESCRIPTION . "Deletes a coupon")
+   (:URI         . "/shops/:shop_id/coupons/:coupon_id")
+   (:PARAMS
+    (:SHOP-ID   . "shop_id_or_name")
+    (:COUPON-ID . "int"))
+   (:DEFAULTS)
+   (:TYPE         . "Coupon")
+   (:VISIBILITY   . "private")
+   (:HTTP-METHOD . "DELETE"))
+
+|#
 
 ;;; ==============================
 ;;; EOF

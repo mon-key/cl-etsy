@@ -3,7 +3,7 @@
 ;;; ==============================
 
 #|
-;; (URL `http://www.etsy.com/developers/documentation/reference/feedbackinfo')
+ (URL `http://www.etsy.com/developers/documentation/reference/feedbackinfo')
 
 ----
 API-ASSOCIATIONS
@@ -187,6 +187,7 @@ Note: This field may be absent, depending on the buyer's privacy settings."))
   ;; :target-user-id nil :seller-user-id nil :buyer-user-id nil
   ;; :creation-tsz nil :message nil :value nil :image-feedback-id nil
   ;; :image-url-25x25 nil :image-url-155x125 nil :image-url-fullxfull nil)
+
   (:documentation "Etsy allows buyers and sellers to leave feedback for one another about a specific transaction.
 Each feedback record contains a short message from the buyer or seller, a value
 of -1, 0 or 1, and information about the item that was purchased.
@@ -196,7 +197,117 @@ two feedback records, one left by a buyer in reference to a seller, and one left
 by a seller in reference to a buyer. To determine the context of a feedback
 record, you will neeed to examine both the creator_user_id and seller_user_id
 fields to determine whether the author of the feedback was the buyer or the
-seller in the transaction."))
+seller in the transaction.
+ (URL `http://www.etsy.com/developers/documentation/reference/feedbackinfo')"))
+
+
+#|
+
+ ((:NAME        . "findAllUserFeedbackAsAuthor")
+  (:DESCRIPTION . "Retrieves a set of Feedback objects associated to a User.")
+  (:URI         . "/users/:user_id/feedback/as-author")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Feedback")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllUserFeedbackAsBuyer")
+  (:DESCRIPTION . "Retrieves a set of Feedback objects associated to a User.")
+  (:URI         . "/users/:user_id/feedback/as-buyer")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Feedback")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllUserFeedbackAsSeller")
+  (:DESCRIPTION . "Retrieves a set of Feedback objects associated to a User.")
+  (:URI         . "/users/:user_id/feedback/as-seller")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Feedback")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllUserFeedbackAsSubject")
+  (:DESCRIPTION . "Retrieves a set of Feedback objects associated to a User.")
+  (:URI         . "/users/:user_id/feedback/as-subject")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Feedback")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllFeedbackFromBuyers")
+  (:DESCRIPTION . "Returns a set of FeedBack objects associated to a User.
+                       This is essentially the union between the findAllUserFeedbackAsBuyer
+                       and findAllUserFeedbackAsSubject methods.")
+  (:URI         . "/users/:user_id/feedback/from-buyers")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:USER-ID)
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Feedback")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+  
+  
+ ((:NAME        . "findAllFeedbackFromSellers")
+  (:DESCRIPTION . "Returns a set of FeedBack objects associated to a User.
+                    This is essentially the union between
+                    the findAllUserFeedbackAsBuyer and findAllUserFeedbackAsSubject methods.")
+  (:URI         . "/users/:user_id/feedback/from-sellers")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:USER-ID)
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Feedback")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+
+|#
 
 
 

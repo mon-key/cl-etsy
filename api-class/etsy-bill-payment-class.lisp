@@ -16,8 +16,7 @@ API-METHODS
 
 ;; BillPayment
 (defclass bill-payment (base-etsy)
-  (
-   ;; bill_payment_id 
+  (;; bill_payment_id 
    (bill-payment-id 
     :initarg :bill-payment-id 
     :accessor bill-payment-id 
@@ -35,7 +34,6 @@ API-METHODS
     ;; :type float
     :documentation "Creation time, in epoch seconds.")
 
-   ;; type
    (type
     :initarg :type
     :accessor type
@@ -62,7 +60,6 @@ API-METHODS
     ;; :type int
     :documentation "The user's numeric ID.")
 
-   ;; amount
    (amount
     :initarg :amount
     :accessor amount
@@ -97,11 +94,42 @@ API-METHODS
     ;; :perm-scope billing_r
     ;; :type int
     :documentation "Year that the payment was made. "))
+
   ;; (:default-initargs 
   ;;  :bill-payment-id nil :creation-tsz nil :type nil :type-id nil :user-id nil
   ;;  :amount nil :currency-code nil :creation-month nil :creation-year nil)
+
   (:documentation "Represents a user's Billing Payment.
  (URL `http://www.etsy.com/developers/documentation/reference/billpayment')"))
+
+
+#|
+
+
+ ((:NAME        . "findAllUserPayments")
+  (:DESCRIPTION . "Retrieves a set of BillPayment objects associated to a User.")
+  (:URI         . "/users/:user_id/payments")
+  (:PARAMS
+   (:LIMIT        . "int")
+   (:OFFSET       . "int")
+   (:PAGE         . "int")
+   (:USER-ID     . "user_id_or_name")
+   (:SORT-ORDER  . "enum(up, down)")
+   (:MIN-CREATED . "epoch")
+   (:MAX-CREATED . "epoch"))
+  (:DEFAULTS
+   (:LIMIT       . 25)
+   (:OFFSET      . 0)
+   (:PAGE)
+   (:SORT-ORDER . "up")
+   (:MIN-CREATED)
+   (:MAX-CREATED))
+  (:TYPE         . "BillPayment")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+|#
+
 
 ;;; ==============================
 ;;; EOF

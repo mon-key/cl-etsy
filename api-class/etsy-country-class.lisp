@@ -91,6 +91,28 @@ API-METHODS
   (:documentation "Represents a geographical country and its location.
  (URL `http://www.etsy.com/developers/documentation/reference/country')"))
 
+#|
+
+  ((:NAME        . "findAllCountry")
+   (:DESCRIPTION . "Finds all Country.")
+   (:URI         . "/countries")
+   (:PARAMS)
+   (:DEFAULTS)
+   (:TYPE         . "Country")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+  ((:NAME        . "getCountry")
+   (:DESCRIPTION . "Retrieves a Country by id.")
+   (:URI         . "/countries/:country_id")
+   (:PARAMS
+    (:COUNTRY-ID . "array(int)"))
+   (:DEFAULTS)
+   (:TYPE         . "Country")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+
+|#
 
 ;;; ==============================
 ;;; EOF

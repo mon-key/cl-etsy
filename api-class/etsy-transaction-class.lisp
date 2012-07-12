@@ -52,9 +52,9 @@ API-METHODS
 
 (in-package #:cl-etsy)
 
+;; Transaction
 (defclass transaction (base-etsy)
-    (
-     ;; transaction_id
+    (;; transaction_id
      (transaction-id
       :initarg :transaction-id
       :accessor transaction-id
@@ -234,8 +234,7 @@ API-METHODS
       ;; :visibility public
       ;; :perm-scope none
       ;; :type string
-      :documentation "URL of this transaction.")
-     )
+      :documentation "URL of this transaction."))
 
   ;; (:default-initargs
   ;;  :transaction-id nil :title nil :description nil :seller-user-id nil
@@ -244,11 +243,74 @@ API-METHODS
   ;;  :image-listing-id nil :receipt-id nil :shipping-cost nil
   ;;  :listing-id nil :seller-feedback-id nil :buyer-feedback-id nil
   ;;  :transaction-type nil :url nil)
+
   (:documentation 
    "Represents the sale of a single item.
  (URL `http://www.etsy.com/developers/documentation/reference/transaction')"))
 
 
+
+#|
+
+ ((:NAME        . "findAllReceiptTransactions")
+  (:DESCRIPTION . "Retrieves a set of Transaction objects associated to a Receipt.")
+  (:URI         . "/receipts/:receipt_id/transactions")
+  (:PARAMS
+   (:RECEIPT-ID . "int")
+   (:LIMIT       . "int")
+   (:OFFSET      . "int")
+   (:PAGE        . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Transaction")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllShopTransactions")
+  (:DESCRIPTION . "Retrieves a set of Transaction objects associated to a Shop.")
+  (:URI         . "/shops/:shop_id/transactions")
+  (:PARAMS
+   (:SHOP-ID . "shop_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Transaction")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "getTransaction")
+  (:DESCRIPTION . "Retrieves a Transaction by id.")
+  (:URI         . "/transactions/:transaction_id")
+  (:PARAMS
+   (:TRANSACTION-ID . "array(int)"))
+  (:DEFAULTS)
+  (:TYPE         . "Transaction")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllUserBuyerTransactions")
+  (:DESCRIPTION . "Retrieves a set of Transaction objects associated to a User.")
+  (:URI         . "/users/:user_id/transactions")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Transaction")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+|#
 
 
 ;;; ==============================

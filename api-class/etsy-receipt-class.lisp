@@ -312,7 +312,6 @@ Return value is per LHS which is shorthand for RHS as follows:
     :documentation "The total discount for the receipt, if using a percent-off Coupon.
 Free shipping Coupons are not refected here; check the Coupon object for these.")
 
-   ;; subtotal
    (subtotal
     :initarg :subtotal
     :accessor subtotal
@@ -321,7 +320,6 @@ Free shipping Coupons are not refected here; check the Coupon object for these."
     ;; :type float
     :documentation "The subtotal for the receipt.")
 
-   ;; grandtotal
    (grandtotal
     :initarg :grandtotal
     :accessor grandtotal
@@ -380,6 +378,120 @@ Free shipping Coupons are not refected here; check the Coupon object for these."
   (:documentation "Represents proof of payment from a user to a shop for one or more transactions.
  (URL `http://www.etsy.com/developers/documentation/reference/receipt')"))
 
+#|
+
+ ((:NAME        . "findAllOrderReceipts")
+   (:DESCRIPTION . "Retrieves a set of Receipt objects associated to a Order.")
+   (:URI         . "/orders/:order_id/receipts")
+   (:PARAMS
+    (:ORDER-ID . "int")
+    (:LIMIT     . "int")
+    (:OFFSET    . "int")
+    (:PAGE      . "int"))
+   (:DEFAULTS
+    (:LIMIT  . 25)
+    (:OFFSET . 0)
+    (:PAGE))
+   (:TYPE         . "Receipt")
+   (:VISIBILITY   . "private")
+   (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "createReceiptOnSandbox")
+  (:DESCRIPTION . "Creates a purchase for the current OAuth user, including Order, Receipt and Transaction resources. This method is only available via the Sandbox API. Listing IDs must be active, and belong to the same seller user ID. The buyer must have at least one UserAddress record, or an error will be thrown.")
+  (:URI         . "/receipts")
+  (:PARAMS
+   (:LISTING-ID . "array(int)"))
+  (:DEFAULTS)
+  (:TYPE         . "Receipt")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "POST"))
+     
+ ((:NAME        . "getReceipt")
+  (:DESCRIPTION . "Retrieves a Receipt by id.")
+  (:URI         . "/receipts/:receipt_id")
+  (:PARAMS
+   (:RECEIPT-ID . "array(int)"))
+  (:DEFAULTS)
+  (:TYPE         . "Receipt")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+     
+ ((:NAME        . "updateReceipt")
+  (:DESCRIPTION . "Updates a Receipt")
+  (:URI         . "/receipts/:receipt_id")
+  (:PARAMS
+   (:RECEIPT-ID           . "int")
+   (:WAS-PAID             . "boolean")
+   (:WAS-SHIPPED          . "boolean")
+   (:MESSAGE-FROM-SELLER . "string")
+   (:MESSAGE-FROM-BUYER  . "string"))
+  (:DEFAULTS
+   (:WAS-PAID)
+   (:WAS-SHIPPED)
+   (:MESSAGE-FROM-SELLER)
+   (:MESSAGE-FROM-BUYER))
+  (:TYPE         . "Receipt")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "PUT"))
+
+ ((:NAME        . "findAllShopReceipts")
+  (:DESCRIPTION . "Retrieves a set of Receipt objects associated to a Shop.")
+  (:URI         . "/shops/:shop_id/receipts")
+  (:PARAMS
+   (:SHOP-ID     . "shop_id_or_name")
+   (:MIN-CREATED . "epoch")
+   (:MAX-CREATED . "epoch")
+   (:LIMIT        . "int")
+   (:OFFSET       . "int")
+   (:PAGE         . "int")
+   (:WAS-PAID    . "boolean")
+   (:WAS-SHIPPED . "boolean"))
+  (:DEFAULTS
+   (:MIN-CREATED)
+   (:MAX-CREATED)
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE)
+   (:WAS-PAID)
+   (:WAS-SHIPPED))
+  (:TYPE         . "Receipt")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllShopReceiptsByStatus")
+  (:DESCRIPTION . "Retrieves a set of Receipt objects associated to a Shop based on the status.")
+  (:URI         . "/shops/:shop_id/receipts/:status")
+  (:PARAMS
+   (:SHOP-ID . "shop_id_or_name")
+   (:STATUS   . "enum(open, unshipped, unpaid, completed, processing, all)")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Receipt")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+ ((:NAME        . "findAllUserBuyerReceipts")
+  (:DESCRIPTION . "Retrieves a set of Receipt objects associated to a User.")
+  (:URI         . "/users/:user_id/receipts")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Receipt")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "GET"))
+
+|#
 
 ;;; ==============================
 ;;; EOF

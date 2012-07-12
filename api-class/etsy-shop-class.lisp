@@ -46,6 +46,7 @@ API-ASSOCIATIONS
 
 ----
 API-METHODS
+
 "getShop"
 "updateShop"
 "findAllUserShops"
@@ -59,8 +60,7 @@ API-METHODS
 
 ;; Shop
 (defclass shop (base-etsy)
-  (
-   ;; shop_id
+  (;; shop_id
    (shop-id
     :initarg :shop-id
     :accessor shop-id
@@ -382,15 +382,14 @@ API-METHODS
     ;; :type int
     :documentation "The number of members who've marked this Shop as a favorite")
 
-   ;; languages
    (languages
     :initarg :languages
     :accessor languages
     ;; :visibility public
     ;; :perm-scope none
     ;; :type array(string)
-    :documentation "The languages that this Shop is enrolled in. ")
-   )
+    :documentation "The languages that this Shop is enrolled in."))
+  
   ;; (:default-initargs 
   ;;  :shop-id nil :shop-name nil :first-line nil :second-line nil
   ;;  :city nil :state nil :zip nil :country-id nil :user-id nil
@@ -402,9 +401,116 @@ API-METHODS
   ;;  :policy-refunds nil :policy-additional nil :policy-seller-info nil
   ;;  :policy-updated-tsz nil :vacation-autoreply nil :ga-code nil :name nil
   ;;  :url nil :image-url-760x100 nil :num-favorers nil :languages nil)
+
   (:documentation "Represents a shop with listings for sale.  Each shop is owned by one user.
  (URL `http://www.etsy.com/developers/documentation/reference/shop')"))
 
+
+#|
+ 
+ ((:NAME        . "findAllShops")
+  (:DESCRIPTION . "Finds all Shops.  If there is a keywords parameter, finds shops with shop_name starting with keywords.")
+  (:URI         . "/shops")
+  (:PARAMS
+   (:SHOP-NAME    . "string (length >= 3)")
+   (:LIMIT         . "int")
+   (:OFFSET        . "int")
+   (:PAGE          . "int")
+   (:LAT           . "latitude")
+   (:LON           . "longitude")
+   (:DISTANCE-MAX . "float"))
+  (:DEFAULTS
+   (:SHOP-NAME)
+   (:LIMIT         . 25)
+   (:OFFSET        . 0)
+   (:PAGE)
+   (:LAT)
+   (:LON)
+   (:DISTANCE-MAX . 35))
+  (:TYPE         . "Shop")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+     
+ ((:NAME        . "getShop")
+  (:DESCRIPTION . "Retrieves a Shop by id.")
+  (:URI         . "/shops/:shop_id")
+  (:PARAMS
+   (:SHOP-ID . "array(shop_id_or_name)"))
+  (:DEFAULTS)
+  (:TYPE         . "Shop")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+     
+ ((:NAME        . "updateShop")
+  (:DESCRIPTION . "Updates a Shop")
+  (:URI         . "/shops/:shop_id")
+  (:PARAMS
+   (:SHOP-ID              . "shop_id_or_name")
+   (:TITLE                 . "string")
+   (:ANNOUNCEMENT          . "text")
+   (:IS-REFUSING-ALCHEMY . "boolean")
+   (:ALCHEMY-MESSAGE      . "string")
+   (:SALE-MESSAGE         . "text")
+   (:POLICY-WELCOME       . "text")
+   (:POLICY-PAYMENT       . "text")
+   (:POLICY-SHIPPING      . "text")
+   (:POLICY-REFUNDS       . "text")
+   (:POLICY-ADDITIONAL    . "text")
+   (:POLICY-SELLER-INFO  . "text"))
+  (:DEFAULTS
+   (:TITLE)
+   (:ANNOUNCEMENT)
+   (:IS-REFUSING-ALCHEMY)
+   (:ALCHEMY-MESSAGE)
+   (:SALE-MESSAGE)
+   (:POLICY-WELCOME)
+   (:POLICY-PAYMENT)
+   (:POLICY-SHIPPING)
+   (:POLICY-REFUNDS)
+   (:POLICY-ADDITIONAL)
+   (:POLICY-SELLER-INFO))
+  (:TYPE         . "Shop")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "PUT"))
+     
+ ((:NAME        . "uploadShopBanner")
+  (:DESCRIPTION . "Upload a new shop banner image")
+  (:URI         . "/shops/:shop_id/appearance/banner")
+  (:PARAMS
+   (:SHOP-ID . "shop_id_or_name")
+   (:IMAGE    . "image"))
+  (:DEFAULTS)
+  (:TYPE         . "Shop")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "POST"))
+     
+ ((:NAME        . "deleteShopBanner")
+  (:DESCRIPTION . "Deletes a shop banner image")
+  (:URI         . "/shops/:shop_id/appearance/banner")
+  (:PARAMS
+   (:SHOP-ID . "shop_id_or_name"))
+  (:DEFAULTS)
+  (:TYPE         . "Shop")
+  (:VISIBILITY   . "private")
+  (:HTTP-METHOD . "DELETE"))
+
+ ((:NAME        . "findAllUserShops")
+  (:DESCRIPTION . "Retrieves a set of Shop objects associated to a User.")
+  (:URI         . "/users/:user_id/shops")
+  (:PARAMS
+   (:USER-ID . "user_id_or_name")
+   (:LIMIT    . "int")
+   (:OFFSET   . "int")
+   (:PAGE     . "int"))
+  (:DEFAULTS
+   (:LIMIT  . 25)
+   (:OFFSET . 0)
+   (:PAGE))
+  (:TYPE         . "Shop")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD . "GET"))
+
+|#
 
 ;;; ==============================
 ;;; EOF
