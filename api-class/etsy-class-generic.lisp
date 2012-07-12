@@ -4,7 +4,9 @@
 
 #|
 
-Following are some ugly symbol-names we should consider adding interspersing #\- charaters to:
+Following are some ugly symbol-names we should consider adding interspersing #\-
+charaters to:
+
 image-url-155x125
 image-url-25x25
 image-url-75x75
@@ -19,6 +21,49 @@ url-fullxfull
 |#
 
 (in-package #:cl-etsy)
+
+;;; ==============================
+
+;; We should run an after method on make-instance of api-type subclasses that
+;; adds the api-name/api-symbol to a hash-table(s)
+;; subclasses of api-type
+;; (defgeneric api-name (object))
+;; (defgeneric (setf api-name) (api-name object))
+
+;; We should run an after method on make-instance of api-type subclasses that
+;; adds the api-name/api-symbol to a hash-table(s)
+;; subclasses of api-type
+;; (defgeneric api-symbol (object))
+;; (defgeneric (setf api-symbol) (api-symbol object))
+
+;; (defgeneric permission-scope (object))
+;; (defgeneric (setf permission-scope) (permission-scope object))
+
+;;; ==============================
+
+;; Following are specific to api-method and may be moved.
+
+;; 1 classes: api-method
+(defgeneric uri (object))
+(defgeneric (setf uri) (url object))
+
+;; 1 classes: api-method
+(defgeneric http-method (object))
+(defgeneric (setf http-method) (http-method object))
+
+;; 1 classes: api-method
+(defgeneric visibility (object))
+(defgeneric (setf visibility) (visibility object))
+
+;; 1 classes: api-method
+(defgeneric params (object))
+(defgeneric (setf params) (params object))
+
+;; 1 classes: api-method
+(defgeneric defaults (object))
+(defgeneric (setf defaults) (defaults object))
+
+;;; ==============================
 
 ;; 1 classes: featured-treasury
 (defgeneric active-date (object))
@@ -505,8 +550,8 @@ url-fullxfull
 (defgeneric meta-title (object))
 (defgeneric (setf meta-title) (meta-title object))
 
-;; 8 classes: category country payment-template receipt shop tag team
-;; user-address
+;; 9 classes: api-method category country 
+;; payment-template receipt shop tag team user-address
 (defgeneric name (object))
 (defgeneric (setf name) (name object))
 
@@ -873,8 +918,8 @@ url-fullxfull
 (defgeneric treasury-owner-id (object))
 (defgeneric (setf treasury-owner-id) (treasury-owner-id object))
 
-;; A we shadow CL:TYPE 
-;; 3 classes: bill-charge bill-payment data-type
+;; we shadow CL:TYPE 
+;; 4 classes: api-method bill-charge bill-payment data-type
 ;; Possible variant names:
 ;; bill-charge  - charge-type bill-charge-type
 ;; bill-payment - payment-type bill-payment-type
@@ -978,12 +1023,15 @@ url-fullxfull
 
 #|
 
- We should have 42 class definitions corresponding to 42
+ We should have 43 class definitions corresponding to 43
  api-class/etsy-<FOO>-class.lisp files when we're finished.
 
- There appear to be 408 symbols with 235 of them being unique.
+ There appear to be 413 symbols with 240 of them being unique.
 
- '((avatar
+ '((api-method
+    (name uri params defaults type http-method visibility))
+
+   (avatar
     (avatar-id hex-code red green blue hue 
      saturation brightness is-black-and-white creation-tsz user-id))
 
@@ -1149,7 +1197,7 @@ url-fullxfull
      transaction-buy-count transaction-sold-count is-seller image-url-75x75
      first-name last-name)))
 
- all 408 symbols with duplicates as per 
+ all 418 symbols with duplicates as per 
   (sort (mon:flatten (mapcar #'cadr <BIG-LIST-ABOVE>))  #'string<)
 
  '(active-date active-listing-count alchemy-message allow-bt allow-cc allow-check
@@ -1216,10 +1264,11 @@ url-fullxfull
    user-id user-id user-id user-id user-id user-id user-id user-name
    user-profile-id vacation-autoreply vacation-autoreply vacation-message
    vacation-message value views views was-paid was-shipped weight when-made
-   who-made world-bank-country-code zip zip zip zip) 
+   who-made world-bank-country-code zip zip zip zip
+   defaults http-method params visibility uri) 
 
  ---
- our 235 unique symbols 
+ our 240 unique symbols 
 
  (active-date active-listing-count alchemy-message allow-bt allow-cc allow-check
   allow-mo allow-other allow-paypal amount announcement avatar-id balance-due
@@ -1261,7 +1310,8 @@ url-fullxfull
   treasury-id treasury-owner-id type type-id update-date url url-170x135
   url-570xn url-75x75 url-fullxfull user-address-id user-avatar-id user-id
   user-name user-profile-id vacation-autoreply vacation-message value views
-  was-paid was-shipped weight when-made who-made world-bank-country-code zip)
+  was-paid was-shipped weight when-made who-made world-bank-country-code zip
+  defaults http-method params visibility uri)
 
  ---
  counting occurences of each symbol with mon:freqs
@@ -1313,7 +1363,7 @@ url-fullxfull
                         receipt-id red region region-id sale-message secondary-cost shipping-cost
                         shipping-template-id shop-id style subtotal target-user-id transaction-id
                         type-id vacation-autoreply vacation-message views))
- (:occurrences 1  :slot-count 162 :with-slots 
+ (:occurrences 1  :slot-count 167 :with-slots 
              (active-date active-listing-count alchemy-message allow-bt allow-cc
              allow-check allow-mo allow-other allow-paypal balance-due bill-charge-id
              bill-payment-id bio birth-day birth-month birth-year buyer-email
@@ -1344,13 +1394,18 @@ url-fullxfull
              transaction-buy-count transaction-sold-count transaction-type treasury-id
              treasury-owner-id update-date url-170x135 url-570xn url-75x75 url-fullxfull
              user-address-id user-avatar-id user-name user-profile-id value was-paid
-             was-shipped weight when-made who-made world-bank-country-code)))
+             was-shipped weight when-made who-made world-bank-country-code
+             defaults http-method params visibility uri)))
 
  ---
  Output some defgenerics four each of our 42 etsy v2 API classes:
 
   
- (let ((class-syms '((avatar
+ (let ((class-syms '(
+                     (api-method
+                      (name uri params defaults type http-method visibility))
+
+                     (avatar
                       (avatar-id hex-code red green blue hue saturation brightness is-black-and-white creation-tsz user-id))
 
                      (bill-charge
