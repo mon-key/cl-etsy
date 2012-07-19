@@ -28,12 +28,11 @@ Valid settings are either:
 
 :SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_entry_points')")
 
-(defvar *api-key* "You need to set your *API-KEY*
-This can be found at (URL `https://www.etsy.com/developers/your-apps')")
+(defvar *api-key* "You need to set your *API-KEY*"
+"This can be found at: (URL `https://www.etsy.com/developers/your-apps')")
 
-(defvar *api-shared-secret*
-  "You need to set your *api-shared-secret*
-This can be found at (URL `https://www.etsy.com/developers/your-apps')")
+(defvar *api-shared-secret* "You need to set your *api-shared-secret*"
+"This can be found at: (URL `https://www.etsy.com/developers/your-apps')")
 
 ;;; ==============================
 ;;; EOF
