@@ -12,6 +12,18 @@ API-METHODS
 "findPopularTags"
 "findAllRelatedTags"
 
+---
+:NOTE Regarding deprecation of the tags related methods
+[ANNOUNCE] Deprecating findPopularTags and findAllRelatedTags - dated 2012/05/21 
+
+1) In 2 days, Wed 23 May 2012, these 2 methods will become no-op
+features. This means they will return empty results sets in all cases.
+
+2) In a few weeks (no sooner than 2), we'll remove these 2 API methods
+and documentation entirely. 
+
+(URL `https://groups.google.com/forum/?fromgroups#!searchin/etsy-api-v2/tags/etsy-api-v2/swh3xwnu4HM/LeADxQUE0JQJ')
+
 |#
 
 (in-package #:cl-etsy)
