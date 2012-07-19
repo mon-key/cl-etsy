@@ -54,10 +54,11 @@
                  ("effective_limit"   . INTEGER | NULL ))
 
 - Figure out how we want to handle the enums:
-  when-made
-  who-made
-  recipient
-  occassion
+
+  when-made - see method "describeWhenMadeEnum" for class data-type
+  who-made  - see method "describeWhoMadeEnum" for class data-type
+  recipient - see method "describeRecipientEnum" for class data-type
+  occassion - see method "describeOccasionEnum" for class data-type
 
   state     "enum(active, draft)"
             "enum(active, inactive, draft)"
@@ -67,6 +68,8 @@
   geo-level  "enum(city, state, country)"
   status     "enum(open, unshipped, unpaid, completed, processing, all)"
              "enum(active, invited, pending)"
+
+
 
 ;;; ==============================
 ;;; EOF

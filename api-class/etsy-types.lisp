@@ -99,6 +99,23 @@ currency
 language
 "An IETF language code. Currently supported values: en, de, fr"
 
+
+---
+enums
+ when-made - see method "describeWhenMadeEnum" for class data-type
+ who-made  - see method "describeWhoMadeEnum" for class data-type
+ recipient - see method "describeRecipientEnum" for class data-type
+ occassion - see method "describeOccasionEnum" for class data-type
+
+ state     "enum(active, draft)"
+           "enum(active, inactive, draft)"
+ sort-on   "enum(created, price, score)"
+           "enum(hotness, created)"
+ sort-order "enum(up, down)"
+ geo-level  "enum(city, state, country)"
+ status     "enum(open, unshipped, unpaid, completed, processing, all)"
+            "enum(active, invited, pending)"
+
 |#
 (in-package #:cl-etsy)
 
