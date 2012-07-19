@@ -44,6 +44,13 @@
   ;; (:default-initargs )
   (:documentation \"\"))")))
 
+;; Regexp for transforming the permission scope table outlined here:
+;;  (URL `http://www.etsy.com/developers/documentation/getting_started/oauth#section_permission_scopes')
+;; :NOTE doesn't correctly split the multiply affected resources correctly
+;;
+;; (while (search-forward-regexp "\\(.*\\)\\( 	\\)\\(.*\\)\\( 	\\)\\(.*\\)" nil t)
+;;   (replace-match "\n:permission-scope  \"\\1\"\n:description       \"\\3\"\n:affected-resource (\"\\5\")"))
+
 ;; (funcall #'(lambda (x) 
 ;;              (loop 
 ;;                 for init in x
