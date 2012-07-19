@@ -51,7 +51,8 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The identifier for this category.")
+    :documentation "The identifier for this category.
+:API-FIELD category_id")
 
    (name
     :initarg :name
@@ -68,7 +69,8 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string ; or null
-    :documentation "The \"title\" meta tag value for the category's landing page (may be null).")
+    :documentation "The \"title\" meta tag value for the category's landing page (may be null).
+:API-FIELD meta_title")
 
    ;; meta_keywords
    (meta-keywords
@@ -77,7 +79,8 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string ; or null
-    :documentation "The \"keywords\" meta tag value for the category's landing page (may be null).")
+    :documentation "The \"keywords\" meta tag value for the category's landing page (may be null).
+:API-FIELD meta_keywords")
 
    ;; meta_description
    (meta-description
@@ -86,7 +89,8 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string ; or null
-    :documentation "The \"description\" meta tag value for the category's landing page (may be null).")
+    :documentation "The \"description\" meta tag value for the category's landing page (may be null).
+:API-FIELD meta_description")
 
    ;; page_description
    (page-description
@@ -95,7 +99,8 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string ; or null
-    :documentation "A short description of the category from the category' landing page (may be null).")
+    :documentation "A short description of the category from the category' landing page (may be null).
+:API-FIELD page_description")
 
    ;; page_title
    (page-title
@@ -104,17 +109,23 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string ; or null
-    :documentation "The title of the category's landing page (may be null).")
+    :documentation "The title of the category's landing page (may be null).
+:API-FIELD page_title")
 
    ;; category_name
    (category-name
     :initarg :category-name
-
     :accessor category-name
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The category's string ID.")
+    :documentation "The category's string ID. 
+Has the form <category-name> or <category-name>/<subs>* where `<subs>*`
+indicates one or more children in a parent-child tree e.g.:
+ vintage 
+ vintage/clothing
+ vintage/clothing/skirts
+:API-FIELD category_name")
 
    ;; short_name
    (short-name
@@ -123,7 +134,8 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "A short display name for the category.")
+    :documentation "A short display name for the category.
+:API-FIELD short_name")
 
    ;; long_name
    (long-name
@@ -132,7 +144,13 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "A longer display name for the category.")
+    :documentation "A longer display name for the category.
+Has the form \"<Category-name>\" or <Category-name> > <Subs>* where `<Subs>*`
+indicates one or more children in a parent-child tree e.g.:
+ \"Vintage\"
+ \"Vintage > Clothing\"
+ \"Vintage > Clothing > Skirts\"
+:API-FIELD long_name")
 
    ;; num_children
    (num-children
@@ -141,9 +159,10 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The number of subcategories below this one. Subcatgories append a new tag to the end of their parent's category_name.")
+    :documentation "The number of subcategories below this one.
+Subcatgories append a new tag to the end of their parent's category_name.
+:API-FIELD num_children")
    )
-
   ;; (:default-initargs :category-id nil :name nil :meta-title nil :meta-keywords nil
   ;; :meta-description nil :page-description nil :page-title nil
   ;; :category-name nil :short-name nil :long-name nil :num-children nil)
@@ -156,8 +175,11 @@
 
 
 #|
- 
- ((:NAME        . "getCategory")
+  
+  | "getCategory"
+  | (yason:parse (api-call (concatenate 'string *base-url* "/categories/vintage")) :object-as :alist)
+
+  ((:NAME        . "getCategory")
    (:DESCRIPTION . "Retrieves a top-level Category by tag.")
    (:URI         . "/categories/:tag")
    (:PARAMS
@@ -166,6 +188,10 @@
    (:TYPE         . "Category")
    (:VISIBILITY   . "public")
    (:HTTP-METHOD . "GET"))
+
+
+  | "getSubCategory"
+  | (yason:parse (api-call (concatenate 'string *base-url* "/categories/" "vintage/clothing")) :object-as :alist)
 
   ((:NAME        . "getSubCategory")
    (:DESCRIPTION . "Retrieves a second-level Category by tag and subtag.")
@@ -177,6 +203,9 @@
    (:TYPE         . "Category")
    (:VISIBILITY   . "public")
    (:HTTP-METHOD . "GET"))
+
+  | "getSubSubCategory"
+  | (yason:parse (api-call (concatenate 'string *base-url* "/categories/" "vintage/clothing/pants")) :object-as :alist)
 
   ((:NAME        . "getSubSubCategory")
    (:DESCRIPTION . "Retrieves a third-level Category by tag, subtag and subsubtag.")
@@ -190,7 +219,10 @@
    (:VISIBILITY   . "public")
    (:HTTP-METHOD . "GET"))
 
-((:NAME        . "findAllTopCategory")
+  | "findAllTopCategory"
+  | (yason:parse (api-call (concatenate 'string *base-url* "/taxonomy/categories")) :object-as :alist)
+
+  ((:NAME        . "findAllTopCategory")
    (:DESCRIPTION . "Retrieves all top-level Categories.")
    (:URI         . "/taxonomy/categories")
    (:PARAMS)
@@ -198,6 +230,9 @@
    (:TYPE         . "Category")
    (:VISIBILITY   . "public")
    (:HTTP-METHOD . "GET"))
+  
+  | "findAllTopCategoryChildren"
+  | (yason:parse (api-call (concatenate 'string *base-url* "/taxonomy/categories/" "vintage")) :object-as :alist)
 
   ((:NAME        . "findAllTopCategoryChildren")
    (:DESCRIPTION . "Retrieves children of a top-level Category by tag.")
@@ -208,6 +243,9 @@
    (:TYPE         . "Category")
    (:VISIBILITY   . "public")
    (:HTTP-METHOD . "GET"))
+
+  | "findAllSubCategoryChildren"
+  | (yason:parse (api-call (concatenate 'string *base-url* "/taxonomy/categories/" "vintage/clothing")) :object-as :alist)
 
   ((:NAME        . "findAllSubCategoryChildren")
    (:DESCRIPTION . "Retrieves children of a second-level Category by tag and subtag.")
