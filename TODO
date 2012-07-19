@@ -1,0 +1,72 @@
+;;; :FILE-CREATED <Timestamp: #{2012-07-12T17:13:44-04:00Z}#{12284} - by MON>
+;;; :FILE cl-etsy/TODO
+;;; ==============================
+
+- simple-api-types for int, text, float, boolean,
+
+- interaction with Etsy api-type "enum()" with are essentially closed sets 
+
+- interaction with api-type "array(string)" - a string possibly of comma separated values
+- interaction with api-type "array(<API-TYPE>)" - a string designating the JSON name of an api-type
+
+- functions to api-method's for each resource type.
+
+- function to parse api-method uri slots on any leading-colon placeholders
+  such that functions which implement the api-method for a particular
+  resource can correctly splice in arguments for the placeholder e.g.
+  listings/:listing_id
+  to a list or vector
+  ("listings/" <PLACEHOLDER>)
+  #("listings/" <PLACEHOLDER>)
+  which in turn will allow for something like this:  
+  (nsubstitute 42424242 '<PLACEHOLDER> #("listings/" <PLACEHOLDER>))
+  => #("listings/" 42424242)
+
+- function validate-fields to validate fields for the api-methods of a given resource
+  e.g. for an elt in an api-call parameters alist such as:
+    ("fields" . "listing_id") and/or ("fields" . "listing_id,title,price")
+
+- function validate-includes to validate includes for the api-methods for a given resource
+   e.g. for an elt in an api-call parameters alist such as:
+    ("includes" . "Profile")
+    ("includes" . "Profile,Shops")
+    ("includes" . "Profile(bio),Shops(shop_id)")
+
+- function build-api-request which validates an api request including and any
+  includes and fields returning an object which may be used as both a mechanism
+  for holding the relevant parameters for an api-call and which can be used to
+  generate clos instances from the parsed yson:parse
+
+- We need better error handling for the vavious standard response codes:
+  (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_standard_response_codes')
+
+- We need to parse all return values from an api call. These are:
+  "count"       integer
+  "results"     response-body
+  "params"      the parameters for the request. Does not discriminate any associations via includes and fields nor the limit/offset syntactical-sugar
+  "type"        the _primary_ type of object in results. When associations are given 
+  "pagination"  has the following form
+               ("pagination" 
+                 ("next_page"       . INTEGER | NULL )
+                 ("effective_page"  . INTEGER | NULL )
+                 ("next_offset"     . INTEGER | NULL )
+                 ("effective_offset"  . INTEGER | NULL )
+                 ("effective_limit"   . INTEGER | NULL ))
+
+- Figure out how we want to handle the enums:
+  when-made
+  who-made
+  recipient
+  occassion
+
+  state     "enum(active, draft)"
+            "enum(active, inactive, draft)"
+  sort-on   "enum(created, price, score)"
+            "enum(hotness, created)"
+  sort-order "enum(up, down)"
+  geo-level  "enum(city, state, country)"
+  status     "enum(open, unshipped, unpaid, completed, processing, all)"
+             "enum(active, invited, pending)"
+
+;;; ==============================
+;;; EOF
