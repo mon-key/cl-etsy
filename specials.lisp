@@ -25,7 +25,7 @@ Valid settings are either:
 
   Developers will need to authenticate their OAuth-based apps separately against the sandbox API.
   OAuth tokens obtained from the sandbox API will not work with the production API.\"
-
+:SEE-ALSO `set-etsy-environment', `etsy-environment'.
 :SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_entry_points')")
 
 (defvar *api-key* "You need to set your *API-KEY*"
