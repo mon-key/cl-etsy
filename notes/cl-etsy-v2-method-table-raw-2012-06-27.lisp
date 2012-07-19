@@ -1144,6 +1144,7 @@ UserAddress
    (:HTTP-METHOD  . "GET"))
 
   ;; !!!!
+  ;; see api-class/etsy-epoch.lisp  
   ((:NAME        . "getServerEpoch")
    (:DESCRIPTION . "Get server time, in epoch seconds notation.")
    (:URI         . "/server/epoch")
@@ -1154,6 +1155,7 @@ UserAddress
    (:HTTP-METHOD  . "GET"))
 
   ;; !!!!     
+  ;; see api-class/etsy-epoch.lisp
   ((:NAME        . "ping")
    (:DESCRIPTION . "Check that the server is alive.")
    (:URI         . "/server/ping")
