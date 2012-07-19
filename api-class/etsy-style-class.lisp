@@ -44,6 +44,13 @@ A user may either select from suggested styles, or create a custom style.
 
 #|
 
+ | Each elt of return value is a pair of key/value pairs of the form:
+ | "style"    "<STYLE-NAME>"
+ | "style_id"  <ID-INT>
+
+ | "findSuggestedStyles"
+ | (yason:parse (api-call (concatenate 'string *base-url* "/taxonomy/styles")) :object-as :alist)
+
  ((:NAME        . "findSuggestedStyles")
   (:DESCRIPTION . "Retrieve all suggested styles.")
   (:URI         . "/taxonomy/styles")
