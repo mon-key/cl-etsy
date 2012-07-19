@@ -230,6 +230,17 @@ original artwork uploaded by the seller:
   (:VISIBILITY   . "public")
   (:HTTP-METHOD . "GET"))
      
+  ((:NAME        . "getImage_Listing")
+   (:DESCRIPTION . "Retrieves a Image_Listing by id.")
+   (:URI         . "/listings/:listing_id/images/:listing_image_id")
+   (:PARAMS
+    (:LISTING-IMAGE-ID . "array(int)")
+    (:LISTING-ID        . "int"))
+   (:DEFAULTS)
+   (:TYPE         . "ListingImage")
+   (:VISIBILITY   . "public")
+   (:HTTP-METHOD . "GET"))
+  
   ((:NAME        . "uploadListingImage")
    (:DESCRIPTION . "Upload a new listing image")
    (:URI         . "/listings/:listing_id/images")
@@ -243,16 +254,7 @@ original artwork uploaded by the seller:
    (:VISIBILITY   . "private")
    (:HTTP-METHOD . "POST"))
      
-  ((:NAME        . "getImage_Listing")
-   (:DESCRIPTION . "Retrieves a Image_Listing by id.")
-   (:URI         . "/listings/:listing_id/images/:listing_image_id")
-   (:PARAMS
-    (:LISTING-IMAGE-ID . "array(int)")
-    (:LISTING-ID        . "int"))
-   (:DEFAULTS)
-   (:TYPE         . "ListingImage")
-   (:VISIBILITY   . "public")
-   (:HTTP-METHOD . "GET"))
+  
   
 
 |#
