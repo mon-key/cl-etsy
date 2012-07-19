@@ -22,8 +22,16 @@ url-fullxfull
 
 (in-package #:cl-etsy)
 
-;;; ==============================
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  ;; (intern "PAGINATION")
+  ;; (intern "RESULTS")
+  :pagination
+  :results)
 
+
+  
+;;; ==============================
+;;
 ;; We should run an after method on make-instance of api-type subclasses that
 ;; adds the api-name/api-symbol to a hash-table(s)
 ;; subclasses of api-type
