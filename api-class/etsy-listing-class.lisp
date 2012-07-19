@@ -253,7 +253,9 @@ A state may be editable or non-editable. A state may be reneable or non-renewabl
     ;; :visibility public
     ;; :perm-scope none
     ;; :type array(string)
-    :documentation "A list of tags for the item.")
+    :documentation "A list of tags for the item. 
+:NOTE As of 2012-07-19 a listing may have up to 13 tags.")
+
 
    ;; category_path
    (category-path
@@ -270,7 +272,8 @@ A state may be editable or non-editable. A state may be reneable or non-renewabl
     ;; :visibility public
     ;; :perm-scope none
     ;; :type array(string)
-    :documentation "A list of materials used in the item.")
+    :documentation "A list of materials used in the item.
+:NOTE As of 2012-07-19 a listing may have up to 10 materials.")
 
    ;; shop_section_id
    (shop-section-id
@@ -408,7 +411,8 @@ A state may be editable or non-editable. A state may be reneable or non-renewabl
     ;; :perm-scope none
     ;; :type array(string)
     :documentation "Style of this listing. A Listing may have up to two styles. 
-Each style is a free-form text string such as \"Formal\", or \"Steampunk\"."))
+Each style is a free-form text string such as \"Formal\", or \"Steampunk\".
+ \"/taxonomy/styles/\""))
 
   ;; (:default-initargs 
   ;;  :listing-id nil :state nil :user-id nil :category-id nil :title nil
@@ -518,6 +522,21 @@ renew them before they can be sold again.
    (:VISIBILITY   . "private")
    (:HTTP-METHOD . "POST"))
      
+  (yason:parse
+  ;; (api-call
+   (sb-ext:octets-to-string (drakma:http-request 
+                             (concatenate 'string *base-url* "/listings/104071558")
+                             :parameters `(("api_key"  . ,cl-etsy::*api-key*)
+                                           ("fields"   . "tags,styles,materials"))))
+   :object-as :alist)
+
+  (yason:parse
+  ;; (api-call 
+   (sb-ext:octets-to-string (drakma:http-request 
+                             (concatenate 'string *base-url* "/listings/104071558")
+                             :parameters `(("api_key"  . ,cl-etsy::*api-key*))))
+   :object-as :alist)
+  
   ((:NAME        . "getListing")
    (:DESCRIPTION . "Retrieves a Listing by id.")
    (:URI         . "/listings/:listing_id")
