@@ -69,7 +69,8 @@
   status     "enum(open, unshipped, unpaid, completed, processing, all)"
              "enum(active, invited, pending)"
 
-
+- `api-call' should leverage cl-oauth:access-protected-resource when accessing
+   :private resources
 
 ;;; ==============================
 ;;; EOF

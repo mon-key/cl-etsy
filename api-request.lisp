@@ -68,7 +68,7 @@
 `yason:*parse-object-as*'"
   '(member :hash-table :plist :alist))
 
-
+;; :TODO api-call should leverage cl-oauth:access-protected-resource when accessing :private resources
 (defun api-call (url &key (parameters nil)
                           (method :get)
                           (content-type "application/json"))
