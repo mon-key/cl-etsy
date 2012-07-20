@@ -11,6 +11,7 @@
   :maintainer "MON KEY"
   :licence "MIT"
   :depends-on (#:cl-ppcre
+               #:symbol-munger
                #:drakma
                #:cl-oauth
                ;; #:flexi-streams see `api-call'
@@ -20,6 +21,7 @@
   :serial t
   :components ((:file "package")
                (:file "specials")
+               (:file "utils")
                (:file "environment")
                (:file "authorize")
                (:file "request-timer")
