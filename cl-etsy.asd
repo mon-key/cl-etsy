@@ -15,21 +15,22 @@
                #:cl-oauth
                ;; #:flexi-streams see `api-call'
                ;;
-               ;; #:cl-json
-               #:yason ; the conversion to the v2 API uses yason not cl-json
-
-               ) 
+               ;; #:cl-json ; the conversion to the v2 API uses yason not cl-json
+               #:yason) 
   :serial t
-  :components (
-               (:file "package")
+  :components ((:file "package")
                (:file "specials")
                (:file "environment")
+               (:file "authorize")
+               (:file "request-timer")
+               (:file "api-request")
                (:module "api-class"
                 :components (
                              (:file "etsy-types")
                              (:file "etsy-class-generic")
                              (:file "etsy-epoch")
                              (:file "etsy-base-class")
+                             (:file "etsy-permission-scope-class")
                              (:file "etsy-api-method-class")
                              (:file "etsy-avatar-class")
                              (:file "etsy-bill-charge-class")
@@ -88,7 +89,18 @@
                )
   )
 
+;; If file cl-etsy/loadtime-bind.lisp exists it should contain an expression
+;; which sets etsy API and oauth related information for the current user. The
+;; expression should have the following general form:
+;;
+;;  (and (setf cl-etsy::*api-key*           "<API-KEY>")
+;;       (setf cl-etsy::*api-shared-secret* "<API-SHARED-SECRET>")
+;;       (set-api-consumer-token)
+;;       (make-api-access-token :consumer *api-consumer-token* :key "<KEY>" :secret "<SECRET>")
+;;       nil)
+;;
 (defmethod asdf:perform :after ((op asdf:load-op) (system (eql (asdf:find-system :cl-etsy))))
+  
   (when (member :IS-MON cl:*features*)
     (let ((maybe-loadtime-bind-file 
            (probe-file (merge-pathnames (make-pathname :name "loadtime-bind" :type "lisp")

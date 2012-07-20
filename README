@@ -25,6 +25,23 @@ user-extensible mechanism for achieving similiar results.
 It is our intention to reuse salvageable portions of the existing v1
 functionality which relies on drakma for RESTfull interaction with the v2 API.
 
+Getting Started:
+
+(pushnew asdf:*central-registry #P"/directory-path/to/cl-etsy/")
+
+(quicklisp:quickload 'cl-etsy)
+
+If file cl-etsy/loadtime-bind.lisp exists it should contain an expression
+which sets etsy API and oauth related information for the current user. The
+expression should have the following general form:
+
+ (and (setf cl-etsy::*api-key*           "<API-KEY>")
+      (setf cl-etsy::*api-shared-secret* "<API-SHARED-SECRET>")
+      (set-api-consumer-token)
+      (make-api-access-token :consumer *api-consumer-token* :key "<KEY>" :secret "<SECRET>")
+      nil)
+
+
 [1] http://www.etsy.com/developers/documentation
 [2] http://www.etsy.com/developers/register
 [3] https://www.etsy.com/developers/your-apps
