@@ -166,6 +166,8 @@ API-METHODS
   (:VISIBILITY   . "private")
   (:HTTP-METHOD . "POST"))
 
+
+
  ((:NAME        . "getUserAddress")
   (:DESCRIPTION . "Retrieves a UserAddress by id.")
   (:URI         . "/users/:user_id/addresses/:user_address_id")

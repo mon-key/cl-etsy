@@ -4,6 +4,40 @@
 
 #|
 
+ Following gets us a token but doesn't work on the sandbox API which AFAICT is
+ broken w/r/t return value of (url-decode-login-url). I have the impression that
+ this is a problem on the Etsy end... Someone with Etsy should verify the flow
+ for obtaining (and USING) an auth token with the sandbox endpoint. The forums
+ are full of devs reporting hassles when attempting to access privately scoped
+ fields on the sandbox.
+
+ - Set the endpoint-type to :production.
+   (when (eql (nth-value 1 (etsy-environment)) :sandbox)
+     (set-etsy-environment :endpoint-type :production))
+
+ - generate a new request-token
+   (set-api-request-token)
+
+ - obtain a verification code by accessing the URL returned from:
+   (url-decode-login-url)
+
+ - set the *api-request-token* verification-code slot to the code we recieved.
+   doing so has the effect that when we go to obtain the access code the
+   authorization headers will contain the following key/value pair:
+   oauth_verifier="<VERIFICATION-CODE>"
+   (setf (cl-oauth:request-token-verification-code *api-request-token*) "<VERIFICATION-CODE>")
+
+ - set the authorized-p slot to T
+   (cl-oauth:authorize-request-token *api-request-token*)
+
+ - obtain an access-token
+ (let ((drakma:*header-stream* *standard-output*))
+   (setf *api-access-token* (cl-oauth:obtain-access-token (get-access-token-endpoint) *api-request-token*)))
+
+ Holding onto our existing tokens:
+  (defparameter *api-production-access-token* *api-access-token*)
+  (defparameter *api-production-request-token* *api-request-token*)
+
 ---
  What the user sees when asked to grant an app permission to the user account:
 
@@ -57,10 +91,6 @@
  | <VERIFICATION-CODE>
  | 
  | You can revoke this access at any time by visiting Your Account.
-
----
-
- :NOTE Much of Following code is cargo culted from cl-oauth/examples/consumer/twitter.lisp
 
 |#
 
@@ -147,44 +177,6 @@ such that its cdr should be cl:equal the `cl-oauth::key' slot-value of `*api-req
           (cdr (assoc "login_url" (cl-oauth:token-user-data *api-request-token*) :test #'equal))))
     (when maybe-login-url
       (cl-oauth::url-decode maybe-login-url))))
-
-;;; ==============================
-;; Following worked:
-;;
-;; - set the endpoint-type to :production
-;; - generate a new request-token
-;; - login to etsy with url-decoded login_url and obtain a verification code
-;; - set the *api-request-token* verification-code slot to the code we recieved.
-;;   doing so has the effect that when we go to obtain the access code the
-;;   authorization headers will contain the following key/value pair:
-;;   oauth_verifier="<VERIFICATION-CODE>"
-;; - set the authorized-p slot to T
-;; - obtain an access-token
-;;
-;; ;; (set-etsy-environment :endpoint-type :sandbox)
-;; ;; (etsy-environment)
-;;
-;; (set-etsy-environment :endpoint-type :production)
-;;
-;; (set-api-request-token)
-;;
-;; (url-decode-login-url)
-;;
-;; (get-access-token-endpoint)
-;; "https://sandbox.openapi.etsy.com/v2/oauth/access_token"
-;;
-;;
-;; (setf (cl-oauth:request-token-verification-code *api-request-token*) "<VERIFICATION-CODE>")
-;;
-;; (cl-oauth:authorize-request-token *api-request-token*)
-;;
-;; (let ((drakma:*header-stream* *standard-output*))
-;;   (setf *api-access-token* (cl-oauth:obtain-access-token (get-access-token-endpoint) *api-request-token*)))
-;;
-;; Holding onto our existing tokens:
-;; (defparameter *api-production-access-token* *api-access-token*)
-;; (defparameter *api-production-request-token* *api-request-token*)
-
 
 ;;; ==============================
 ;;; EOF

@@ -137,6 +137,8 @@ API-METHODS
 
 
 #|
+ | "findAllUsers"
+ | (yason:parse (api-call (concatenate 'string *base-url* "/users") :parameters '(("keywords" . "<USER-NAME>"))) :object-as :alist)
 
  ((:NAME        . "findAllUsers")
    (:DESCRIPTION . "Finds all Users whose name or username match the keywords parameter.")
@@ -154,6 +156,12 @@ API-METHODS
    (:TYPE         . "User")
    (:VISIBILITY   . "public")
    (:HTTP-METHOD . "GET"))
+ 
+ | "getUser"
+ | (yason:parse (api-call (concatenate 'string *base-url* "/users/<USER-NAME-OR-ID>")) :object-as :alist)
+ | (yason:parse (api-call (concatenate 'string *base-url* "/users/<USER-NAME-OR-ID>")) :object-as :alist)
+ | (yason:parse (api-call (concatenate 'string *base-url* "/users/<USER-NAME>") :parameters '(("fields" . "user_id,login-name"))) :object-as :alist)
+ | (yason:parse (api-call (concatenate 'string *base-url* "/users/<USER-ID>") :parameters '(("fields" . "login_name,user_id"))) :object-as :alist)
 
  ((:NAME        . "getUser")
   (:DESCRIPTION . "Retrieves a User by id.")

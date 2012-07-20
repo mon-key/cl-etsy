@@ -2,6 +2,7 @@
 ;;; :FILE cl-etsy/specials.lisp
 ;;; ==============================
 
+
 (in-package #:cl-etsy)
 
 ;; v1 "http://beta-api.etsy.com/v1"
@@ -34,14 +35,29 @@ Valid settings are either:
 
 (defvar *api-shared-secret* "You need to set your *api-shared-secret*"
 "This can be found at: (URL `https://www.etsy.com/developers/your-apps')
-:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*', `make-api-consumer-token', `set-api-consumer-token'.")
-
+:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
+`make-api-consumer-token', `set-api-consumer-token'.")
 
 (defvar *api-consumer-token* nil
   "A `cl-auth:consumer-token' object generated with `make-api-consumer-token'.
 Value should be set at runtime with `set-api-consumer-token'.
-:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*', `make-api-consumer-token', `set-api-consumer-token'.")
+:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
+`make-api-consumer-token', `set-api-consumer-token'.")
 
+(defvar *api-request-token* nil)
+
+(defvar *api-access-token* nil)
+
+(defvar *api-default-permission-scope* 
+  (list "email_r" "listings_r" "listings_w" "listings_d" "transactions_r"
+        "transactions_w" "billing_r" "profile_r" "profile_w" "address_r" "address_w"
+        "favorites_rw" "shops_rw" "cart_rw" "recommend_rw" "feedback_r" "treasury_w")
+  "The default permission-scope's we request authorization to consume.
+For use with `get-default-permission-scope-parameter'.")
+
+;; :NOTE make-api-consumer-token and set-api-consumer-token should stay with
+;; this file b/c they depend on the initial string values of *api-key* and
+;; *api-shared-secret*
 (defun make-api-consumer-token ()
   "Generate a consumer token as if by `cl-oauth:make-consumer-token'
 When non-nil `*api-key*' and `*api-shared-secret*' are used as arguments for
@@ -65,7 +81,7 @@ KEY and SECRET keyword arguments of `cl-oauth:make-consumer-token'.
 :SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
 `make-api-consumer-token', `set-api-consumer-token'."
   (setf *api-consumer-token* (make-api-consumer-token)))
-    
+
 
 ;;; ==============================
 ;;; EOF
