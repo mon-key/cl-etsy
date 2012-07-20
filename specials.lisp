@@ -29,10 +29,43 @@ Valid settings are either:
 :SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_entry_points')")
 
 (defvar *api-key* "You need to set your *API-KEY*"
-"This can be found at: (URL `https://www.etsy.com/developers/your-apps')")
+"This can be found at: (URL `https://www.etsy.com/developers/your-apps')
+:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*', `make-api-consumer-token', `set-api-consumer-token'.")
 
 (defvar *api-shared-secret* "You need to set your *api-shared-secret*"
-"This can be found at: (URL `https://www.etsy.com/developers/your-apps')")
+"This can be found at: (URL `https://www.etsy.com/developers/your-apps')
+:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*', `make-api-consumer-token', `set-api-consumer-token'.")
+
+
+(defvar *api-consumer-token* nil
+  "A `cl-auth:consumer-token' object generated with `make-api-consumer-token'.
+Value should be set at runtime with `set-api-consumer-token'.
+:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*', `make-api-consumer-token', `set-api-consumer-token'.")
+
+(defun make-api-consumer-token ()
+  "Generate a consumer token as if by `cl-oauth:make-consumer-token'
+When non-nil `*api-key*' and `*api-shared-secret*' are used as arguments for
+KEY and SECRET keyword arguments of `cl-oauth:make-consumer-token'.
+:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
+`make-api-consumer-token', `set-api-consumer-token'."
+  (if (or (null *api-shared-secret*)
+          (equal *api-shared-secret* "You need to set your *api-shared-secret*"))
+      (values nil *api-shared-secret*)
+      (if (or (null *api-key*)
+              (equal *api-key* "You need to set your *API-KEY*"))
+          (values nil *api-key*)
+          (cl-oauth:make-consumer-token :key *api-key* :secret *api-shared-secret*))))
+
+(defun set-api-consumer-token ()
+  "Set value of `*api-consumer-token*' to return value of `make-api-consumer-token'.
+:EXAMPLE
+ (and (set-api-consumer-token)
+      (equal (slot-value  *api-consumer-token* 'cl-oauth::key) *api-key*)
+      (equal (slot-value  *api-consumer-token* 'cl-oauth::secret) *api-shared-secret*))
+:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
+`make-api-consumer-token', `set-api-consumer-token'."
+  (setf *api-consumer-token* (make-api-consumer-token)))
+    
 
 ;;; ==============================
 ;;; EOF

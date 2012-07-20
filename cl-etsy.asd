@@ -12,10 +12,12 @@
   :licence "MIT"
   :depends-on (#:cl-ppcre
                #:drakma
+               #:cl-oauth
                ;; #:flexi-streams see `api-call'
                ;;
                ;; #:cl-json
                #:yason ; the conversion to the v2 API uses yason not cl-json
+
                ) 
   :serial t
   :components (
