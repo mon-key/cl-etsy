@@ -119,9 +119,6 @@ enums
 |#
 (in-package #:cl-etsy)
 
-(deftype int ()
-  'integer)
-
 ;; (deftype epoch ()
 ;;   'integer)
 
