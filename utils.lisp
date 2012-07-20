@@ -7,6 +7,10 @@
 (deftype int ()
   'integer)
 
+;; (and (typep "88" 'int-or-int-string) (null (typep "88.0" 'int-or-int-string )))
+(deftype int-or-int-string ()
+  '(or int (satisfies int-string-p)))
+
 (defun int-to-int-string (int &optional stream)
   (declare (int int))
   (check-type int 'int)
@@ -25,6 +29,12 @@
   (assert (int-string-p int-string))
   (parse-integer int-string :radix 10))
 
+;; (and (ensure-int "42") (ensure-int 42))
+(defun ensure-int (int-or-int-string)
+  (declare (int-or-int-string int-or-int-string))
+  (if (typep int-or-int-string 'int) 
+      int-or-int-string
+      (int-string-to-int int-or-int-string)))
 
 ;;; ==============================
 ;;; EOF
