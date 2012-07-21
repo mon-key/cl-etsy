@@ -196,7 +196,7 @@ PaymentTemplate
 UserAddress
  - "findAllUserAddresses", "createUserAddress", "getUserAddress", "deleteUserAddress"
 
-
+---
 (with-output-to-string (v)
   (format v ":API-CLASSES")
   (dolist (i '("Avatar" "BillCharge" "BillingOverview" "BillPayment" "Cart" "CartListing"
@@ -215,6 +215,7 @@ UserAddress
                           (cl-ppcre:regex-replace-all "(?<!^)((?<!_)([A-Z]))" i "-\\1")))
             i)))
 
+---
 
 :API-CLASSES
 
@@ -720,7 +721,7 @@ UserAddress
    (:HTTP-METHOD  . "PUT"))
      
   ((:NAME        . "deleteListing")
-   (:DESCRIPTION . "Deletes a Listing")
+   (:DESCRIPTION . "Deletes a Listing.")
    (:URI         . "/listings/:listing_id")
    (:PARAMS
     (:LISTING-ID . "int"))
@@ -780,7 +781,7 @@ UserAddress
    (:HTTP-METHOD  . "GET"))
      
   ((:NAME        . "deleteListingImage")
-   (:DESCRIPTION . "Deletes a listing image")
+   (:DESCRIPTION . "Deletes a listing image.")
    (:URI         . "/listings/:listing_id/images/:listing_image_id")
    (:PARAMS
     (:LISTING-ID        . "int")
@@ -824,7 +825,7 @@ UserAddress
    (:HTTP-METHOD  . "POST"))
      
   ((:NAME        . "getListingTranslation")
-   (:DESCRIPTION . "Retrieves a ListingTranslation by listing_id and language")
+   (:DESCRIPTION . "Retrieves a ListingTranslation by listing_id and language.")
    (:URI         . "/listings/:listing_id/translations/:language")
    (:PARAMS
     (:LISTING-ID . "int")
@@ -916,7 +917,7 @@ UserAddress
      
   ;; !!!!  
   ((:NAME        . "findPaymentAdjustments")
-   (:DESCRIPTION . "Get a Payment Adjustments from a Payment Id")
+   (:DESCRIPTION . "Get a Payment Adjustments from a Payment Id.")
    (:URI         . "/payments/:payment_id/adjustments")
    (:PARAMS
     (:PAYMENT-ID . "int")
@@ -933,7 +934,7 @@ UserAddress
   
   ;; !!!!     
   ((:NAME        . "findPaymentAdjustment")
-   (:DESCRIPTION . "Get a Direct Checkout Payment Adjustment")
+   (:DESCRIPTION . "Get a Direct Checkout Payment Adjustment.")
    (:URI         . "/payments/:payment_id/adjustments/:payment_adjustment_id")
    (:PARAMS
     (:PAYMENT-ID             . "int")
@@ -2673,91 +2674,178 @@ UserAddress
  (:PAGINATION))
 )))
 
-
-;; The 43 distinct types (or 152 total) returned by the etsy API methods:
-;; (loop 
-;;   for method in *api-method-table*
-;;   collect (cdr (assoc :type method)) into types
-;;   finally (return (sort (delete-duplicates types :test #'string=) #'string<)))
-;;
-;; => ("ApiMethod" "Avatar" "BillCharge" "BillPayment" "BillingOverview" "Cart"
-;;     "Category" "Country" "Coupon" "DataType" "FavoriteListing" "FavoriteUser"
-;;     "FeaturedTreasury" "Feedback" "ForumPost" "Int" "Ledger" "LedgerEntry"
-;;     "Listing" "ListingImage" "ListingTranslation" "Order" "Payment"
-;;     "PaymentAdjustment" "PaymentAdjustmentItem" "PaymentTemplate" "Receipt"
-;;     "Region" "ShippingInfo" "ShippingTemplate" "ShippingTemplateEntry" "Shop"
-;;     "ShopSection" "ShopSectionTranslation" "ShopTranslation" "String" "Style"
-;;     "Tag" "Team" "Transaction" "Treasury" "User" "UserAddress")
-;;
-
-;; the 41 unique types specified in the :PARAMS of the API methods:
-;; (loop 
-;;   for method in *api-method-table*
-;;   for params = (cdr (assoc :params method))
-;;   for param-types = (and params 
-;;                          (loop 
-;;                            for (param . type) in params
-;;                            when type collect type into types
-;;                            finally (return (delete-duplicates types :test #'string=))))
-;;   nconcing param-types into gthr
-;;   finally (return (sort (delete-duplicates gthr :test #'string=) #'string<)))
-;;
-;; ("array(int)"
-;;  "array(shop_id_or_name)"
-;;  "array(string)"
-;;  "array(team_id_or_name)"
-;;  "array(user_id_or_name)"
-;;  "boolean"
-;;  "cart_id"
-;;  "category"
-;;  "color_triplet"
-;;  "color_wiggle"
-;;  "enum(active, draft)"
-;;  "enum(active, inactive, draft)"
-;;  "enum(active, invited, pending)"
-;;  "enum(anniversary, baptism, bar_or_bat_mitzvah, birthday, canada_day, chinese_new_year, cinco_de_mayo, confirmation, christmas, day_of_the_dead, easter, eid, engagement, fathers_day, get_well, graduation, halloween, hanukkah, housewarming, kwanza, prom, july_4th, mothers_day, new_baby, new_years, quinceanera, retirement, st_patricks_day, sweet_16, sympathy, thanksgiving, valentines, wedding)"
-;;  "enum(city, state, country)"
-;;  "enum(created, price)"
-;;  "enum(created, price, score)"
-;;  "enum(hotness, created)"
-;;  "enum(i_did, collective, someone_else)"
-;;  "enum(made_to_order, 2010_2012, 2000_2009, 1993_1999, before_1993, 1990_1992, 1980s, 1970s, 1960s, 1950s, 1940s, 1930s, 1920s, 1910s, 1900s, 1800s, 1700s, before_1700)"
-;;  "enum(men, women, unisex_adults, teen_boys, teen_girls, teens, boys, girls, children, baby_boys, baby_girls, babies, birds, cats, dogs, pets)"
-;;  "enum(open, unshipped, unpaid, completed, processing, all)"
-;;  "enum(up, down)"
-;;  "epoch"
-;;  "float"
-;;  "forum_post"
-;;  "image"
-;;  "int"
-;;  "language"
-;;  "latitude"
-;;  "longitude"
-;;  "region"
-;;  "shop_id_or_name"
-;;  "string"
-;;  "string (length >= 3)"
-;;  "text"
-;;  "treasury_description"
-;;  "treasury_id"
-;;  "treasury_search_string"
-;;  "treasury_title"
-;;  "user_id_or_name")
-
-
 #|
 
+ ---
+ The 43 distinct types (or 152 total) returned by the etsy API methods:
+ :NOTE "String" is not particularly useful/informative as only the ping API method has this type.
 
- ;; v1 "method" wants v2 "ApiMethod"
- (demarshall-results
-  (api-call "http://openapi.etsy.com/v2/"
-            `(("api_key" . ,*API-KEY*)))
-  "ApiMethod"
-  'demarshall-method)
+ (loop 
+   for method in *api-method-table*
+   collect (cdr (assoc :type method)) into types
+   finally (return (sort (delete-duplicates types :test #'string=) #'string<)))
+
+ => ("ApiMethod" "Avatar" "BillCharge" "BillPayment" "BillingOverview" "Cart"
+     "Category" "Country" "Coupon" "DataType" "FavoriteListing" "FavoriteUser"
+     "FeaturedTreasury" "Feedback" "ForumPost" "Int" "Ledger" "LedgerEntry"
+     "Listing" "ListingImage" "ListingTranslation" "Order" "Payment"
+     "PaymentAdjustment" "PaymentAdjustmentItem" "PaymentTemplate" "Receipt"
+     "Region" "ShippingInfo" "ShippingTemplate" "ShippingTemplateEntry" "Shop"
+     "ShopSection" "ShopSectionTranslation" "ShopTranslation" "String" "Style"
+     "Tag" "Team" "Transaction" "Treasury" "User" "UserAddress")
 
  ---
- (api-call "http://openapi.etsy.com/v2/"
-           `(("api_key" . ,*API-KEY*)))
+ The 41 unique types specified in the :PARAMS of the API methods:
+ (loop 
+   for method in *api-method-table*
+   for params = (cdr (assoc :params method))
+   for param-types = (and params 
+                          (loop 
+                            for (param . type) in params
+                            when type collect type into types
+                            finally (return (delete-duplicates types :test #'string=))))
+   nconcing param-types into gthr
+   finally (return (sort (delete-duplicates gthr :test #'string=) #'string<)))
+
+ ("array(int)"
+  "array(shop_id_or_name)"
+  "array(string)"
+  "array(team_id_or_name)"
+  "array(user_id_or_name)"
+  "boolean"
+  "cart_id"
+  "category"
+  "color_triplet"
+  "color_wiggle"
+  "enum(active, draft)"
+  "enum(active, inactive, draft)"
+  "enum(active, invited, pending)"
+  "enum(anniversary, baptism, bar_or_bat_mitzvah, birthday, canada_day, chinese_new_year, cinco_de_mayo, confirmation, christmas, day_of_the_dead, easter, eid, engagement, fathers_day, get_well, graduation, halloween, hanukkah, housewarming, kwanza, prom, july_4th, mothers_day, new_baby, new_years, quinceanera, retirement, st_patricks_day, sweet_16, sympathy, thanksgiving, valentines, wedding)"
+  "enum(city, state, country)"
+  "enum(created, price)"
+  "enum(created, price, score)"
+  "enum(hotness, created)"
+  "enum(i_did, collective, someone_else)"
+  "enum(made_to_order, 2010_2012, 2000_2009, 1993_1999, before_1993, 1990_1992, 1980s, 1970s, 1960s, 1950s, 1940s, 1930s, 1920s, 1910s, 1900s, 1800s, 1700s, before_1700)"
+  "enum(men, women, unisex_adults, teen_boys, teen_girls, teens, boys, girls, children, baby_boys, baby_girls, babies, birds, cats, dogs, pets)"
+  "enum(open, unshipped, unpaid, completed, processing, all)"
+  "enum(up, down)"
+  "epoch"
+  "float"
+  "forum_post"
+  "image"
+  "int"
+  "language"
+  "latitude"
+  "longitude"
+  "region"
+  "shop_id_or_name"
+  "string"
+  "string (length >= 3)"
+  "text"
+  "treasury_description"
+  "treasury_id"
+  "treasury_search_string"
+  "treasury_title"
+  "user_id_or_name")
+
+ --- 
+ Following loop returns the a list of the "GET", "POST", "PUT", and "DELETE" of
+ the API method table. All "POST" "PUT" "DELETE" API methods are marked "private".
+ Here are the counts for each of the http-method types:
+ 72  "GET" (public)
+ 37  "GET" (private)
+ 17  "POST"
+ 11  "PUT"
+ 15  "DELETE"
+
+ (loop 
+   with gets-public  = (make-array 0 :fill-pointer 0)
+   with gets-private = (make-array 0 :fill-pointer 0)
+   with puts         = (make-array 0 :fill-pointer 0)
+   with posts        = (make-array 0 :fill-pointer 0)
+   with deletes      = (make-array 0 :fill-pointer 0)
+   for method in *api-method-table*
+   for http-method = (cdr (assoc :http-method method))
+   for method-name = (cdr (assoc :name method))
+   for visibility  = (cdr (assoc :visibility method))
+   collect (cond ((string= http-method "DELETE")
+                  (vector-push-extend method-name deletes))
+                 ((string= http-method "PUT")
+                  (vector-push-extend method-name puts))
+                 ((string= http-method "POST")
+                  (vector-push-extend method-name posts))
+                 ((string= http-method "GET")
+                  (if (string= visibility "private")
+                      (vector-push-extend method-name gets-private)
+                      (vector-push-extend method-name gets-public))))
+   finally (return (list 
+                    (list "GET-public"  (sort gets-public #'string<))
+                    (list "GET-private" (sort gets-private #'string<))
+                    (list "POST"        (sort posts #'string<))
+                    (list "PUT"         (sort puts #'string<))
+                    (list "DELETE"      (sort deletes #'string<)))))
+ =>
+ (("GET-public" ; 72
+               #("describeOccasionEnum" "describeRecipientEnum" "describeWhenMadeEnum"
+                 "describeWhoMadeEnum" "findAllActiveListingsForFeaturedTreasuryId"
+                 "findAllCountry" "findAllCurrentFeaturedListings" "findAllFeaturedListings"
+                 "findAllFeaturedTreasuries" "findAllFeaturedTreasuriesByOwner"
+                 "findAllFeedbackFromBuyers" "findAllFeedbackFromSellers"
+                 "findAllListingActive" "findAllListingFavoredBy" "findAllListingImages"
+                 "findAllListingShippingInfo" "findAllListingsForFeaturedTreasuryId"
+                 "findAllRegion" "findAllRelatedTags" "findAllShippingTemplateEntries"
+                 "findAllShopListingsActive" "findAllShopListingsFeatured"
+                 "findAllShopSectionListings" "findAllShopSectionListingsActive"
+                 "findAllShopSections" "findAllShops" "findAllSubCategoryChildren"
+                 "findAllTeams" "findAllTeamsForUser" "findAllTopCategory"
+                 "findAllTopCategoryChildren" "findAllTreasuries" "findAllUserFavoredBy"
+                 "findAllUserFavoriteListings" "findAllUserFavoriteUsers"
+                 "findAllUserFeedbackAsAuthor" "findAllUserFeedbackAsBuyer"
+                 "findAllUserFeedbackAsSeller" "findAllUserFeedbackAsSubject"
+                 "findAllUserShops" "findAllUserTreasuries" "findAllUsers"
+                 "findAllUsersForTeam" "findPopularTags" "findSuggestedStyles" "findTeams"
+                 "findTreasuryComments" "findUserFavoriteListings" "findUserFavoriteUsers"
+                 "getAvatarImgSrc" "getCategory" "getCountry" "getFeaturedTreasuryById"
+                 "getImage_Listing" "getListing" "getListingTranslation" "getMethodTable"
+                 "getRegion" "getServerEpoch" "getShippingInfo" "getShippingTemplate"
+                 "getShippingTemplateEntry" "getShop" "getShopSection"
+                 "getShopSectionTranslationShopSection" "getShopTranslation"
+                 "getShopTranslation" "getSubCategory" "getSubSubCategory" "getTreasury"
+                 "getUser" "ping"))
+ ("GET-private" ; 37
+                #("findAllCartListings" "findAllOrderReceipts" "findAllReceiptListings"
+                  "findAllReceiptTransactions" "findAllShopCoupons"
+                  "findAllShopListingsDraft" "findAllShopListingsExpired"
+                  "findAllShopListingsInactive" "findAllShopReceipts"
+                  "findAllShopReceiptsByStatus" "findAllShopTransactions"
+                  "findAllUserAddresses" "findAllUserBuyerReceipts"
+                  "findAllUserBuyerTransactions" "findAllUserCharges" "findAllUserOrders"
+                  "findAllUserPaymentTemplates" "findAllUserPayments"
+                  "findAllUserShippingTemplates" "findCoupon" "findLedger"
+                  "findLedgerEntries" "findPayment" "findPaymentAdjustment"
+                  "findPaymentAdjustmentItem" "findPaymentAdjustmentItem"
+                  "findPaymentAdjustments" "getAllUserCarts" "getOrder" "getPaymentTemplate"
+                  "getReceipt" "getShopListingExpired" "getShopListingInactive"
+                  "getTransaction" "getUserAddress" "getUserBillingOverview" "getUserCart"))
+ ("POST" ; 17
+         #("addToCart" "createCoupon" "createListing" "createPaymentTemplate"
+           "createReceiptOnSandbox" "createShippingInfo" "createShippingTemplate"
+           "createShippingTemplateEntry" "createShopSection" "createTreasury"
+           "createUserAddress" "createUserFavoriteListings" "createUserFavoriteUsers"
+           "postTreasuryComment" "uploadAvatar" "uploadListingImage"
+           "uploadShopBanner"))
+ ("PUT" ;11
+        #("updateCart" "updateCartListingQuantity" "updateCoupon" "updateListing"
+          "updatePaymentTemplate" "updateReceipt" "updateShippingInfo"
+          "updateShippingTemplate" "updateShippingTemplateEntry" "updateShop"
+          "updateShopSection"))
+ ("DELETE" ; 15
+           #("deleteCart" "deleteCoupon" "deleteListing" "deleteListingImage"
+             "deleteShippingInfo" "deleteShippingTemplate" "deleteShippingTemplateEntry"
+             "deleteShopBanner" "deleteShopSection" "deleteTreasury"
+             "deleteTreasuryComment" "deleteUserAddress" "deleteUserFavoriteListings"
+             "deleteUserFavoriteUsers" "removeCartListing")))
 
 
 |#

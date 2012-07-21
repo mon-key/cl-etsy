@@ -120,6 +120,19 @@ enums
  status     "enum(open, unshipped, unpaid, completed, processing, all)"
             "enum(active, invited, pending)"
 
+
+ "enum(active, invited, pending)" ; ``status'' parameter - find-all-users-for-team public GET API method
+ "enum(city, state, country)" ; ``geo-level'' parameter - find-all-listing-active public GET API method
+ "enum(created, price)" ; ``sort-on'' parameter - find-all-shop-section-listings-active public GET
+ "enum(created, price, score)" ; ``sort-on'' parameter - find-all-listing-active public GET - find-all-shop-listings-active parameter public GET
+ "enum(hotness, created)" ; "findAllTreasuries" public GET - find-all-user-treasuries public GET
+ "enum(up, down)" ; `sort-order' parameter - find-all-listing-active public GET - find-all-shop-listings-active public GET
+                 ; find-all-shop-section-listings-active public GET - find-all-treasuries public GET - find-all-user-treasuries public GET
+                 ;  find-all-user-charges private GET - "findAllUserPayments" private GET
+ "enum(active, draft)" ; ``state'' parameter - create-listing of private POST API method
+ "enum(active, inactive, draft)" ; ``state'' parameter - update-listing of private PUT API method
+ "enum(open, unshipped, unpaid, completed, processing, all)" ; ``status'' parameter --find-all-shop-receipts-by-status private GET API method
+
 |#
 (in-package #:cl-etsy)
 

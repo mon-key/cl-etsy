@@ -6,7 +6,7 @@
 
  (URL `http://www.etsy.com/developers/documentation/reference/paramlist')
 
-AFAICT the only resource that has a fields of this type is api-method.
+AFAICT the only resource that has a fields of type param-name are the params and defaults slots of class `api-method'.
 
  params   - An array of method parameters and types.
  defaults - An array of default values for parameters. Parameters that lack a default are required.
