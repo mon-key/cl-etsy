@@ -10,17 +10,40 @@
 API-METHODS
 
  "describeOccasionEnum"
- - Describes the legal values for Listing.occasion.
-
  "describeRecipientEnum"
- - Describes the legal values for Listing.recipient.
-
  "describeWhenMadeEnum
- - Describes the legal values for Listing.when_made.
-
  "describeWhoMadeEnum"
- - Describes the legal values for Listing.who_made.
 
+ --- 
+ Get mapping for their lispy string equivalent to Etsy enums string values:
+
+ (loop 
+   for describe-fun in '(describe-occasion-enum describe-recipient-enum
+                         describe-who-made-enum describe-when-made-enum)
+   for etsy-name = (cdaadr (assoc "results" (funcall describe-fun) :test #'string=))
+   for lisp-name = (map 'list #'symbol-munger:underscores->lisp-name etsy-name)
+   collect (list (symbol-name describe-fun) 
+                 (sort 
+                  (loop
+                    for (lisp . etsy) in (pairlis lisp-name etsy-name)
+                    collect (if (string=  lisp etsy)
+                                (list lisp)
+                                (cons lisp etsy )))
+                  #'string< :key #'car)))
+
+ ---
+ Dump output from above to a csv file
+
+ (with-open-file (elc #P"/<PATH-TO-DUMP/<FILE-NAME>.csv"
+                     :if-exists :supersede
+                     :if-does-not-exist :create
+                     :direction :output) 
+  (format elc "~{~A~%~}"
+          ;; this version dumps the ugly_underscore_variant of the Etsy values
+          ;; (mapcar #'(lambda (x) (if (cdr x) (cdr x) (car x)))
+          ;; this version dumps a pretty-lispy-version instead
+          (mapcar #'car 
+                  '( <KEY-VALUE-CONSES> ))))
 
 |#
 
@@ -63,16 +86,17 @@ Currently only applicable for the following enums:
  (URL `http://www.etsy.com/developers/documentation/reference/listing#section_marketplace_attributes')
  (URL `http://www.etsy.com/developers/documentation/reference/datatype')"))
 
+
+
 ;; :NOTE We need to transform the "values" field of returned results to ``data-type-values''
-;; (caaadr (assoc "results" (describe-occasion-enum) :test #'string=))
+;;  e.g. (caaadr (assoc "results" (describe-occasion-enum) :test #'string=))
 (defun describe-occasion-enum (&key
                                (object-as :alist))
   "Describes the legal values for use as the occasion slot-value of class `listing'.
 Result when non-nil should contain fields which map to the slots of a `data-type' class.
 :EXAMPLE
  (describe-occasion-enum)
-:API-METHOD \"describeOccasionEnum\"
-"
+:API-METHOD \"describeOccasionEnum\""
   (yason:parse 
    (api-call (concatenate 'string 
                           *base-url*
