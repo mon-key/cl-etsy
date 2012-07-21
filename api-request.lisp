@@ -82,7 +82,7 @@ Following errors successfully:
                            :parameters (acons "api_key" *api-key* parameters)
                            :method method
                            :content-type content-type
-                           :force-binary t
+                           ;; :force-binary t
                            ;; :accept "*/*")
                            ;; :accept "application/json")
                            )
@@ -119,54 +119,55 @@ Following errors successfully:
                        response-body)
                   (flexi-streams:octets-to-string response-body))))))
 
-;; :NOTE it looks like some of the return data is not getting html-unescaped we're getting bogus junk
-;; appearing in at least the "sale_message" "bio" and "description" fields.
-;; (URL `http://www.theukwebdesigncompany.com/articles/entity-escape-characters.php')
-(let ((replacements (list (cons  (cl-ppcre:create-scanner "&quot;") "\\\\\"")
-                          (cons  (cl-ppcre:create-scanner "&#39;") "'")
-                          (cons  (cl-ppcre:create-scanner "&gt;") ">")
-                          (cons  (cl-ppcre:create-scanner "&#62;") ">")
-                          (cons  (cl-ppcre:create-scanner "&lt;") "<")
-                          (cons  (cl-ppcre:create-scanner "&#60;") "<")
-                          (cons  (cl-ppcre:create-scanner "\\\\r\\\\n") (princ-to-string #\Newline)))))
-  (defun clean-html-escapes (target)
-    (dolist (i replacements target)
-      (setf target (cl-ppcre:regex-replace-all (car i) target (cdr i))))))
 
+(defun %parsed-api-call-values (parsed-response object-as)
+  (declare (parsed-object-type object-as))
+  (ecase object-as
+    (:alist 
+     (values
+      (cdr (assoc :results    parsed-response))
+      (cdr (assoc :count      parsed-response))
+      (cdr (assoc :type       parsed-response))
+      (cdr (assoc :params     parsed-response))
+      (cdr (assoc :pagination parsed-response))))
+    (:plist
+     (values
+      (getf parsed-response :results)   
+      (getf parsed-response :count)
+      (getf parsed-response :type)   
+      (getf parsed-response :params)  
+      (getf parsed-response :pagination)))
+    (:hash-table
+     (values
+      (gethash :results    parsed-response)
+      (gethash :count      parsed-response)
+      (gethash :type       parsed-response)
+      (gethash :params     parsed-response)
+      (gethash :pagination parsed-response)))))
 
-#|
+(defun parsed-api-call (url &key (parameters nil) 
+                                 (method :get)
+                                 (content-type "application/json")
+                                 (object-key-fn yason:*parse-object-key-fn*)
+                                 (return-values t)
+                                 (object-as yason:*parse-object-as*)
+                                 (json-arrays-as-vectors yason:*parse-json-arrays-as-vectors*)
+                                 (json-booleans-as-symbols yason:*parse-json-booleans-as-symbols*))
+  "Request JSON data from resource at URL returning results as if by `yason:parse'.
+URL is a URL to request a resource from. 
+Keyword PARAMETERS is a list conses for `api-call'.
+Keyword METHOD is a REST method one of: :get :put :post :delete
+Keyword OBJECT-AS is one of :hash-table :plist :alist. Default is dynamic value of `yason:*parse-object-as*'.
+Keyword RETURN-VALUES is a boolean indicating whether to return the parsed response object as cl:values. 
+When T (the default) return 5 values forms as follows:
+ nth-value 0 is :results portion of response
+ nth-value 1 is :count portion of response
+ nth-value 2 is :type portion of response
+ nth-value 3 is :params portion of response
+ nth-value 4 is :pagination portion of response
+When null return a single value as a list.
+keyword object-key-fn is a function is as per `yason:parse'. Default is dynamic value of `yason:*parse-object-key-fn*'.
 
-
- (etsy-environment)
-
- (set-etsy-environment :endpoint-type :sandbox)
-
- (set-etsy-environment :endpoint-type :production)
-
-
- ---
-
- (defmacro with-api-call ((&rest url-bits) &rest optional-parameters)
-   `(let ((cgi-args (list (cons "api_key" cl-etsy:*api-key*))))
-      ,@(loop
-          for (name type) in optional-parameters
-          collect `(when ,name
-                     (parameter-type-check ,type ,name)
-                     (push (cons ,(lisp-to-cgi name) (marshall-type ,type ,name))
-                           cgi-args)))
-      (api-call (concatenate 'string *base-url* ,@url-bits) cgi-args)))
-
-
-
- (defun parsed-api-call (url &key (parameters nil) 
-                                  (method :get)
-                                  (content-type "application/json")
-                                  (object-key-fn yason:*parse-object-key-fn*)
-                                  (object-as yason:*parse-object-as*)
-                                  (json-arrays-as-vectors yason:*parse-json-arrays-as-vectors*)
-                                  (json-booleans-as-symbols yason:*parse-json-booleans-as-symbols*))
-   "keyword OBJECT-AS is one of :hash-table :plist :alist. Default is dynamic value of `yason:*parse-object-as*'.
- getUser
  \(parsed-api-call \(concatenate 'string *base-url* \"/\" \"users\" \"/\" \"12981664\"\)
                   :object-as :alist\)
 
@@ -191,17 +192,45 @@ Following errors successfully:
                  :object-as :alist\)
 
 "
-   (declare (parsed-object-type object-as)
-            (boolean json-arrays-as-vectors json-booleans-as-symbols))
-   (yason::parse
-    (api-call url
-              :parameters parameters 
-              :method  method 
-              :content-type content-type)
-    :object-key-fn object-key-fn
-    :object-as object-as
-    :json-arrays-as-vectors json-arrays-as-vectors
-    :json-booleans-as-symbols json-booleans-as-symbols) )
+  (declare (parsed-object-type object-as)
+           (boolean return-values json-arrays-as-vectors json-booleans-as-symbols))
+  (let ((parsed-response 
+          (yason::parse
+           (api-call url
+                     :parameters parameters 
+                     :method  method 
+                     :content-type content-type)
+           :object-key-fn object-key-fn
+           :object-as object-as
+           :json-arrays-as-vectors json-arrays-as-vectors
+           :json-booleans-as-symbols json-booleans-as-symbols)))
+    (if (null return-values)  
+        parsed-response
+        (%parsed-api-call-values parsed-response object-as))))
+
+#|
+
+
+ (etsy-environment)
+ (set-etsy-environment :endpoint-type :sandbox)
+ (set-etsy-environment :endpoint-type :production)
+
+
+ ---
+
+ (defmacro with-api-call ((&rest url-bits) &rest optional-parameters)
+   `(let ((cgi-args (list (cons "api_key" cl-etsy:*api-key*))))
+      ,@(loop
+          for (name type) in optional-parameters
+          collect `(when ,name
+                     (parameter-type-check ,type ,name)
+                     (push (cons ,(lisp-to-cgi name) (marshall-type ,type ,name))
+                           cgi-args)))
+      (api-call (concatenate 'string *base-url* ,@url-bits) cgi-args)))
+
+
+
+ 
 
 |#
 
