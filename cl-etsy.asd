@@ -12,6 +12,7 @@
   :licence "MIT"
   :depends-on (#:cl-ppcre
                #:symbol-munger
+               #:split-sequence
                #:drakma
                #:cl-oauth
                ;; #:flexi-streams see `api-call'
