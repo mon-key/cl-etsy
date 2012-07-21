@@ -36,7 +36,7 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The method's descriptive name.")
+    :documentation "The Etsy API method's descriptive name.")
 
    (uri
     :initarg :uri
@@ -44,8 +44,8 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The method's URI pattern.
-Parameters are marked with a leading colon.")
+    :documentation "The Etsy API method's URI pattern.
+Embedded parameters are marked with a leading colon.")
 
    (params
     :initarg :params
@@ -53,7 +53,7 @@ Parameters are marked with a leading colon.")
     ;; :visibility public
     ;; :perm-scope none
     ;; :type ParamList
-    :documentation "An array of method parameters and types.")
+    :documentation "An associative array of Etsy API method parameters and their types.")
 
    (defaults
     :initarg :defaults
@@ -61,8 +61,13 @@ Parameters are marked with a leading colon.")
     ;; :visibility public
     ;; :perm-scope none
     ;; :type ParamList
-    :documentation "An array of default values for parameters.
-Parameters that lack a default are required.")
+    :documentation "An associative array of defaulting values (if any) for the parameters of an Etsy API method.
+Parameters that lack a default are required.
+:NOTE Although, the docs claim non-defaulted parameters are required this does
+not appear to hold for the \"standard parameters\" ``limit'', ``offset'', and ``page''.
+ (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_standard_parameters')
+ (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_pagination')")
+
 
    (type
     :initarg :type
@@ -70,7 +75,7 @@ Parameters that lack a default are required.")
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The resource type returned by the method.")
+    :documentation "The resource type returned by the Etsy API method call.")
 
    (visibility
     :initarg :visibility
@@ -78,9 +83,9 @@ Parameters that lack a default are required.")
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The method's visibility level. Either public or private.
+    :documentation "The Etsy API method's visibility level. Either public or private.
 This is presented as \"Requires Oauth\" in the \"Methods\" section of the web documentation of a resource.
-Methods marked \"private\" require Oauth-1 authentication and may be entailed by a permission-scope.")
+Methods marked \"private\" may be entailed by a permission-scope and require Oauth-1 authentication.")
 
    ;; http_method
    (http-method
@@ -89,7 +94,7 @@ Methods marked \"private\" require Oauth-1 authentication and may be entailed by
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The HTTP method used to call the API method.
+    :documentation "The HTTP method used when making an Etsy API method call.
 
 RESTful APIs use standard HTTP methods to denote actions against a resource:
 
@@ -97,6 +102,15 @@ RESTful APIs use standard HTTP methods to denote actions against a resource:
     POST   - Create a new resource. Returns HTTP 201 on success.
     PUT    - Update a resource. Returns HTTP 200 on success.
     DELETE - Delete a resource. Returns HTTP 200 on success.
+
+Of these four standard HTTP methods, the Etsy API only exposes GET API methods with public visibility.
+As of 2012-07-21 following are counts of public and private Etsy API methods:
+ public    private    
+ -------   -------    
+ GET 72    GET    37  
+           POST   17  
+           PUT    11  
+           DELETE 15  
 
  (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_http_methods')"))
  
@@ -106,6 +120,32 @@ RESTful APIs use standard HTTP methods to denote actions against a resource:
   (:documentation "A method call from the Etsy API.
  (URL `http://www.etsy.com/developers/documentation/reference/apimethod')"))
 
+;; 
+(defun get-method-table (&key
+                         (object-as :alist)
+                         (object-key-fn #'api-response-string-to-symbol-lookup)
+                         )
+  "Return a yason:parsed object representing all Etsy API methods currently exposed.
+:API-METHOD \"getMethodTable\""
+  (declare (parsed-object-type object-as))
+  (yason:parse 
+   (api-call (concatenate 'string 
+                          *base-url* "/"))
+   :object-as object-as
+   :object-key-fn object-key-fn))
+
+#|
+
+ ((:NAME        . "getMethodTable")
+  (:DESCRIPTION . "Get a list of all methods available.")
+  (:URI         . "/")
+  (:PARAMS)
+  (:DEFAULTS)
+  (:TYPE         . "ApiMethod")
+  (:VISIBILITY   . "public")
+  (:HTTP-METHOD  . "GET"))
+
+|#
 
 ;;; ==============================
 ;;; EOF
