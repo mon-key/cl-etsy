@@ -15,6 +15,7 @@ these standard types:
 string
 "Any string (up to 255 characters)."
 
+; deftype exists
 int
 "A whole number value."
 
@@ -90,12 +91,15 @@ longitude
 image
 "An image file; see Uploading Images"
 
+; deftype exists
 region
 "An ISO 3166-1 alpha 2 country code. Currently supported values: US, CA, AU, GB, DE, FR, NL"
 
+; deftype exists
 currency
 "A 3-letter ISO 4217 code."
 
+; deftype exists
 language
 "An IETF language code. Currently supported values: en, de, fr"
 

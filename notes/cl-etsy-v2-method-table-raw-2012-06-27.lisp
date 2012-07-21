@@ -467,7 +467,11 @@ UserAddress
  ;; (api-call "http://openapi.etsy.com/v2/"
  ;;           `(("api_key" . ,*API-KEY*)))
 
-((:COUNT . 152)
+(defparameter *api-method-table* 
+(cdr
+(assoc :results
+
+'((:COUNT . 152)
  (:RESULTS
   ((:NAME        . "getMethodTable")
    (:DESCRIPTION . "Get a list of all methods available.")
@@ -2667,10 +2671,82 @@ UserAddress
  (:PARAMS)
  (:TYPE         . "ApiMethod")
  (:PAGINATION))
-NIL
+)))
+
+
+;; The 43 distinct types (or 152 total) returned by the etsy API methods:
+;; (loop 
+;;   for method in *api-method-table*
+;;   collect (cdr (assoc :type method)) into types
+;;   finally (return (sort (delete-duplicates types :test #'string=) #'string<)))
+;;
+;; => ("ApiMethod" "Avatar" "BillCharge" "BillPayment" "BillingOverview" "Cart"
+;;     "Category" "Country" "Coupon" "DataType" "FavoriteListing" "FavoriteUser"
+;;     "FeaturedTreasury" "Feedback" "ForumPost" "Int" "Ledger" "LedgerEntry"
+;;     "Listing" "ListingImage" "ListingTranslation" "Order" "Payment"
+;;     "PaymentAdjustment" "PaymentAdjustmentItem" "PaymentTemplate" "Receipt"
+;;     "Region" "ShippingInfo" "ShippingTemplate" "ShippingTemplateEntry" "Shop"
+;;     "ShopSection" "ShopSectionTranslation" "ShopTranslation" "String" "Style"
+;;     "Tag" "Team" "Transaction" "Treasury" "User" "UserAddress")
+;;
+
+;; the 41 unique types specified in the :PARAMS of the API methods:
+;; (loop 
+;;   for method in *api-method-table*
+;;   for params = (cdr (assoc :params method))
+;;   for param-types = (and params 
+;;                          (loop 
+;;                            for (param . type) in params
+;;                            when type collect type into types
+;;                            finally (return (delete-duplicates types :test #'string=))))
+;;   nconcing param-types into gthr
+;;   finally (return (sort (delete-duplicates gthr :test #'string=) #'string<)))
+;;
+;; ("array(int)"
+;;  "array(shop_id_or_name)"
+;;  "array(string)"
+;;  "array(team_id_or_name)"
+;;  "array(user_id_or_name)"
+;;  "boolean"
+;;  "cart_id"
+;;  "category"
+;;  "color_triplet"
+;;  "color_wiggle"
+;;  "enum(active, draft)"
+;;  "enum(active, inactive, draft)"
+;;  "enum(active, invited, pending)"
+;;  "enum(anniversary, baptism, bar_or_bat_mitzvah, birthday, canada_day, chinese_new_year, cinco_de_mayo, confirmation, christmas, day_of_the_dead, easter, eid, engagement, fathers_day, get_well, graduation, halloween, hanukkah, housewarming, kwanza, prom, july_4th, mothers_day, new_baby, new_years, quinceanera, retirement, st_patricks_day, sweet_16, sympathy, thanksgiving, valentines, wedding)"
+;;  "enum(city, state, country)"
+;;  "enum(created, price)"
+;;  "enum(created, price, score)"
+;;  "enum(hotness, created)"
+;;  "enum(i_did, collective, someone_else)"
+;;  "enum(made_to_order, 2010_2012, 2000_2009, 1993_1999, before_1993, 1990_1992, 1980s, 1970s, 1960s, 1950s, 1940s, 1930s, 1920s, 1910s, 1900s, 1800s, 1700s, before_1700)"
+;;  "enum(men, women, unisex_adults, teen_boys, teen_girls, teens, boys, girls, children, baby_boys, baby_girls, babies, birds, cats, dogs, pets)"
+;;  "enum(open, unshipped, unpaid, completed, processing, all)"
+;;  "enum(up, down)"
+;;  "epoch"
+;;  "float"
+;;  "forum_post"
+;;  "image"
+;;  "int"
+;;  "language"
+;;  "latitude"
+;;  "longitude"
+;;  "region"
+;;  "shop_id_or_name"
+;;  "string"
+;;  "string (length >= 3)"
+;;  "text"
+;;  "treasury_description"
+;;  "treasury_id"
+;;  "treasury_search_string"
+;;  "treasury_title"
+;;  "user_id_or_name")
 
 
 #|
+
 
  ;; v1 "method" wants v2 "ApiMethod"
  (demarshall-results

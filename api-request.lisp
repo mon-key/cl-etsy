@@ -48,26 +48,6 @@
 
 (in-package #:cl-etsy)
 
-(deftype api-request-offset-range ()
-  "The valid integer range for the OFFSET parameter of an Etsy API call.
-:SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_pagination')"
-  '(mod 50001))
-
-(deftype api-request-limit-range ()
-"The valid integer range for the LIMIT parameter of an Etsy API call.
-:SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_pagination')"
-  '(integer 1 100))
-
-(deftype api-request-page-range ()
-"The valid integer range for the PAGE parameter of an Etsy API call.
-:SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_pagination')"
-  '(integer 1 2001))
-
-(deftype parsed-object-type ()
-  "The valid parameter values for yason :object-as keywords 
-`yason:*parse-object-as*'"
-  '(member :hash-table :plist :alist))
-
 ;; :TODO api-call should leverage cl-oauth:access-protected-resource when accessing :private resources
 (defun api-call (url &key (parameters nil)
                           (method :get)
