@@ -119,38 +119,45 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "One of active, removed, sold_out, expired, alchemy, edit, create, private, or unavailable.
-A state may be editable or non-editable. A state may be reneable or non-renewable.
+    :documentation "The current status state of a listing.
+A listings statsu may be one of:
+ active removed sold_out expired edit private unavailable alchemy create
 
-  active   - The listing is currently for sale - editable renewable
-  removed  - The Listing has been removed by its owner. non-editable non-renewable
-  sold_out - The Listing has sold out.
-             *Sold out listings may be edited, but active=true will only be
-             honored if renew=true is aso passed. Users will be billed for this
-             action. Otherwise, the listing will remain in the expired
-             state. Note that when editing a sold out listing, you will need to
-             update the quantity to a value greater than zero. - editable
-             renewable
+A state may be editable or non-editable. 
+A state may be renewable or non-renewable.
+
+ active   - The listing is currently for sale.
+            - editable renewable
+ removed  - The Listing has been removed by its owner.
+            - non-editable non-renewable
+ sold_out - The Listing has sold out.
+            *Sold out listings may be edited, but active=true will only be
+            honored if renew=true is aso passed. Users will be billed for this
+            action. Otherwise, the listing will remain in the expired
+            state. Note that when editing a sold out listing, you will need to
+            update the quantity to a value greater than zero.
+            - editable renewable
  expired - The Listing has expired.
            **Expired listings can be edited, but active=true will only be
              honored if renew=true is also passed. Users will be billed for this
-             action. Otherwise, the listing will remain in the expired state. -
-             editable renewable
- alchemy - Deprecated; please ignore.
+             action. Otherwise, the listing will remain in the expired state. 
+             - editable renewable
+
  edit    - The Listing is inactive. \(For legacy reasons, this displays as \"edit\".\)
-           non-editable non-renewable
+           - non-editable non-renewable
  draft   - Draft listings are listings that have been saved prior to their first
            activation. The API can create draft listings, and also make draft listings
            active, but note that a listing in any other state cannot be moved to draft,
            nor can a draft listing be moved to any state other than active.
-           non-editable non-renewable
-
- create  - Deprecated. The Listing is currently being edited by the owner (as
-           part of the initial Listing creation.)
- private - The owner of the Listing has requested that it not appear in API results.m
-           non-editable non-renewable
+           - non-editable non-renewable
+ private - The owner of the Listing has requested that it not appear in API results.
+           - non-editable non-renewable
  unavailable - The Listing has been removed by Etsy admin for unspecified reasons.
-               non-editable non-renewable")
+               - non-editable non-renewable
+ alchemy - [DEPRECATED] Please ignore.
+ create  - [DEPRECATED] The Listing is currently being edited by the owner as
+           part of the initial Listing creation.
+:SEE-ALSO the enum for ``state'' parameter of private POST API method \"createListing\".")
 
    ;; user_id
    (user-id
@@ -256,7 +263,6 @@ A state may be editable or non-editable. A state may be reneable or non-renewabl
     :documentation "A list of tags for the item. 
 :NOTE As of 2012-07-19 a listing may have up to 13 tags.")
 
-
    ;; category_path
    (category-path
     :initarg :category-path
@@ -282,7 +288,7 @@ A state may be editable or non-editable. A state may be reneable or non-renewabl
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The numeric ID of the shop section for this listing, can be null")
+    :documentation "The numeric ID of the shop section for this listing, may be null.")
 
    ;; featured_rank
    (featured-rank
@@ -350,7 +356,7 @@ A state may be editable or non-editable. A state may be reneable or non-renewabl
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The number of times the listing has been viewed on Etsy.com (does not include API views).")
+    :documentation "The number of times the listing has been viewed on Etsy.com (excluding API views).")
 
    ;; num_favorers
    (num-favorers
@@ -368,7 +374,8 @@ A state may be editable or non-editable. A state may be reneable or non-renewabl
     ;; :visibility public
     ;; :perm-scope none
     ;; :type enum(i_did, collective, someone_else)
-    :documentation "Who made the item being listed.")
+    :documentation "Who made the item being listed.
+:SEE-ALSO \"describeWhoMadeEnum\" API method.")
 
    ;; is_supply
    (is-supply
@@ -386,7 +393,8 @@ A state may be editable or non-editable. A state may be reneable or non-renewabl
     ;; :visibility public
     ;; :perm-scope none
     ;; :type enum(made_to_order, 2010_2012, 2000_2009, 1993_1999, before_1993, 1990_1992, 1980s, 1970s, 1960s, 1950s, 1940s, 1930s, 1920s, 1910s, 1900s, 1800s, 1700s, before_1700)
-    :documentation "When was the item made.")
+    :documentation "When was the item made.
+:SEE-ALSO \"describeWhenMadeEnum\" API method.")
 
    (recipient
     :initarg :recipient
@@ -394,7 +402,8 @@ A state may be editable or non-editable. A state may be reneable or non-renewabl
     ;; :visibility public
     ;; :perm-scope none
     ;; :type enum(men, women, unisex_adults, teen_boys, teen_girls, teens, boys, girls, children, baby_boys, baby_girls, babies, birds, cats, dogs, pets)
-    :documentation "Who is this listing for.")
+    :documentation "Who is this listing for.
+:SEE-ALSO \"describeRecipientEnum\" API method.")
 
    (occasion
     :initarg :occasion
@@ -402,7 +411,8 @@ A state may be editable or non-editable. A state may be reneable or non-renewabl
     ;; :visibility public
     ;; :perm-scope none
     ;; :type enum(anniversary, baptism, bar_or_bat_mitzvah, birthday, canada_day, chinese_new_year, cinco_de_mayo, confirmation, christmas, day_of_the_dead, easter, eid, engagement, fathers_day, get_well, graduation, halloween, hanukkah, housewarming, kwanza, prom, july_4th, mothers_day, new_baby, new_years, quinceanera, retirement, st_patricks_day, sweet_16, sympathy, thanksgiving, valentines, wedding)
-    :documentation "What is the occasion for this listing.")
+    :documentation "What is the occasion for this listing.
+:SEE-ALSO \"describeOccasionEnum\" API method.")
 
    (style
     :initarg :style
@@ -449,7 +459,8 @@ Result when non-nil should contain fields which map to the slots of class `listi
                                                           featured-treasury-id
                                                           (object-as :alist))
   "Finds all active listings for a certain FeaturedTreasury.
-Result when non-nil should contain fields which map to the slots of class `listing'."
+Result when non-nil should contain fields which map to the slots of class `listing'.
+:API-METHOD \"findAllActiveListingsForFeaturedTreasuryId\""
   (declare (parsed-object-type object-as))
   (assert (int-or-int-string-p featured-treasury-id))
   (yason:parse 
@@ -467,7 +478,8 @@ Result when non-nil should contain fields which map to the slots of class `listi
                                    (limit 25)
                                    (offset 0))
   "Finds all FeaturedTreasury listings.
-Result when non-nil should contain fields which map to the slots of class `listing'."
+Result when non-nil should contain fields which map to the slots of class `listing'.
+:API-METHOD \"findAllFeaturedListings\""
   (declare (api-request-offset-range offset)
            (api-request-limit-range limit)
            (parsed-object-type object-as))
@@ -484,7 +496,8 @@ Result when non-nil should contain fields which map to the slots of class `listi
 (defun find-all-current-featured-listings (&key
                                            (region "US")
                                            (object-as :alist))
-  "Finds FeaturedTreasury listings that are currently displayed on a regional homepage."
+  "Finds FeaturedTreasury listings that are currently displayed on a regional homepage.
+:API-METHOD \"findAllCurrentFeaturedListings\""
   (declare ;; (string region)
    (parsed-object-type object-as))
   (yason:parse 
@@ -502,7 +515,8 @@ Result when non-nil should contain fields which map to the slots of class `listi
                     (object-as :alist))
   "Retrieve a listing by listing-id.
 Value of keyword arg LISTING-ID should be of type `int-or-int-string'.
-Result when non-nil should contain fields which map to the slots of class `listing'."
+Result when non-nil should contain fields which map to the slots of class `listing'.
+:API-METHOD \"getListing\""
   (declare (parsed-object-type object-as)
            (int-or-int-string listing-id))
   (yason:parse 
