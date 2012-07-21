@@ -110,7 +110,7 @@ Result when non-nil should contain fields which map to the slots of a `data-type
    :object-as object-as))
 
 ;; "describeWhoMadeEnum" 
-(defund describe-who-made-enum (&key
+(defun describe-who-made-enum (&key
                                 (object-as :alist))
   "Describes the legal values for use as the who-made slot-value of class `listing'.
 Result when non-nil should contain fields which map to the slots of a `data-type' class.
