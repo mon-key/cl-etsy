@@ -128,11 +128,13 @@ As of 2012-07-21 following are counts of public and private Etsy API methods:
   "Return a yason:parsed object representing all Etsy API methods currently exposed.
 :API-METHOD \"getMethodTable\""
   (declare (parsed-object-type object-as))
-  (yason:parse 
-   (api-call (concatenate 'string 
-                          *base-url* "/"))
-   :object-as object-as
-   :object-key-fn object-key-fn))
+  ;; (yason:parse 
+  ;;  (api-call (concatenate 'string *base-url* "/"))
+  ;;  :object-as object-as
+  ;;  :object-key-fn object-key-fn)
+  (parsed-api-call (concatenate 'string *base-url* "/")
+                   :object-as object-as
+                   :object-key-fn object-key-fn))
 
 #|
 

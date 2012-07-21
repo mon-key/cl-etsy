@@ -42,6 +42,19 @@
    #'symbol-munger:underscores->keyword)
   )
 
+;; :NOTE it looks like some of the return data is not getting html-unescaped we're getting bogus junk
+;; appearing in at least the "sale_message" "bio" and "description" fields.
+;; (URL `http://www.theukwebdesigncompany.com/articles/entity-escape-characters.php')
+(let ((replacements (list (cons  (cl-ppcre:create-scanner "&quot;") "\\\\\"")
+                          (cons  (cl-ppcre:create-scanner "&#39;") "'")
+                          (cons  (cl-ppcre:create-scanner "&gt;") ">")
+                          (cons  (cl-ppcre:create-scanner "&#62;") ">")
+                          (cons  (cl-ppcre:create-scanner "&lt;") "<")
+                          (cons  (cl-ppcre:create-scanner "&#60;") "<")
+                          (cons  (cl-ppcre:create-scanner "\\\\r\\\\n") (princ-to-string #\Newline)))))
+  (defun clean-html-escapes (target)
+    (dolist (i replacements target)
+      (setf target (cl-ppcre:regex-replace-all (car i) target (cdr i))))))
 
 ;; Following may change as/when we begin incorporationg magic for converting
 ;; keys of responses values from string -> symbols/keywords
