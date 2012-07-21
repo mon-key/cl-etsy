@@ -27,6 +27,7 @@
                (:file "authorize")
                (:file "request-timer")
                (:file "api-request")
+               (:file "api-response")
                (:module "api-class"
                 :components (
                              (:file "etsy-types")

@@ -2,15 +2,22 @@
 ;;; :FILE #P"cl-etsy/utils.lisp"
 ;;; ==============================
 
+#|
+
+|#
+
 (in-package #:cl-etsy)
 
 (deftype api-request-offset-range ()
   "The valid integer range for the OFFSET parameter of an Etsy API call.
+Indicates to skip the first N records before returning results of API call. 
+May be combined with api-request-limit-range for pagination.
 :SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_pagination')"
   '(mod 50001))
 
 (deftype api-request-limit-range ()
 "The valid integer range for the LIMIT parameter of an Etsy API call.
+Indicates the maximum number of records to return.
 :SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_pagination')"
   '(integer 1 100))
 
@@ -18,6 +25,15 @@
 "The valid integer range for the PAGE parameter of an Etsy API call.
 :SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_pagination')"
   '(integer 1 2001))
+
+(deftype api-request-visibility ()
+  "The lispy version of an Etsy API method's visibility level is either :public or :private.
+This is presented as \"Requires Oauth\" in the \"Methods\" section of the web documentation of a resource.
+Methods marked \"private\" may be entailed by a permission-scope and require Oauth-1 authentication.
+:SEE-ALSO `api-method-public-p'."
+  (and (typep :private 'api-request-visibility)
+       (null (typep nil 'api-request-visibility)))
+  '(member :private :public))
 
 (deftype parsed-object-type ()
   "The valid parameter values for yason :object-as keywords 
@@ -130,29 +146,6 @@ For the sake of completeness we define all ISO-3166-1 ALPHA-2 codes.
       int-or-int-string
       (int-to-int-string int-or-int-string)))
 
-;; (split-uri-component-on-embedded-parameter "/shops/:shop_id/sections/:shop_section_id/listings/active")
-;; (split-uri-component-on-embedded-parameter "/shops/sections/listings/active")
-(defun split-uri-component-on-embedded-parameter (uri-component)
-  (declare (string uri-component))
-  (flet ((char-colonp (x)
-           (declare (character x))
-           (char= x #\:)))
-    (values
-     (and (some #'char-colonp uri-component)
-          (loop 
-            for component in (split-sequence:split-sequence  #\/ uri-component :remove-empty-subseqs t)
-            collect (if (char= (char component 0) #\:)
-                        (string-upcase (symbol-munger:underscores->lisp-name (subseq component 1)))
-                        component)))
-     uri-component)))
-
-(defun api-method-public-p (api-method-alist)
-  (equal (cdr (assoc :visibility api-method-alist)) "public"))
-
-(defun api-method-name-to-lisp-name (api-method-alist)
-  (symbol-munger:camel-case->lisp-name 
-   (cdr (assoc :name api-method-alist))))
-
 (defun id-or-name-for-etsy (int-or-string)
   "Convert int-or-string (an int or string) to an Etsy representation."
   (declare (int-or-string int-or-string))
@@ -186,7 +179,6 @@ Relavant for (at least) the following Etsy parameter types:
       for ensured = (id-or-name-for-etsy int-or-int-string)
       collect ensured into gthr
       finally (return (format nil "~{~A~^,~}" gthr)))))
-
 
 ;;; ==============================
 ;;; EOF

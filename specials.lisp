@@ -262,5 +262,12 @@ KEY and SECRET keyword arguments of `cl-oauth:make-consumer-token'.
     do (setf (gethash code ht) country)
     finally (return ht)))
 
+(defparameter *api-response-string-symbol-hash-for-object-key-fn* (make-hash-table :test #'equal)
+  "Hash-table mapping Etsy API strings to Lispy symbols/keywords.
+:EXAMPLE
+ \(gethash \"type\" *api-response-string-symbol-hash-for-object-key-fn*\)
+ \(gethash :type *api-response-string-symbol-hash-for-object-key-fn*\)")
+
+
 ;;; ==============================
 ;;; EOF
