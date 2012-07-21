@@ -6,19 +6,36 @@
 
 ;; :SOURCE Ben Hyde's egleis/base.lisp :WAS `etsy-epoch->text'
 (defun epoch-to-timestring (value)
+  "
+:EXAMPLE
+ (epoch-to-timestring 1342731989)"
   (setf value (round value))
   (incf value 2209006800) ;; convert to universal time
   (multiple-value-bind (second minute hour date month year)
       (decode-universal-time value)
     (format nil "~D/~D/~D ~D:~D:~D" year month date  hour minute second)))
 
-;; (epoch-to-timestring 1342731989)
+
+;; (epoch-to-timestring (cadr (assoc "results" (get-server-epoch) :test #'equal)))
+(defun get-server-epoch ()
+    "
+:EXAMPLE 
+ (get-server-epoch)
+:API-METHOD \"getServerEpoch\""
+  (yason:parse 
+   (api-call (concatenate 'string *base-url* "/server/epoch"))
+   :object-as :alist))
+
+(defun ping ()
+  "
+:EXAMPLE 
+ \(ping\)
+:API-METHOD \"ping\""
+  (yason:parse 
+   (api-call (concatenate 'string *base-url* "/server/ping"))
+   :object-as :alist))
 
 #|
-
-  | "getServerEpoch"
-  | (yason:parse (api-call (concatenate 'string *base-url* "/server/epoch")) :object-as :alist)
-  | => (("pagination") ("type" . "Int") ("params") ("results" 1342731989) ("count" . 1))
 
    ((:NAME        . "getServerEpoch")
     (:DESCRIPTION . "Get server time, in epoch seconds notation.")
@@ -29,18 +46,14 @@
     (:VISIBILITY   . "public")
     (:HTTP-METHOD  . "GET"))
 
-  | "ping"
-  | (yason:parse (api-call (concatenate 'string *base-url* "/server/ping")) :object-as :alist)
-  | => (("pagination") ("type" . "String") ("params") ("results" "pong") ("count" . 1))
-
-  ((:NAME        . "ping")
-   (:DESCRIPTION . "Check that the server is alive.")
-   (:URI         . "/server/ping")
-   (:PARAMS)
-   (:DEFAULTS)
-   (:TYPE         . "String")
-   (:VISIBILITY   . "public")
-   (:HTTP-METHOD  . "GET"))
+   ((:NAME        . "ping")
+    (:DESCRIPTION . "Check that the server is alive.")
+    (:URI         . "/server/ping")
+    (:PARAMS)
+    (:DEFAULTS)
+    (:TYPE         . "String")
+    (:VISIBILITY   . "public")
+    (:HTTP-METHOD  . "GET"))
 
 |#
 
