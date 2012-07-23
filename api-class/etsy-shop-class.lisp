@@ -409,7 +409,6 @@ API-METHODS
   (:documentation "Represents a shop with listings for sale.  Each shop is owned by one user.
  (URL `http://www.etsy.com/developers/documentation/reference/shop')"))
 
-
 #|
  
  ((:NAME        . "findAllShops")
@@ -513,7 +512,7 @@ API-METHODS
   (:TYPE         . "Shop")
   (:VISIBILITY   . "public")
   (:HTTP-METHOD . "GET"))
-
+ 
 |#
 
 ;;; ==============================

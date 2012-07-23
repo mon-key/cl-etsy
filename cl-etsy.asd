@@ -60,6 +60,7 @@
                              (:file "etsy-listing-translation-class")
                              (:file "etsy-order-class")
                              (:file "etsy-param-list-class")
+                             (:file "etsy-payment-class.lisp")
                              (:file "etsy-payment-template-class")
                              (:file "etsy-receipt-class")
                              (:file "etsy-region-class")

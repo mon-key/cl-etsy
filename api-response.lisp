@@ -98,6 +98,7 @@
   ;; (substitute "url_570xN" "url_570xn" (api-class-slot-names-as-underscored-strings 'listing-image) :test #'string=)
   ;; (api-class-slot-names-as-underscored-strings 'listing-translation)
   ;; (api-class-slot-names-as-underscored-strings 'order)
+  ;; (api-class-slot-names-as-underscored-strings 'payment)
   ;; (api-class-slot-names-as-underscored-strings 'payment-template)
   ;; (api-class-slot-names-as-underscored-strings 'receipt)
   ;; (api-class-slot-names-as-underscored-strings 'region)

@@ -109,7 +109,7 @@ The higher the sequence, the more recent the entry.")
     ;; :visibility private
     ;; :perm-scope transactions_r
     ;; :type int
-    :documentation "The date and time the ledger entry was created in Epoch seconds."))
+    :documentation "The date and time the ledger entry was created in Epoch seconds.")))
 
   ;; (:default-initargs 
   ;;  :ledger-entry-id nil :ledger-id nil :sequence nil :credit-amount nil
