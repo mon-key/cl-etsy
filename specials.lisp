@@ -262,7 +262,7 @@ KEY and SECRET keyword arguments of `cl-oauth:make-consumer-token'.
     do (setf (gethash code ht) country)
     finally (return ht)))
 
-(defparameter *api-classes-and-slots* 
+(defparameter *api-classes-and-slots*
   '((api-method
      (name uri params defaults type http-method visibility))
 

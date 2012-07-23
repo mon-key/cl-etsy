@@ -1,8 +1,14 @@
 ;;; :FILE-CREATED <Timestamp: #{2012-07-23T18:02:08-04:00Z}#{12301} - by MON>
-;;; :FILE /home/sp/HG-Repos/CL-repo-HG/CL-MON-CODE/cl-etsy/api-mappings.lisp
+;;; :FILE #P"/cl-etsy/api-mappings.lisp"
 ;;; ==============================
 
- (defun %api-class-slot-freqs (seq &key (test #'eql) (key #'identity))
+#|
+
+|#
+
+(in-package #:cl-etsy)
+
+(defun %api-class-slot-freqs (seq &key (test #'eql) (key #'identity))
    (declare (sequence seq)
             (cl:type (function (t t) t) test)
             (cl:type (function (t) t) key)
