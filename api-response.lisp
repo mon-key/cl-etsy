@@ -2,6 +2,29 @@
 ;;; :FILE cl-etsy/api-response.lisp
 ;;; ==============================
 
+(in-package #:cl-etsy)
+
+(defun ensure-api-class-finalized (class)
+  ;; By default cl:find-class errors when class does not exist.
+  (let ((found-class (find-class class)))
+    (if (closer-mop:class-finalized-p found-class)
+        found-class
+        (closer-mop:ensure-finalized found-class))))
+
+(defun api-class-direct-slot-definition-names (class)
+  ;; 
+  (map 'list #'closer-mop:slot-definition-name
+       (closer-mop:class-direct-slots (ensure-api-class-finalized class))))
+
+(defun api-class-slot-names-as-lispy-strings (class)
+  ;; (api-class-slot-names-as-lispy-strings 'api-method)
+  (map 'list #'string
+       (api-class-direct-slot-definition-names class)))
+
+;; (symbol-munger:lisp->underscores 
+(defun api-class-slot-names-as-underscored-strings (class)
+  (map 'list #'symbol-munger:lisp->underscores
+       (api-class-direct-slot-definition-names class)))
 
 (defun api-response-hash-string-list-for-object-key-fn (string-list munging-function)
   (loop 
@@ -20,8 +43,10 @@
   (or (gethash string *api-response-string-symbol-hash-for-object-key-fn*)
       string))
 
-
+;; Once we start evaluating #'api-class-slot-names-as-underscored-strings
+;; the following form will need to come _after_ the asdf api-class compenent.
 (eval-when (:compile-toplevel :load-toplevel :execute)
+  ;; standard response value
   (api-response-hash-string-list-for-object-key-fn
    '("pagination" ; :PAGINATION
      "type"       ; :TYPE 
@@ -30,18 +55,81 @@
      "results")   ; :RESULTS
    #'symbol-munger:underscores->keyword)
   
+  ;; api-method class
   (api-response-hash-string-list-for-object-key-fn
-   '("http_method"
-     "visibility"
-     "type"
-     "defaults"
-     "params"
-     "uri" 
+   '("name"
      "description"
-     "name")
+     "uri"
+     "params"
+     "defaults"
+     "type"
+     "visibility"
+     "http_method")
    #'symbol-munger:underscores->keyword)
+
+  ;; standard parameter types
+  (api-response-hash-string-list-for-object-key-fn
+   '("page" 
+     "offset"
+     "limit")
+   #'symbol-munger:underscores->keyword)
+
+
+  ;; (cadadr '(api-class-slot-names-as-underscored-strings 'avatar))
+
+  ;; (api-class-slot-names-as-underscored-strings 'avatar)
+  ;; (api-class-slot-names-as-underscored-strings 'bill-charge)
+  ;; (api-class-slot-names-as-underscored-strings 'billing-overview)
+  ;; (api-class-slot-names-as-underscored-strings 'bill-payment)
+  ;; (api-class-slot-names-as-underscored-strings 'cart)
+  ;; (api-class-slot-names-as-underscored-strings 'cart-listing)
+  ;; (api-class-slot-names-as-underscored-strings 'category)
+  ;; (api-class-slot-names-as-underscored-strings 'country)
+  ;; (api-class-slot-names-as-underscored-strings 'coupon)
+  ;; (api-class-slot-names-as-underscored-strings 'favorite-listing)
+  ;; (api-class-slot-names-as-underscored-strings 'favorite-user)
+  ;; (api-class-slot-names-as-underscored-strings 'featured-treasury)
+  ;; (api-class-slot-names-as-underscored-strings 'feedback)
+  ;; (api-class-slot-names-as-underscored-strings 'feedback-info)
+  ;; (api-class-slot-names-as-underscored-strings 'forum-post)
+  ;; (api-class-slot-names-as-underscored-strings 'listing)
+  ;; (substitute "url_570xN" "url_570xn" (api-class-slot-names-as-underscored-strings 'listing-image) :test #'string=)
+  ;; (api-class-slot-names-as-underscored-strings 'listing-translation)
+  ;; (api-class-slot-names-as-underscored-strings 'order)
+  ;; (api-class-slot-names-as-underscored-strings 'payment-template)
+  ;; (api-class-slot-names-as-underscored-strings 'receipt)
+  ;; (api-class-slot-names-as-underscored-strings 'region)
+  ;; (api-class-slot-names-as-underscored-strings 'shipping-info)
+  ;; (api-class-slot-names-as-underscored-strings 'shipping-template)
+  ;; (api-class-slot-names-as-underscored-strings 'shipping-template-entry)
+  ;; (api-class-slot-names-as-underscored-strings 'shop)
+  ;; (api-class-slot-names-as-underscored-strings 'shop-section)
+  ;; (api-class-slot-names-as-underscored-strings 'shop-section-translation)
+  ;; (api-class-slot-names-as-underscored-strings 'shop-translation)
+  ;; (api-class-slot-names-as-underscored-strings 'style)
+  ;; (api-class-slot-names-as-underscored-strings 'tag)
+  ;; (api-class-slot-names-as-underscored-strings 'team)
+  ;; (api-class-slot-names-as-underscored-strings 'transaction)
+  ;; (api-class-slot-names-as-underscored-strings 'treasury)
+  ;; (api-class-slot-names-as-underscored-strings 'treasury-counts)
+  ;; (api-class-slot-names-as-underscored-strings 'treasury-listing)
+  ;; (api-class-slot-names-as-underscored-strings 'treasury-listing-data)
+  ;; (api-class-slot-names-as-underscored-strings 'user)
+  ;; (api-class-slot-names-as-underscored-strings 'user-address)
+  ;; (api-class-slot-names-as-underscored-strings 'user-profile)
+  ;;
+  ;; (api-class-slot-names-as-underscored-strings 'data-type)
+  ;; :data-type-values "values"
+  ;; "values" :data-type-values
+  ;;
+  ;; No, we should not try to map this string to/from a symbol
+  ;; data-type-values "values" 
+  ;; "values" 'data-type-values ' 
   )
 
+
+
+ 
 ;; :NOTE it looks like some of the return data is not getting html-unescaped we're getting bogus junk
 ;; appearing in at least the "sale_message" "bio" and "description" fields.
 ;; (URL `http://www.theukwebdesigncompany.com/articles/entity-escape-characters.php')
@@ -105,14 +193,17 @@ Return values have one of the following form:
           ((string= maybe-http-method "DELETE")
            (values :delete maybe-http-method)))))
 
+(defun api-method-documentation-url (api-method-alist)
+  (format nil "http://www.etsy.com/developers/documentation/reference/~A#method_~A"
+          (cdr (assoc :type api-method-alist))
+          (cdr (assoc :name api-method-alist))))
+
 (defun api-method-description-to-docstring (api-method-alist)
-  (format nil "~A~&~%:EXAMPLE~2%:API-METHOD ~S~2%:VISIBILITY ~S~2%:SEE-ALSO ."
+  (format nil "~A~&~%:EXAMPLE~2%:API-METHOD ~S~%:VISIBILITY ~S~%:METHOD-URL (URL `~A')~2%:SEE-ALSO ."
           (or (cdr (assoc :description api-method-alist)) "")
           (or (cdr (assoc :name api-method-alist)) "")
-          (or (and (api-method-public-p api-method-alist) :public) :private)))
-
-
-
+          (or (and (api-method-public-p api-method-alist) :public) :private)
+          (api-method-documentation-url api-method-alist)))
 
 ;;; ==============================
 ;;; EOF
