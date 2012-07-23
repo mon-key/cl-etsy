@@ -15,6 +15,7 @@
                #:split-sequence
                #:drakma
                #:cl-oauth
+               #:closer-mop
                ;; #:flexi-streams see `api-call'
                ;;
                ;; #:cl-json ; the conversion to the v2 API uses yason not cl-json
