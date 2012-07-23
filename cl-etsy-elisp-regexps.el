@@ -35,7 +35,9 @@
 (defun etsy-class-insert ()
   (interactive)
   (save-excursion
-    (insert "\n\n#|\n\n----\nAPI-ASSOCIATIONS\n\n----\nAPI-METHODS\n\n|#\n
+    (insert "\n\n#|\n\n----\nAPI-ASSOCIATIONS\n\n----\nAPI-METHODS\n
+----\n (closer-mop:class-finalized-p (find-class '))\n (api-class-slot-names-as-underscored-strings ')\n
+|#\n
 (in-package #:cl-etsy)\n
 ;;
 (defclass  (base-etsy)
@@ -68,7 +70,7 @@
 ;;   (loop 
 ;;     for type in (list "Avatar" "BillCharge" "BillingOverview" "BillPayment" "Cart" "CartListing"
 ;;                       "Category" "Country" "Coupon" "DataType" "FavoriteListing" "FavoriteUser"
-;;                       "FeaturedTreasury" "Feedback" "FeedbackInfo" "ForumPost" "Listing"
+;;                       "FeaturedTreasury" "Feedback" "FeedbackInfo" "ForumPost" "Ledger" "LedgerEntry" "Listing"
 ;;                       "ListingImage" "ListingTranslation" "Order" "ParamList" "PaymentTemplate"
 ;;                       "Receipt" "Region" "ShippingInfo" "ShippingTemplate" "ShippingTemplateEntry"
 ;;                       "Shop" "ShopSection" "ShopSectionTranslation" "ShopTranslation" "Style" "Tag"
