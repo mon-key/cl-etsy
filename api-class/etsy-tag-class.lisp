@@ -24,6 +24,10 @@ and documentation entirely.
 
 (URL `https://groups.google.com/forum/?fromgroups#!searchin/etsy-api-v2/tags/etsy-api-v2/swh3xwnu4HM/LeADxQUE0JQJ')
 
+----
+ (closer-mop:class-finalized-p (find-class 'tag))
+ (api-class-slot-names-as-underscored-strings 'tag)
+
 |#
 
 (in-package #:cl-etsy)

@@ -54,6 +54,10 @@ API-METHODS
 "uploadShopBanner"
 "deleteShopBanner"
 
+----
+ (closer-mop:class-finalized-p (find-class 'shop))
+ (api-class-slot-names-as-underscored-strings 'shop)
+
 |#
 
 (in-package #:cl-etsy)
@@ -362,7 +366,7 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The URL of the shop")
+    :documentation "The URL of the shop.")
 
    ;; image_url_760x100
    (image-url-760x100
@@ -380,7 +384,7 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The number of members who've marked this Shop as a favorite")
+    :documentation "The number of members who've marked this Shop as a favorite.")
 
    (languages
     :initarg :languages

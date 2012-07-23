@@ -13,6 +13,10 @@ AFAICT the only resource that has a fields of type param-name are the params and
  
 We should probably move this further up the class lattice.
 
+----
+ (closer-mop:class-finalized-p (find-class 'param-list))
+ (api-class-slot-names-as-underscored-strings 'param-list)
+
 |#
 
 (in-package #:cl-etsy)

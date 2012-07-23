@@ -54,6 +54,9 @@ Methods
 "findAllFeedbackFromBuyers"
 "findAllFeedbackFromSellers"
 
+----
+ (closer-mop:class-finalized-p (find-class 'feedback))
+ (api-class-slot-names-as-underscored-strings 'feedback)
 
 |#
 (in-package #:cl-etsy)

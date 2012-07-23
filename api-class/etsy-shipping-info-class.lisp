@@ -36,6 +36,10 @@ API-METHODS
 "updateShippingInfo"
 "deleteShippingInfo"
 
+----
+ (closer-mop:class-finalized-p (find-class 'shipping-info))
+ (api-class-slot-names-as-underscored-strings 'shipping-info)
+
 |#
 
 (in-package #:cl-etsy)
@@ -161,9 +165,9 @@ the listing with it.
    -- There is only one origin per template, so this is changed on the
       shipping-template resource instead of the shipping-template-entry.
 
-  - You can pass a destination id or a region id when creating a
-    ShippingTemplateEntry, but not both - If you leave them both blank then the
-    destination is assumed to be \"everywhere\".
+ - You can pass a destination id or a region id when creating a
+   ShippingTemplateEntry, but not both - If you leave them both blank then the
+   destination is assumed to be \"everywhere\".
 
  - If you create a shipping-template-entry with a region, this implies several
    destinations and will insert a row for each destination within that region.

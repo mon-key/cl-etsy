@@ -11,6 +11,10 @@ API-METHODS
 
 "findSuggestedStyles"
 
+----
+ (closer-mop:class-finalized-p (find-class 'style))
+ (api-class-slot-names-as-underscored-strings 'style)
+
 |#
 
 (in-package #:cl-etsy)

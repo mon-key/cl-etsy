@@ -32,6 +32,10 @@ API-METHODS
 "createUserFavoriteUsers"
 "deleteUserFavoriteUsers"
 
+----
+ (closer-mop:class-finalized-p (find-class 'favorite-user))
+ (api-class-slot-names-as-underscored-strings 'favorite-user)
+
 |#
 
 (in-package #:cl-etsy)

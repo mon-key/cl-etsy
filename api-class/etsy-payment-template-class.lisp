@@ -30,6 +30,10 @@ API-METHODS
 "updatePaymentTemplate"
 "findAllUserPaymentTemplates"
 
+----
+ (closer-mop:class-finalized-p (find-class 'payment-template))
+ (api-class-slot-names-as-underscored-strings 'payment-template)
+
 |#
 
 (in-package #:cl-etsy)

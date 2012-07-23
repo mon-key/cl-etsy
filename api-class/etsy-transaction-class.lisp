@@ -47,6 +47,9 @@ API-METHODS
 "findAllShopTransactions"
 "findAllUserBuyerTransactions"
 
+----
+ (closer-mop:class-finalized-p (find-class 'transaction))
+ (api-class-slot-names-as-underscored-strings 'transaction)
 
 |#
 

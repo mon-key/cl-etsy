@@ -10,6 +10,10 @@
 API-METHODS
 "getListingTranslation"
 
+----
+ (closer-mop:class-finalized-p (find-class 'listing-translation))
+ (api-class-slot-names-as-underscored-strings 'listing-translation)
+
 |#
 
 (in-package #:cl-etsy)

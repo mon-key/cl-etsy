@@ -12,10 +12,13 @@ API-METHODS
 "findAllRegion"
 "getRegion"
 
+----
+ (closer-mop:class-finalized-p (find-class 'region))
+ (api-class-slot-names-as-underscored-strings 'region)
+
 |#
 
 (in-package #:cl-etsy)
-
 
 ;; Region
 (defclass region (base-etsy)
@@ -37,8 +40,8 @@ API-METHODS
     ;; :type string
     :documentation "The name of the region."))
  
- ;; (:default-initargs 
- ;;  :region-id nil :region-name nil)
+  ;; (:default-initargs 
+  ;;  :region-id nil :region-name nil)
  
   (:documentation "Represents a collection of countries to which an item ships.
  (URL `http://www.etsy.com/developers/documentation/reference/region')"))

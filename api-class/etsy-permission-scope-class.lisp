@@ -99,6 +99,10 @@ permission scopes should be separated with spaces."
    :description       "Create and delete treasuries and treasury comments"
    :affected-resources ("Treasury")))
 
+----
+ (closer-mop:class-finalized-p (find-class 'permission-scope))
+ (api-class-slot-names-as-underscored-strings 'permission-scope)
+
 |#
 
 (in-package #:cl-etsy)

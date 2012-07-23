@@ -2,49 +2,54 @@
 ;;; :FILE cl-etsy/api-class/etsy-category-class.lisp
 ;;; ==============================
 
-;;; ==============================
-;;
-;; (URL `http://www.etsy.com/developers/documentation/reference/category')
-;;
-;; "getCategory"
-;; - Retrieves a top-level Category by tag.
-;;  (URL `http://www.etsy.com/developers/documentation/reference/category#method_getcategory')
-;;
-;; "findAllTopCategory"
-;; - Retrieves all top-level Categories.
-;;  (URL `http://www.etsy.com/developers/documentation/reference/category#method_findalltopcategory')
-;;
-;; "getSubCategory"
-;; - Retrieves a second-level Category by tag and subtag.
-;;  (URL `http://www.etsy.com/developers/documentation/reference/category#method_getsubcategory')
-;;
-;; "getSubSubCategory"
-;; - Retrieves a third-level Category by tag, subtag and subsubtag.
-;;  (URL `http://www.etsy.com/developers/documentation/reference/category#method_getsubsubcategory')
-;;
-;; "findAllTopCategoryChildren"
-;; - Retrieves children of a top-level Category by tag.
-;;  (URL `http://www.etsy.com/developers/documentation/reference/category#method_findalltopcategorychildren')
-;;
-;; "findAllSubCategoryChildren"
-;; -Retrieves children of a second-level Category by tag and subtag.
-;;  (URL `http://www.etsy.com/developers/documentation/reference/category#method_findallsubcategorychildren')
-;;
-;; --- 
-;; Categories are no longer the first three tags of a Listing.
-;; Category is a first-class resource, with its own primary key ID.
-;; When calling createListing, you must pass a category_id to specify the category for the Listing.
-;;
-;; (URL `http://www.etsy.com/developers/documentation/reference/listing#section_categories_and_tags')
-;;
-;;; ==============================
+
+#|
+ (URL `http://www.etsy.com/developers/documentation/reference/category')
+
+ ----
+ Categories are no longer the first three tags of a Listing.
+ Category is a first-class resource, with its own primary key ID.
+ When calling createListing, you must pass a category_id to specify the category for the Listing.
+
+ (URL `http://www.etsy.com/developers/documentation/reference/listing#section_categories_and_tags')
+
+ ----
+ :METHODS
+ "getCategory"
+ - Retrieves a top-level Category by tag.
+  (URL `http://www.etsy.com/developers/documentation/reference/category#method_getcategory')
+
+ "findAllTopCategory"
+ - Retrieves all top-level Categories.
+  (URL `http://www.etsy.com/developers/documentation/reference/category#method_findalltopcategory')
+
+ "getSubCategory"
+ - Retrieves a second-level Category by tag and subtag.
+  (URL `http://www.etsy.com/developers/documentation/reference/category#method_getsubcategory')
+
+ "getSubSubCategory"
+ - Retrieves a third-level Category by tag, subtag and subsubtag.
+  (URL `http://www.etsy.com/developers/documentation/reference/category#method_getsubsubcategory')
+
+ "findAllTopCategoryChildren"
+ - Retrieves children of a top-level Category by tag.
+  (URL `http://www.etsy.com/developers/documentation/reference/category#method_findalltopcategorychildren')
+
+ "findAllSubCategoryChildren"
+ -Retrieves children of a second-level Category by tag and subtag.
+  (URL `http://www.etsy.com/developers/documentation/reference/category#method_findallsubcategorychildren')
+
+----
+ (closer-mop:class-finalized-p (find-class 'category))
+ (api-class-slot-names-as-underscored-strings  'category)
+
+|#
 
 (in-package #:cl-etsy)
 
 ;; Category
 (defclass category (base-etsy)
-  (
-   ;; category_id
+  (;; category_id
    (category-id
     :initarg :category-id
     :accessor category-id
@@ -167,7 +172,8 @@ Subcatgories append a new tag to the end of their parent's category_name.
   ;; :meta-description nil :page-description nil :page-title nil
   ;; :category-name nil :short-name nil :long-name nil :num-children nil)
   (:documentation "A category
- (URL `http://www.etsy.com/developers/documentation/reference/category')"))
+ (URL `http://www.etsy.com/developers/documentation/reference/category')
+ (URL `http://www.etsy.com/developers/documentation/reference/listing#section_categories_and_tags')"))
 
 
 ;; (defmethod print-object ((x category) stream)
@@ -178,6 +184,7 @@ Subcatgories append a new tag to the end of their parent's category_name.
   
   | "getCategory"
   | (yason:parse (api-call (concatenate 'string *base-url* "/categories/vintage")) :object-as :alist)
+  | (parsed-api-call (concatenate 'string *base-url* "/categories/vintage") :object-as :alist)
 
   ((:NAME        . "getCategory")
    (:DESCRIPTION . "Retrieves a top-level Category by tag.")

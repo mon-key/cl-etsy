@@ -16,6 +16,10 @@
 "deleteTreasury"
 "findAllUserTreasuries"
 
+----
+ (closer-mop:class-finalized-p (find-class 'treasury))
+ (api-class-slot-names-as-underscored-strings 'treasury)
+
 |#
 
 (in-package #:cl-etsy)
@@ -154,7 +158,7 @@
     :accessor creation-tsz
     ;; :visibility public
     ;; :perm-scope none
-    ;; :type int
+    ;; :type int ;; :NOTE all other classes other than Treasury and TreasuryListing have this as float
     :documentation "Time this collection was created, in epoch seconds."))
 
   ;; (:default-initargs :id nil :title nil :description nil :homepage nil :mature nil

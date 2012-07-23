@@ -13,6 +13,10 @@ API-METHODS
 "findTeams"
 "findAllTeamsForUser"
 
+----
+ (closer-mop:class-finalized-p (find-class 'team))
+ (api-class-slot-names-as-underscored-strings 'team)
+
 |#
 
 (in-package #:cl-etsy)

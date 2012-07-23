@@ -41,6 +41,10 @@ API-METHODS
 "updateShippingTemplateEntry"
 "deleteShippingTemplateEntry"
 
+----
+ (closer-mop:class-finalized-p (find-class 'shipping-template-entry))
+ (api-class-slot-names-as-underscored-strings 'shipping-template-entry)
+
 |#
 
 (in-package #:cl-etsy)

@@ -13,6 +13,10 @@ API-METHODS
 "postTreasuryComment"
 "deleteTreasuryComment"
 
+----
+ (closer-mop:class-finalized-p (find-class 'forum-post))
+ (api-class-slot-names-as-underscored-strings 'forum-post)
+
 |#
 
 (in-package #:cl-etsy)

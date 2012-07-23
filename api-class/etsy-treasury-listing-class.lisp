@@ -6,6 +6,10 @@
 
  (URL `http://www.etsy.com/developers/documentation/reference/treasurylisting')
 
+----
+ (closer-mop:class-finalized-p (find-class 'treasury-listing))
+ (api-class-slot-names-as-underscored-strings 'treasury-listing)
+
 |#
 
 (in-package #:cl-etsy)
@@ -18,7 +22,7 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type treasury-listing-data
-    :documentation "The detailed fields of the listing")
+    :documentation "The detailed fields of the listing.")
 
    ;; creation_tsz
    (creation-tsz
@@ -26,7 +30,7 @@
     :accessor creation-tsz
     ;; :visibility public
     ;; :perm-scope none
-    ;; :type int
+    ;; :type int  ;; :NOTE all other classes other than Treasury and TreasuryListing have this as float
     :documentation "Time the listing was added to this Treasury, in epoch seconds."))
 
   ;; (:default-initargs :data nil :creation-tsz nil)

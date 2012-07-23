@@ -6,20 +6,23 @@
 
  (URL `http://www.etsy.com/developers/documentation/reference/treasurycounts')
 
+----
+ (closer-mop:class-finalized-p (find-class 'treasury-counts))
+ (api-class-slot-names-as-underscored-strings 'treasury-counts)
+
 |#
 
 (in-package #:cl-etsy)
 
 ;; TreasuryCounts
 (defclass treasury-counts (base-etsy)
-  (
-   (clicks
+  ((clicks
     :initarg :clicks
     :accessor clicks
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The number of times the Treasury has been clicked on")
+    :documentation "The number of times the Treasury has been clicked on.")
 
    (views
     :initarg :views
@@ -27,7 +30,7 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The number of times the Treasury has been viewed")
+    :documentation "The number of times the Treasury has been viewed.")
 
    (shares
     :initarg :shares
@@ -35,7 +38,7 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The number of times the Treasury has been shared")
+    :documentation "The number of times the Treasury has been shared.")
 
    (reports
     :initarg :reports
@@ -43,10 +46,10 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The number of times the Treasury has been reported ")
-   )
-
+    :documentation "The number of times the Treasury has been reported."))
+  
   ;; (:default-initargs :clicks nil :views nil :shares nil :reports nil)
+
   (:documentation "Various metrics on the Treasury"))
 
 

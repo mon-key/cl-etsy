@@ -29,6 +29,10 @@ API-METHODS
 "getUserAddress"
 "deleteUserAddress"
 
+----
+ (closer-mop:class-finalized-p (find-class 'user-address))
+ (api-class-slot-names-as-underscored-strings 'user-address)
+
 |#
 
 (in-package #:cl-etsy)
@@ -119,7 +123,7 @@ API-METHODS
     ;; :visibility private
     ;; :perm-scope address_r
     ;; :type string
-    :documentation "The name of the user's country"))
+    :documentation "The name of the user's country."))
 
  ;; (:default-initargs 
  ;;  :user-address-id nil :user-id nil :name nil :first-line nil :second-line nil

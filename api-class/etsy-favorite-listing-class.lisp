@@ -30,6 +30,9 @@ API-METHODS
 "createUserFavoriteListings"
 "deleteUserFavoriteListings"
 
+----
+ (closer-mop:class-finalized-p (find-class 'favorite-listing))
+ (api-class-slot-names-as-underscored-strings 'favorite-listing)
 
 |#
 

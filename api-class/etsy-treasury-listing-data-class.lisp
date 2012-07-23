@@ -7,6 +7,10 @@
 
  (URL `http://www.etsy.com/developers/documentation/reference/treasurylistingdata')
 
+----
+ (closer-mop:class-finalized-p (find-class 'treasury-listing-data))
+ (api-class-slot-names-as-underscored-strings 'treasury-listing-data)
+
 |#
 
 (in-package #:cl-etsy)

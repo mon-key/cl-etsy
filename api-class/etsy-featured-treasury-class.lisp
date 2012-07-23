@@ -13,6 +13,10 @@ API-METHODS
 "getFeaturedTreasuryById"
 "findAllFeaturedTreasuriesByOwner"
 
+----
+ (closer-mop:class-finalized-p (find-class 'featured-treasury))
+ (api-class-slot-names-as-underscored-strings 'featured-treasury)
+
 |#
 
 (in-package #:cl-etsy)

@@ -6,6 +6,10 @@
 
  (URL `http://www.etsy.com/developers/documentation/reference/feedbackinfo')
 
+----
+ (closer-mop:class-finalized-p (find-class 'feedback-info))
+ (api-class-slot-names-as-underscored-strings 'feedback-info)
+
 |#
 
 (in-package #:cl-etsy)

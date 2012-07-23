@@ -17,6 +17,10 @@ API-METHODS
 "updateCoupon"
 "deleteCoupon"
 
+----
+ (closer-mop:class-finalized-p (find-class 'coupon))
+ (api-class-slot-names-as-underscored-strings 'coupon)
+
 |#
 
 (in-package #:cl-etsy)

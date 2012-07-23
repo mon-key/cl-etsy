@@ -20,6 +20,10 @@ API-METHODS
 
  "getShopSectionTranslation"
 
+----
+ (closer-mop:class-finalized-p (find-class 'shop-section-translation))
+ (api-class-slot-names-as-underscored-strings 'shop-section-translation)
+
 |#
 
 (in-package #:cl-etsy)

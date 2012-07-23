@@ -28,6 +28,10 @@ API-METHODS
 "getOrder"
 "findAllUserOrders"
 
+----
+ (closer-mop:class-finalized-p (find-class 'order))
+ (api-class-slot-names-as-underscored-strings 'order)
+
 |#
 
 (in-package #:cl-etsy)

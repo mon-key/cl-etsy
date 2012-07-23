@@ -11,6 +11,9 @@ API-METHODS
 
 "findAllUserPayments"
 
+ ;; (closer-mop:class-finalized-p (find-class 'bill-payment))
+ ;; (api-class-slot-names-as-underscored-strings  'bill-payment)
+
 |#
 
 (in-package #:cl-etsy)

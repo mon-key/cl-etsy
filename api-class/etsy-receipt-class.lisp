@@ -62,6 +62,10 @@ API-METHODS
 "findAllShopReceiptsByStatus"
 "findAllUserBuyerReceipts"
 
+----
+ (closer-mop:class-finalized-p (find-class 'receipt))
+ (api-class-slot-names-as-underscored-strings 'receipt)
+
 |#
 
 (in-package #:cl-etsy)

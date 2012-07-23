@@ -12,6 +12,9 @@ API-METHODS
 "getAvatarImgSrc"
 "uploadAvatar"
 
+ (closer-mop:class-finalized-p  (find-class 'avatar))
+ (api-class-slot-names-as-underscored-strings 'avatar)
+
 |#
 
 (in-package #:cl-etsy)
@@ -99,7 +102,7 @@ API-METHODS
     :accessor creation-tsz
     ;; :visibility public
     ;; :perm-scope none
-    ;; :type float
+    ;; :type float ;; why not int?
     :documentation "The time that the avatar was uploaded.")
 
    ;; user_id
@@ -137,6 +140,10 @@ API-METHODS
   (:VISIBILITY   . "private")
   (:HTTP-METHOD . "POST"))
 
+ ;; WTF!!! "getAvatarImgSrc" returns the URL of the image user with the form:
+ ;; ("src" . "http://img3.etsystatic.com/000/0/<USER-ID>/iusa_75x75.7674075.jpg")
+ ;; How is this of type "Avatar"?
+
  ((:NAME        . "getAvatarImgSrc")
   (:DESCRIPTION . "Get avatar image source")
   (:URI         . "/users/:user_id/avatar/src")
@@ -144,7 +151,7 @@ API-METHODS
    (:USER-ID . "user_id_or_name"))
   (:DEFAULTS
    (:USER-ID))
-  (:TYPE         . "Avatar")
+  (:TYPE         . "Avatar") 
   (:VISIBILITY   . "public")
   (:HTTP-METHOD . "GET"))
 

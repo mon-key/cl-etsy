@@ -11,6 +11,11 @@
 API-METHODS
 "getUserBillingOverview"
 
+
+ ;; (closer-mop:class-finalized-p (find-class 'billing-overview))
+ ;; (api-class-slot-names-as-underscored-strings  'billing-overview)
+
+
 |#
 
 (in-package #:cl-etsy)

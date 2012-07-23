@@ -11,6 +11,9 @@ API-METHODS
 
 "findAllUserCharges"
 
+ (closer-mop:class-finalized-p  (find-class 'bill-charge))
+ (api-class-slot-names-as-underscored-strings 'bill-charge)
+
 |#
 
 (in-package #:cl-etsy)
@@ -32,7 +35,7 @@ API-METHODS
     :accessor creation-tsz
     ;; :visibility private
     ;; :perm-scope billing_r
-    ;; :type float
+    ;; :type float ;; why not int?
     :documentation "Creation time, in epoch seconds.")
 
    ;; :NOTE This symbol conflicts with CL:TYPE

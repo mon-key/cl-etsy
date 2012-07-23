@@ -37,6 +37,11 @@ API-METHODS
 "updateCart"
 "deleteCart"
 
+----
+ (closer-mop:class-finalized-p (find-class 'cart))
+ (api-class-slot-names-as-underscored-strings  'cart)
+
+
 |#
 
 (in-package #:cl-etsy)

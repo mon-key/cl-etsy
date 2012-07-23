@@ -23,6 +23,12 @@ API-METHODS
 "getImage_Listing"
 "deleteListingImage"
 
+----
+ (closer-mop:class-finalized-p (find-class 'listing-image))
+ (api-class-slot-names-as-underscored-strings 'listing-image)
+ (substitute "url_570xN" "url_570xn" (api-class-slot-names-as-underscored-strings 'listing-image) :test #'string=)
+ 
+
 |#
 
 (in-package #:cl-etsy)
@@ -147,15 +153,23 @@ API-METHODS
     ;; :perm-scope none
     ;; :type string
     :documentation "The URL to a 170x135 thumbnail of the image.")
-
-   ;; url_570xN
+   
+   ;; _Fucking_Assholes_! 
+   ;; Howsabout some consistency in your symbol naming rules?
+   ;; either "fullxfull" is a valid symbol or "570xN" is but not both
+   ;; (symbol-munger:underscores->lisp-name "url_570xN") => "url-570xn"
+   ;; (symbol-munger:lisp->underscores 'url_570xn)       => "url_570xn"
+   ;; url_570xN 
    (url-570xn
     :initarg :url-570xn
     :accessor url-570xn
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The URL to a thumbnail of the image, no more than 570px width by variable height.")
+    :documentation "The URL to a thumbnail of the image, no more than 570px width by variable height.
+The url-570xN image sizes have variable dimensions depending on the original artwork uploaded by the seller.
+The horizontal dimension will be the original artwork's horizontal size, or 570 pixels, whichever is smaller.
+The vertical dimension is variatic dependent on the original artwork's aspect ratio.")
 
    ;; url_fullxfull
    (url-fullxfull
@@ -164,7 +178,10 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The URL to the full-size image, no more than 1500px width by variable height.")
+    :documentation "The URL to the full-size image, no more than 1500px width by variable height.
+The url-fullxfull image sizes have variable dimensions depending on the original artwork uploaded by the seller.
+The horizontal dimension will be the original artwork's horizontal size, or 1500 pixels, whichever is smaller.
+The vertical dimension is variatic dependent on the original artwork's aspect ratio.")
 
    ;; full_height
    (full-height
@@ -202,18 +219,6 @@ Etsy through the end of 2013:
  570xN	   listings
  760x100   shop banners
  fullxfull listings
-
-The 570xN and fullxfull image sizes have variable dimensions depending on the
-original artwork uploaded by the seller:
-
-   - For the 570xN size, the horizontal dimension will be the original artwork's
-     horizontal size, or 570 pixels, whichever is smaller.
-
-   - For the fullxfull size, the horizontal dimension will be the original
-     artwork's horizontal size, or 1500 pixels, whichever is smaller.
-
-   - Both sizes will have a variable vertical dimension, dependent on the
-     original artwork's aspect ratio.\"
 
  (URL `http://www.etsy.com/developers/documentation/reference/listingimage')"))
 
@@ -253,9 +258,6 @@ original artwork uploaded by the seller:
    (:TYPE         . "ListingImage")
    (:VISIBILITY   . "private")
    (:HTTP-METHOD . "POST"))
-     
-  
-  
 
 |#
 

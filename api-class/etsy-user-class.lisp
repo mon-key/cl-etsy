@@ -66,6 +66,10 @@ API-METHODS
  "getUser"
  "findAllUsersForTeam"
 
+----
+ (closer-mop:class-finalized-p (find-class 'user))
+ (api-class-slot-names-as-underscored-strings 'user)
+
 |#
 
 (in-package #:cl-etsy)

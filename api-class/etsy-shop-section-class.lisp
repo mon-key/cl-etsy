@@ -36,6 +36,10 @@ API-METHODS
 "updateShopSection"
 "deleteShopSection"
 
+----
+ (closer-mop:class-finalized-p (find-class 'shop-section))
+ (api-class-slot-names-as-underscored-strings 'shop-section)
+
 |#
 
 (in-package #:cl-etsy)

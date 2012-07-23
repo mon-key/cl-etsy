@@ -15,14 +15,17 @@ API-METHODS
 "findAllCountry"
 "getCountry"
 
+----
+ (closer-mop:class-finalized-p (find-class 'country))
+ (api-class-slot-names-as-underscored-strings  'country)
+
 |#
 
 (in-package #:cl-etsy)
 
 ;; Country
 (defclass country (base-etsy)
-  (
-   ;; country_id
+  (;; country_id
    (country-id
     :initarg :country-id
     :accessor country-id
@@ -65,7 +68,7 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "The country's plain-English name slugified; suitable for interpolation into a url.")
+    :documentation "The country's plain-English name slugified; suitable for interpolation into a URL.")
 
    ;; lat
    (lat
@@ -83,15 +86,18 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type float
-    :documentation "The country's longitude.")
-   )
+    :documentation "The country's longitude."))
+
   ;; (:default-initargs 
   ;;  :country-id nil :iso-country-code nil :world-bank-country-code nil :name nil
   ;;  :slug nil :lat nil :lon nil)
+
   (:documentation "Represents a geographical country and its location.
  (URL `http://www.etsy.com/developers/documentation/reference/country')"))
 
 #|
+
+  | (parsed-api-call (concatenate 'string *base-url* "/countries") :object-as :alist)
 
   ((:NAME        . "findAllCountry")
    (:DESCRIPTION . "Finds all Country.")
@@ -101,6 +107,8 @@ API-METHODS
    (:TYPE         . "Country")
    (:VISIBILITY   . "public")
    (:HTTP-METHOD . "GET"))
+
+ | (parsed-api-call (concatenate 'string *base-url* "/countries/" "302") :object-as :alist)
 
   ((:NAME        . "getCountry")
    (:DESCRIPTION . "Retrieves a Country by id.")

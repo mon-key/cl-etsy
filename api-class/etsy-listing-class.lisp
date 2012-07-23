@@ -98,6 +98,10 @@ API-METHODS
 "findAllShopSectionListingsActive"
 "findAllCartListings"
 
+----
+ (closer-mop:class-finalized-p (find-class 'listing))
+ (api-class-slot-names-as-underscored-strings 'listing)
+
 |#
 
 (in-package #:cl-etsy)

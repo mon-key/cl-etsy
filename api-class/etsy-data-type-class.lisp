@@ -45,6 +45,10 @@ API-METHODS
           (mapcar #'car 
                   '( <KEY-VALUE-CONSES> ))))
 
+----
+ (closer-mop:class-finalized-p (find-class 'data-type))
+ (api-class-slot-names-as-underscored-strings 'data-type)
+
 |#
 
 (in-package #:cl-etsy)
@@ -89,7 +93,7 @@ Currently only applicable for the following enums:
 
 
 ;; :NOTE We need to transform the "values" field of returned results to ``data-type-values''
-;;  e.g. (caaadr (assoc "results" (describe-occasion-enum) :test #'string=))
+;;  e.g. (assoc "values" (car (describe-occasion-enum)) :test #'string=)
 (defun describe-occasion-enum (&key
                                (object-as :alist))
   "Describes the legal values for use as the occasion slot-value of class `listing'.
@@ -97,11 +101,8 @@ Result when non-nil should contain fields which map to the slots of a `data-type
 :EXAMPLE
  (describe-occasion-enum)
 :API-METHOD \"describeOccasionEnum\""
-  (yason:parse 
-   (api-call (concatenate 'string 
-                          *base-url*
-                          "/types/enum/occasion"))
-   :object-as object-as))
+  (parsed-api-call (concatenate 'string *base-url* "/types/enum/occasion")
+                   :object-as object-as))
 
 ;; "describeRecipientEnum"
 (defun describe-recipient-enum (&key
@@ -111,12 +112,8 @@ Result when non-nil should contain fields which map to the slots of a `data-type
 :EXAMPLE
  (describe-recipient-enum)
 :API-METHOD \"describeRecipientEnum\""
-  (yason:parse 
-   (api-call (concatenate 'string 
-                          *base-url*
-                          "/types/enum/recipient"
-                          ))
-   :object-as object-as))
+  (parsed-api-call (concatenate 'string *base-url* "/types/enum/recipient")
+                   :object-as object-as))
 
 ;; "describeWhenMadeEnum" 
 (defun describe-when-made-enum (&key
@@ -126,12 +123,8 @@ Result when non-nil should contain fields which map to the slots of a `data-type
 :EXAMPLE
  (describe-when-made-enum)
 :API-METHOD \"describeWhenMadeEnum\""
-  (yason:parse 
-   (api-call (concatenate 'string 
-                          *base-url*
-                          "/types/enum/when_made"
-                          ))
-   :object-as object-as))
+  (parsed-api-call (concatenate 'string *base-url* "/types/enum/when_made")
+                   :object-as object-as))
 
 ;; "describeWhoMadeEnum" 
 (defun describe-who-made-enum (&key
@@ -141,12 +134,8 @@ Result when non-nil should contain fields which map to the slots of a `data-type
 :EXAMPLE
  (describe-who-made-enum)
 :API-METHOD \"describeWhoMadeEnum\""
-  (yason:parse 
-   (api-call (concatenate 'string 
-                          *base-url*
-                          "/types/enum/who_made"
-                          ))
-   :object-as object-as))
+  (parsed-api-call (concatenate 'string *base-url* "/types/enum/who_made")
+                   :object-as object-as))
 
 
 #|
