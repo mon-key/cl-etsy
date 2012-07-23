@@ -148,7 +148,7 @@ Following errors successfully:
 (defun parsed-api-call (url &key (parameters nil) 
                                  (method :get)
                                  (content-type "application/json")
-                                 (object-key-fn yason:*parse-object-key-fn*)
+                                 (object-key-fn 'api-response-string-to-symbol-lookup) ;yason:*parse-object-key-fn*
                                  (return-values t)
                                  (object-as yason:*parse-object-as*)
                                  (json-arrays-as-vectors yason:*parse-json-arrays-as-vectors*)
