@@ -82,9 +82,13 @@ rounding errors.  They may omit the leading "#", or use the three-digit form."
 color_wiggle
 "Specify the degree of tolerance for color matching where 0 is the most accurate, and 30 is the least."
 
+; :NOTE yason parses floats for us already
+; :SEE lon slot of class `country'
 latitude
 "A valid numeric latitude, between -90.0 and 90.0"
 
+; :NOTE yason parses floats for us already
+; :SEE lon slot of class `country'
 longitude
 "A valid numeric longitude, between -180.0 and 180.0"
 
@@ -132,6 +136,60 @@ enums
  "enum(active, draft)" ; ``state'' parameter - create-listing of private POST API method
  "enum(active, inactive, draft)" ; ``state'' parameter - update-listing of private PUT API method
  "enum(open, unshipped, unpaid, completed, processing, all)" ; ``status'' parameter --find-all-shop-receipts-by-status private GET API method
+
+
+purchase-state slot of class `cart-listing'
+ valid, invalid_quantity, invalid_shipping, 
+ not_active, edited, invalid_currency, invalid_shipping_currency
+
+---
+:NOTE TreasuryListing and Treasury both specify that creation_tsz is an Int
+whereas all of the other representations specifty it as a float:
+
+Avatar
+creation_tsz 	public 	none 	float 	The time that the avatar was uploaded. 
+
+BillCharge
+creation_tsz 	private 	billing_r 	float 	Creation time, in epoch seconds. 
+
+BillPayment
+creation_tsz 	private 	billing_r 	float 	Creation time, in epoch seconds. 
+
+FavoriteListing
+Creation_tsz 	public 	none 	float 	(DEPRECATED - use 'create_date') The date and time that the listing was favorited. 
+
+FavoriteUser
+creation_tsz 	public 	none 	float 	The date and time that the user was favorited.
+
+Feedback
+creation_tsz 	public 	none 	float 	Creation time, in epoch seconds. 
+
+Listing
+creation_tsz 	public 	none 	float 	Creation time, in epoch seconds. 
+
+ListingImage
+creation_tsz 	public 	none 	float 	Creation time, in epoch seconds. 
+
+Order
+creation_tsz 	private 	transactions_r 	float 	Creation time, in epoch seconds. 
+
+Receipt
+creation_tsz 	private 	transactions_r 	float 	Creation time, in epoch seconds. 
+
+Shop
+creation_tsz 	public 	none 	float 	The date and time the shop was created, in epoch seconds.
+
+Transaction
+creation_tsz 	public 	none 	float 	The date and time the transaction was created, in epoch seconds
+
+Treasury
+creation_tsz 	public 	none 	int 	Time this collection was created, in epoch seconds 
+
+TreasuryListing
+creation_tsz 	public 	none 	int 	Time the listing was added to this Treasury, in epoch seconds
+
+User
+creation_tsz 	public 	none 	float 	The date and time the user was created, in epoch seconds. 
 
 |#
 (in-package #:cl-etsy)
