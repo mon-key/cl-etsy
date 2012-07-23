@@ -10,7 +10,9 @@
 API-METHODS
 
 "findAllUserCharges"
+"getUserChargesMetadata"
 
+----
  (closer-mop:class-finalized-p  (find-class 'bill-charge))
  (api-class-slot-names-as-underscored-strings 'bill-charge)
 
@@ -134,27 +136,41 @@ Following table outlines the types of charges for a bill-charge:
 
 #|
 
- ((:NAME        . "findAllUserCharges")
-  (:DESCRIPTION . "Retrieves a set of BillCharge objects associated to a User.")
-  (:URI         . "/users/:user_id/charges")
+ ((:NAME . "findAllUserCharges")
+  (:DESCRIPTION
+   . "Retrieves a set of BillCharge objects associated to a User. NOTE: from 8/8/12 the min_created and max_created arguments will be mandatory and can be no more than 31 days apart.")
+  (:URI . "/users/:user_id/charges")
   (:PARAMS
-   (:LIMIT        . "int")
-   (:OFFSET       . "int")
-   (:PAGE         . "int")
-   (:USER-ID     . "user_id_or_name")
-   (:SORT-ORDER  . "enum(up, down)")
-   (:MIN-CREATED . "epoch")
-   (:MAX-CREATED . "epoch"))
+   ("max_created" . "epoch")
+   ("min_created" . "epoch")
+   ("sort_order" . "enum(up, down)")
+   ("user_id" . "user_id_or_name")
+   ("page" . "int")
+   ("offset" . "int")
+   ("limit" . "int"))
   (:DEFAULTS
-   (:LIMIT       . 25)
-   (:OFFSET      . 0)
-   (:PAGE)
-   (:SORT-ORDER . "up")
-   (:MIN-CREATED)
-   (:MAX-CREATED))
-  (:TYPE         . "BillCharge")
-  (:VISIBILITY   . "private")
+   ("max_created")
+   ("min_created")
+   ("sort_order" . "up")
+   ("page")
+   ("offset" . 0)
+   ("limit" . 25))
+  (:TYPE . "BillCharge")
+  (:VISIBILITY . "private")
   (:HTTP-METHOD . "GET"))
+
+
+ ((:NAME . "getUserChargesMetadata")
+  (:DESCRIPTION
+   . "Metadata for the set of BillCharges objects associated to a User")
+  (:URI . "/users/:user_id/charges/meta")
+  (:PARAMS ("user_id" . "user_id_or_name"))
+  (:DEFAULTS)
+  (:TYPE . "Dict")
+  (:VISIBILITY . "private")
+  (:HTTP-METHOD . "GET"))
+ 
+
 
 |#
 
