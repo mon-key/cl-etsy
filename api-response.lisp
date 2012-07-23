@@ -44,7 +44,7 @@
       string))
 
 ;; Once we start evaluating #'api-class-slot-names-as-underscored-strings
-;; the following form will need to come _after_ the asdf api-class compenent.
+;; the following form will need to come _after_ the ASDF api-class component.
 (eval-when (:compile-toplevel :load-toplevel :execute)
   ;; standard response value
   (api-response-hash-string-list-for-object-key-fn
@@ -92,6 +92,8 @@
   ;; (api-class-slot-names-as-underscored-strings 'feedback)
   ;; (api-class-slot-names-as-underscored-strings 'feedback-info)
   ;; (api-class-slot-names-as-underscored-strings 'forum-post)
+  ;; (api-class-slot-names-as-underscored-strings 'ledger)
+  ;; (api-class-slot-names-as-underscored-strings 'ledger-entry)
   ;; (api-class-slot-names-as-underscored-strings 'listing)
   ;; (substitute "url_570xN" "url_570xn" (api-class-slot-names-as-underscored-strings 'listing-image) :test #'string=)
   ;; (api-class-slot-names-as-underscored-strings 'listing-translation)

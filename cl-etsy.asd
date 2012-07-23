@@ -53,6 +53,8 @@
                              (:file "etsy-feedback-class")
                              (:file "etsy-feedback-info-class")
                              (:file "etsy-forum-post-class")
+                             (:file "etsy-ledger-class")
+                             (:file "etsy-ledger-entry-class")
                              (:file "etsy-listing-class")
                              (:file "etsy-listing-image-class")
                              (:file "etsy-listing-translation-class")
