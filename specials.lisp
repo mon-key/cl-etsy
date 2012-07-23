@@ -270,4 +270,232 @@ KEY and SECRET keyword arguments of `cl-oauth:make-consumer-token'.
 
 
 ;;; ==============================
+
+#|
+
+ (defparameter *api-classes-and-slots*
+   '((api-method
+      (name uri params defaults type http-method visibility))
+
+     (avatar
+      (avatar-id hex-code red green blue hue 
+       saturation brightness is-black-and-white creation-tsz user-id))
+
+     (bill-charge
+      (bill-charge-id creation-tsz type type-id user-id amount currency-code
+       creation-year creation-month last-modified-tsz))
+
+     (billing-overview
+      (is-overdue currency-code overdue-balance balance-due total-balance date-due date-overdue))
+
+     (bill-payment
+      (bill-payment-id creation-tsz type type-id user-id
+       amount currency-code creation-month creation-year))
+
+     (category
+      (category-id name meta-title meta-keywords meta-description page-description
+       page-title category-name short-name long-name num-children))
+
+     (cart
+      (cart-id shop-name message-to-seller destination-country-id coupon-code
+       currency-code total subtotal shipping-cost tax-cost discount-amount
+       shipping-discount-amount tax-discount-amount url listings))
+
+     (cart-listing
+      (listing-id purchase-quantity purchase-state))
+
+     (country
+      (country-id iso-country-code world-bank-country-code name slug lat lon))
+
+     (coupon
+      (coupon-id coupon-code seller-active pct-discount free-shipping domestic-only))
+
+     (data-type
+      (type data-type-values))
+
+     (favorite-listing
+      (listing-id user-id listing-state create-date state creation-tsz favorite-listing-id))
+
+     (favorite-user
+      (user-id favorite-user-id target-user-id creation-tsz))
+
+     (featured-treasury
+      (treasury-id treasury-owner-id url region active-date))
+
+     (feedback
+      (feedback-id transaction-id creator-user-id target-user-id seller-user-id
+       buyer-user-id creation-tsz message value image-feedback-id image-url-25x25
+       image-url-155x125 image-url-fullxfull))
+
+     (feedback-info
+      (count score))
+
+     (forum-post
+      (thread-id post-id post user-id last-edit-time create-date))
+
+     (ledger 
+      (ledger-id shop-id currency create-date update-date))
+
+     (ledger-entry
+      (ledger-entry-id ledger-id sequence credit-amount debit-amount entry-type
+       reference-id running-balance create-date))
+
+     (listing
+      (listing-id state user-id category-id title description creation-tsz ending-tsz
+       original-creation-tsz last-modified-tsz price currency-code quantity tags
+       category-path materials shop-section-id featured-rank state-tsz hue saturation
+       brightness is-black-and-white url views num-favorers who-made is-supply
+       when-made recipient occasion style))
+
+     (listing-image
+      (listing-image-id hex-code red green blue hue saturation brightness
+       is-black-and-white creation-tsz listing-id rank url-75x75 url-170x135
+       url-570xn url-fullxfull full-height full-width))
+
+     (listing-translation
+      (listing-id language title description tags))
+
+     (order
+      (order-id user-id creation-tsz))
+
+     (payment
+      (payment-id buyer-user-id shop-id receipt-id amount-gross amount-fees
+       amount-net posted-gross posted-fees posted-net adjusted-gross
+       adjusted-fees adjusted-net currency shipping-user-id
+       shipping-address-id billing-address-id status shipped-date
+       create-date update-date))
+
+     (param-list
+      (param-name))
+
+     (payment-template
+      (payment-template-id allow-bt allow-check allow-mo allow-other allow-paypal
+       allow-cc paypal-email name first-line second-line city state zip country-id
+       user-id listing-payment-id))
+
+     (receipt
+      (receipt-id order-id seller-user-id buyer-user-id creation-tsz
+       last-modified-tsz name first-line second-line city state zip country-id
+       payment-method payment-email message-from-seller message-from-buyer was-paid
+       total-tax-cost total-price total-shipping-cost currency-code
+       message-from-payment was-shipped buyer-email seller-email discount-amt
+       subtotal grandtotal shipping-tracking-code shipping-tracking-url
+       shipping-carrier shipping-note))
+
+     (region
+      (region-id region-name))
+
+     (shipping-info
+      (shipping-info-id origin-country-id destination-country-id currency-code
+       primary-cost secondary-cost listing-id region-id origin-country-name
+       destination-country-name))
+
+     (shipping-template
+      (shipping-template-id title user-id))
+
+     (shipping-template-entry
+      (shipping-template-entry-id shipping-template-id currency-code origin-country-id
+       destination-country-id destination-region-id primary-cost secondary-cost))
+
+     (shop
+      (shop-id shop-name first-line second-line city state zip country-id user-id
+       creation-tsz title announcement currency-code is-vacation vacation-message
+       sale-message last-updated-tsz listing-active-count login-name lat lon
+       alchemy-message is-refusing-alchemy policy-welcome policy-payment
+       policy-shipping policy-refunds policy-additional policy-seller-info
+       policy-updated-tsz vacation-autoreply ga-code name url image-url-760x100
+       num-favorers languages))
+
+     (shop-section
+      (shop-section-id title rank user-id active-listing-count))
+
+     (shop-section-translation
+      (shop-section-id language title))
+
+     (shop-translation
+      (shop-id language announcement policy-welcome policy-payment policy-shipping
+       policy-refunds policy-additional policy-seller-info sale-message title
+       vacation-autoreply vacation-message))
+
+     (style
+      (style-id style))
+
+     (tag
+      (tag name num-listings weight))
+
+     (team
+      (group-id name create-date update-date tags))
+
+     (transaction
+      (transaction-id title description seller-user-id buyer-user-id creation-tsz
+       paid-tsz shipped-tsz price currency-code quantity tags materials
+       image-listing-id receipt-id shipping-cost listing-id seller-feedback-id
+       buyer-feedback-id transaction-type url))
+
+     (treasury
+      (id title description homepage mature locale comment-count tags counts hotness
+       hotness-color user-id user-name user-avatar-id listings creation-tsz))
+
+     (treasury-counts
+      (clicks views shares reports))
+
+     (treasury-listing
+      (data creation-tsz))
+
+     (treasury-listing-data
+      (user-id title price listing-id state shop-name image-id))
+
+     (user
+      (user-id login-name primary-email creation-tsz referred-by-user-id feedback-info))
+
+     (user-address
+      (user-address-id user-id name first-line second-line city state zip country-id country-name))
+
+     (user-profile
+      (user-profile-id user-id login-name bio gender birth-month birth-day birth-year
+       join-tsz materials country-id region city location avatar-id lat lon
+       transaction-buy-count transaction-sold-count is-seller image-url-75x75
+       first-name last-name)))
+
+   "A list symbols each element of list has the form:
+    (api-class (slots-of-api-class ...))
+Used for generating defgeneric forms of cl-etsy/api-class/etsy-class-generic.lisp
+with `api-class-output-defgeneric-forms'.")
+
+
+ (defun api-class-output-defgeneric-forms (&key (class-with-class-slot-list *api-classes-and-slots*)
+                                               (output-stream nil))
+  ;; class-with-class-slot-list is a proper-list the elements of which are
+  ;; symbols with each element of the list having the form:
+  ;; (api-class (slots-of-api-class ...))
+  ;; output-stream is a stream
+  (declare ((or boolean stream) output-stream)
+           (cons class-with-class-slot-list))
+  (loop 
+    with ht = (make-hash-table)
+    for (class  slots) in class-with-class-slot-list       
+    do (loop 
+         for slot in slots
+         do (multiple-value-bind (maybe-class-list foundp) (gethash slot ht)
+              (if foundp
+                  (if maybe-class-list
+                      (pushnew class (gethash slot ht))
+                      (setf (gethash slot ht) (list class)))
+                  (setf (gethash slot ht) (list class)))))
+    finally (let ((*print-case* :downcase))
+              (loop 
+                for key being the hash-keys in ht using (hash-value val)
+                for rev-val = (sort val #'string-lessp)
+                collect (list key rev-val) into gthr
+                finally (setf gthr (sort gthr #'string-lessp :key #'car))
+                        (let ((*print-right-margin* 360))
+                          (loop for (srtd-slot  srtd-clss) in gthr
+                                do (format output-stream "~%;; ~D classes: ~{~A~^ ~}~%(defgeneric ~S (object))~%(defgeneric (setf ~S) (~S object))~%" 
+                                           (length srtd-clss) srtd-clss srtd-slot srtd-slot srtd-slot)))
+                        ;; (format t "~:{ ~2%slot-name: ~S~%~2Tclasses: ~S~}" gthr)
+                ))))
+|#
+ 
+
+;;; ==============================
 ;;; EOF

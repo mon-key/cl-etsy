@@ -22,13 +22,11 @@ url-fullxfull
 
 (in-package #:cl-etsy)
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  ;; (intern "PAGINATION")
-  ;; (intern "RESULTS")
-  :pagination
-  :results)
-
-
+;; (eval-when (:compile-toplevel :load-toplevel :execute)
+;;   ;; (intern "PAGINATION")
+;;   ;; (intern "RESULTS")
+;;   :pagination
+;;   :results)
   
 ;;; ==============================
 ;;
@@ -81,6 +79,18 @@ url-fullxfull
 (defgeneric active-listing-count (object))
 (defgeneric (setf active-listing-count) (active-listing-count object))
 
+;; 1 classes: payment
+(defgeneric adjusted-fees (object))
+(defgeneric (setf adjusted-fees) (adjusted-fees object))
+
+;; 1 classes: payment
+(defgeneric adjusted-gross (object))
+(defgeneric (setf adjusted-gross) (adjusted-gross object))
+
+;; 1 classes: payment
+(defgeneric adjusted-net (object))
+(defgeneric (setf adjusted-net) (adjusted-net object))
+
 ;; 1 classes: shop
 (defgeneric alchemy-message (object))
 (defgeneric (setf alchemy-message) (alchemy-message object))
@@ -113,6 +123,18 @@ url-fullxfull
 (defgeneric amount (object))
 (defgeneric (setf amount) (amount object))
 
+;; 1 classes: payment
+(defgeneric amount-fees (object))
+(defgeneric (setf amount-fees) (amount-fees object))
+
+;; 1 classes: payment
+(defgeneric amount-gross (object))
+(defgeneric (setf amount-gross) (amount-gross object))
+
+;; 1 classes: payment
+(defgeneric amount-net (object))
+(defgeneric (setf amount-net) (amount-net object))
+
 ;; 2 classes: shop shop-translation
 (defgeneric announcement (object))
 (defgeneric (setf announcement) (announcement object))
@@ -132,6 +154,10 @@ url-fullxfull
 ;; 1 classes: bill-payment
 (defgeneric bill-payment-id (object))
 (defgeneric (setf bill-payment-id) (bill-payment-id object))
+
+;; 1 classes: payment
+(defgeneric billing-address-id (object))
+(defgeneric (setf billing-address-id) (billing-address-id object))
 
 ;; 1 classes: user-profile
 (defgeneric bio (object))
@@ -165,7 +191,7 @@ url-fullxfull
 (defgeneric buyer-feedback-id (object))
 (defgeneric (setf buyer-feedback-id) (buyer-feedback-id object))
 
-;; 3 classes: feedback receipt transaction
+;; 4 classes: feedback receipt transaction payment
 (defgeneric buyer-user-id (object))
 (defgeneric (setf buyer-user-id) (buyer-user-id object))
 
@@ -222,7 +248,7 @@ url-fullxfull
 (defgeneric coupon-id (object))
 (defgeneric (setf coupon-id) (coupon-id object))
 
-;; 3 classes: favorite-listing forum-post team
+;; 6 classes: favorite-listing forum-post team ledger ledger-entry payment
 (defgeneric create-date (object))
 (defgeneric (setf create-date) (create-date object))
 
@@ -244,6 +270,14 @@ url-fullxfull
 (defgeneric creator-user-id (object))
 (defgeneric (setf creator-user-id) (creator-user-id object))
 
+;; 1 classes: ledger-entry
+(defgeneric credit-amount (object))
+(defgeneric (setf credit-amount) (credit-amount object))
+
+;; 2 classes: ledger payment
+(defgeneric currency (object))
+(defgeneric (setf currency) (currency object))
+
 ;; 10 classes: bill-charge bill-payment billing-overview cart listing receipt
 ;; shipping-info shipping-template-entry shop transaction
 (defgeneric currency-code (object))
@@ -264,6 +298,10 @@ url-fullxfull
 ;; 1 classes: billing-overview
 (defgeneric date-overdue (object))
 (defgeneric (setf date-overdue) (date-overdue object))
+
+;; 1 classes: ledger-entry
+(defgeneric debit-amount (object))
+(defgeneric (setf debit-amount) (debit-amount object))
 
 ;; 4 classes: listing listing-translation transaction treasury
 (defgeneric description (object))
@@ -296,6 +334,10 @@ url-fullxfull
 ;; 1 classes: listing
 (defgeneric ending-tsz (object))
 (defgeneric (setf ending-tsz) (ending-tsz object))
+
+;; 1 classes: ledger-entry
+(defgeneric entry-type (object))
+(defgeneric (setf entry-type) (entry-type object))
 
 ;; 1 classes: favorite-listing
 (defgeneric favorite-listing-id (object))
@@ -473,6 +515,14 @@ url-fullxfull
 (defgeneric lat (object))
 (defgeneric (setf lat) (lat object))
 
+;; 1 classes: ledger-entry
+(defgeneric ledger-entry-id (object))
+(defgeneric (setf ledger-entry-id) (ledger-entry-id object))
+
+;; 2 classes: ledger ledger-entry
+(defgeneric ledger-id (object))
+(defgeneric (setf ledger-id) (ledger-id object))
+
 ;; 1 classes: shop
 (defgeneric listing-active-count (object))
 (defgeneric (setf listing-active-count) (listing-active-count object))
@@ -619,6 +669,10 @@ url-fullxfull
 (defgeneric payment-email (object))
 (defgeneric (setf payment-email) (payment-email object))
 
+;; 1 classes: payment
+(defgeneric payment-id (object))
+(defgeneric (setf payment-id) (payment-id object))
+
 ;; 1 classes: receipt
 (defgeneric payment-method (object))
 (defgeneric (setf payment-method) (payment-method object))
@@ -671,6 +725,18 @@ url-fullxfull
 (defgeneric post-id (object))
 (defgeneric (setf post-id) (post-id object))
 
+;; 1 classes: payment
+(defgeneric posted-fees (object))
+(defgeneric (setf posted-fees) (posted-fees object))
+
+;; 1 classes: payment
+(defgeneric posted-gross (object))
+(defgeneric (setf posted-gross) (posted-gross object))
+
+;; 1 classes: payment
+(defgeneric posted-net (object))
+(defgeneric (setf posted-net) (posted-net object))
+
 ;; 3 classes: listing transaction treasury-listing-data
 (defgeneric price (object))
 (defgeneric (setf price) (price object))
@@ -699,7 +765,7 @@ url-fullxfull
 (defgeneric rank (object))
 (defgeneric (setf rank) (rank object))
 
-;; 2 classes: receipt transaction
+;; 3 classes: receipt payment transaction
 (defgeneric receipt-id (object))
 (defgeneric (setf receipt-id) (receipt-id object))
 
@@ -710,6 +776,10 @@ url-fullxfull
 ;; 2 classes: avatar listing-image
 (defgeneric red (object))
 (defgeneric (setf red) (red object))
+
+;; 1 classes: ledger-entry
+(defgeneric reference-id (object))
+(defgeneric (setf reference-id) (reference-id object))
 
 ;; 1 classes: user
 (defgeneric referred-by-user-id (object))
@@ -730,6 +800,10 @@ url-fullxfull
 ;; 1 classes: treasury-counts
 (defgeneric reports (object))
 (defgeneric (setf reports) (reports object))
+
+;; 1 classes: ledger-entry
+(defgeneric running-balance (object))
+(defgeneric (setf running-balance) (running-balance object))
 
 ;; 2 classes: shop shop-translation
 (defgeneric sale-message (object))
@@ -767,13 +841,26 @@ url-fullxfull
 (defgeneric seller-user-id (object))
 (defgeneric (setf seller-user-id) (seller-user-id object))
 
+;; :NOTE sequence is a built in CL system class
+;; 1 classes: ledger-entry
+(defgeneric sequence (object))
+(defgeneric (setf sequence) (sequence object))
+
 ;; 1 classes: treasury-counts
 (defgeneric shares (object))
 (defgeneric (setf shares) (shares object))
 
+;; 1 classes: payment
+(defgeneric shipped-date (object))
+(defgeneric (setf shipped-date) (shipped-date object))
+
 ;; 1 classes: transaction
 (defgeneric shipped-tsz (object))
 (defgeneric (setf shipped-tsz) (shipped-tsz object))
+
+;; 1 classes: payment
+(defgeneric shipping-address-id (object))
+(defgeneric (setf shipping-address-id) (shipping-address-id object))
 
 ;; 1 classes: receipt
 (defgeneric shipping-carrier (object))
@@ -811,7 +898,11 @@ url-fullxfull
 (defgeneric shipping-tracking-url (object))
 (defgeneric (setf shipping-tracking-url) (shipping-tracking-url object))
 
-;; 2 classes: shop shop-translation
+;; 1 classes: payment
+(defgeneric shipping-user-id (object))
+(defgeneric (setf shipping-user-id) (shipping-user-id object))
+
+;; 4 classes: ledger payment shop shop-translation
 (defgeneric shop-id (object))
 (defgeneric (setf shop-id) (shop-id object))
 
@@ -839,6 +930,10 @@ url-fullxfull
 ;; 1 classes: listing
 (defgeneric state-tsz (object))
 (defgeneric (setf state-tsz) (state-tsz object))
+
+;; 1 classes: payment
+(defgeneric status (object))
+(defgeneric (setf status) (status object))
 
 ;; 2 classes: listing style
 (defgeneric style (object))
@@ -939,7 +1034,7 @@ url-fullxfull
 (defgeneric type-id (object))
 (defgeneric (setf type-id) (type-id object))
 
-;; 1 classes: team
+;; 3 classes: ledger payment team
 (defgeneric update-date (object))
 (defgeneric (setf update-date) (update-date object))
 
@@ -1036,6 +1131,7 @@ url-fullxfull
 
  There appear to be 413 symbols with 240 of them being unique.
 
+(defparameter *api-classes-and-slots*
  '((api-method
     (name uri params defaults type http-method visibility))
 
@@ -1095,6 +1191,13 @@ url-fullxfull
    (forum-post
     (thread-id post-id post user-id last-edit-time create-date))
 
+  (ledger 
+   (ledger-id shop-id currency create-date update-date))
+
+  (ledger-entry
+   (ledger-entry-id ledger-id sequence credit-amount debit-amount entry-type
+    reference-id running-balance create-date))
+
    (listing
     (listing-id state user-id category-id title description creation-tsz ending-tsz
      original-creation-tsz last-modified-tsz price currency-code quantity tags
@@ -1112,6 +1215,13 @@ url-fullxfull
 
    (order
     (order-id user-id creation-tsz))
+
+  (payment
+   (payment-id buyer-user-id shop-id receipt-id amount-gross amount-fees
+    amount-net posted-gross posted-fees posted-net adjusted-gross
+    adjusted-fees adjusted-net currency shipping-user-id
+    shipping-address-id billing-address-id status shipped-date
+    create-date update-date))
 
    (param-list
     (param-name))
@@ -1203,123 +1313,140 @@ url-fullxfull
     (user-profile-id user-id login-name bio gender birth-month birth-day birth-year
      join-tsz materials country-id region city location avatar-id lat lon
      transaction-buy-count transaction-sold-count is-seller image-url-75x75
-     first-name last-name)))
+     first-name last-name))))
 
- all 418 symbols with duplicates as per 
-  (sort (mon:flatten (mapcar #'cadr <BIG-LIST-ABOVE>))  #'string<)
+There appear to be 443 symbols with 259 of them being unique.
+all 443 symbols with duplicates as per 
+ (sort (mon:flatten (mapcar #'cadr <BIG-LIST-ABOVE>))  #'string<)
 
- '(active-date active-listing-count alchemy-message allow-bt allow-cc allow-check
-   allow-mo allow-other allow-paypal amount amount announcement announcement
-   avatar-id avatar-id balance-due bill-charge-id bill-payment-id bio birth-day
-   birth-month birth-year blue blue brightness brightness brightness buyer-email
-   buyer-feedback-id buyer-user-id buyer-user-id buyer-user-id cart-id
-   category-id category-id category-name category-path city city city city city
-   clicks comment-count count country-id country-id country-id country-id
-   country-id country-id country-name counts coupon-code coupon-code coupon-id
-   create-date create-date create-date creation-month creation-month creation-tsz
-   creation-tsz creation-tsz creation-tsz creation-tsz creation-tsz creation-tsz
-   creation-tsz creation-tsz creation-tsz creation-tsz creation-tsz creation-tsz
-   creation-tsz creation-tsz creation-year creation-year creator-user-id
-   currency-code currency-code currency-code currency-code currency-code
-   currency-code currency-code currency-code currency-code currency-code data
-   data-type-values date-due date-overdue description description description
-   description destination-country-id destination-country-id
-   destination-country-id destination-country-name destination-region-id
-   discount-amount discount-amt domestic-only ending-tsz favorite-listing-id
-   favorite-user-id featured-rank feedback-id feedback-info first-line first-line
-   first-line first-line first-name free-shipping full-height full-width ga-code
-   gender grandtotal green green group-id hex-code hex-code homepage hotness
-   hotness-color hue hue hue id image-feedback-id image-id image-listing-id
-   image-url-155x125 image-url-25x25 image-url-75x75 image-url-760x100
-   image-url-fullxfull is-black-and-white is-black-and-white is-black-and-white
-   is-overdue is-refusing-alchemy is-seller is-supply is-vacation
-   iso-country-code join-tsz language language language languages last-edit-time
-   last-modified-tsz last-modified-tsz last-modified-tsz last-name
-   last-updated-tsz lat lat lat listing-active-count listing-id listing-id
-   listing-id listing-id listing-id listing-id listing-id listing-id
-   listing-image-id listing-payment-id listing-state listings listings locale
-   location login-name login-name login-name lon lon lon long-name materials
-   materials materials mature message message-from-buyer message-from-payment
-   message-from-seller message-to-seller meta-description meta-keywords
-   meta-title name name name name name name name name num-children num-favorers
-   num-favorers num-listings occasion order-id order-id origin-country-id
-   origin-country-id origin-country-name original-creation-tsz overdue-balance
-   page-description page-title paid-tsz param-name payment-email payment-method
-   payment-template-id paypal-email pct-discount policy-additional
-   policy-additional policy-payment policy-payment policy-refunds policy-refunds
-   policy-seller-info policy-seller-info policy-shipping policy-shipping
-   policy-updated-tsz policy-welcome policy-welcome post post-id price price
-   price primary-cost primary-cost primary-email purchase-quantity purchase-state
-   quantity quantity rank rank receipt-id receipt-id recipient red red
-   referred-by-user-id region region region-id region-id region-name reports
-   sale-message sale-message saturation saturation saturation score second-line
-   second-line second-line second-line secondary-cost secondary-cost
-   seller-active seller-email seller-feedback-id seller-user-id seller-user-id
-   seller-user-id shares shipped-tsz shipping-carrier shipping-cost shipping-cost
-   shipping-discount-amount shipping-info-id shipping-note
-   shipping-template-entry-id shipping-template-id shipping-template-id
-   shipping-tracking-code shipping-tracking-url shop-id shop-id shop-name
-   shop-name shop-name shop-section-id shop-section-id shop-section-id short-name
-   slug state state state state state state state state-tsz style style style-id
-   subtotal subtotal tag tags tags tags tags tags target-user-id target-user-id
-   tax-cost tax-discount-amount thread-id title title title title title title
-   title title title title total total-balance total-price total-shipping-cost
-   total-tax-cost transaction-buy-count transaction-id transaction-id
-   transaction-sold-count transaction-type treasury-id treasury-owner-id type
-   type type type-id type-id update-date url url url url url url-170x135
-   url-570xn url-75x75 url-fullxfull user-address-id user-avatar-id user-id
-   user-id user-id user-id user-id user-id user-id user-id user-id user-id
-   user-id user-id user-id user-id user-id user-id user-id user-name
-   user-profile-id vacation-autoreply vacation-autoreply vacation-message
-   vacation-message value views views was-paid was-shipped weight when-made
-   who-made world-bank-country-code zip zip zip zip
-   defaults http-method params visibility uri) 
+ (active-date active-listing-count adjusted-fees adjusted-gross adjusted-net
+  alchemy-message allow-bt allow-cc allow-check allow-mo allow-other allow-paypal
+  amount amount amount-fees amount-gross amount-net announcement announcement
+  avatar-id avatar-id balance-due bill-charge-id bill-payment-id
+  billing-address-id bio birth-day birth-month birth-year blue blue brightness
+  brightness brightness buyer-email buyer-feedback-id buyer-user-id buyer-user-id
+  buyer-user-id buyer-user-id cart-id category-id category-id category-name
+  category-path city city city city city clicks comment-count count country-id
+  country-id country-id country-id country-id country-id country-name counts
+  coupon-code coupon-code coupon-id create-date create-date create-date
+  create-date create-date create-date creation-month creation-month creation-tsz
+  creation-tsz creation-tsz creation-tsz creation-tsz creation-tsz creation-tsz
+  creation-tsz creation-tsz creation-tsz creation-tsz creation-tsz creation-tsz
+  creation-tsz creation-tsz creation-year creation-year creator-user-id
+  credit-amount currency currency currency-code currency-code currency-code
+  currency-code currency-code currency-code currency-code currency-code
+  currency-code currency-code data data-type-values date-due date-overdue
+  debit-amount description description description description
+  destination-country-id destination-country-id destination-country-id
+  destination-country-name destination-region-id discount-amount discount-amt
+  domestic-only ending-tsz entry-type favorite-listing-id favorite-user-id
+  featured-rank feedback-id feedback-info first-line first-line first-line
+  first-line first-name free-shipping full-height full-width ga-code gender
+  grandtotal green green group-id hex-code hex-code homepage hotness hotness-color
+  hue hue hue id image-feedback-id image-id image-listing-id image-url-155x125
+  image-url-25x25 image-url-75x75 image-url-760x100 image-url-fullxfull
+  is-black-and-white is-black-and-white is-black-and-white is-overdue
+  is-refusing-alchemy is-seller is-supply is-vacation iso-country-code join-tsz
+  language language language languages last-edit-time last-modified-tsz
+  last-modified-tsz last-modified-tsz last-name last-updated-tsz lat lat lat
+  ledger-entry-id ledger-id ledger-id listing-active-count listing-id listing-id
+  listing-id listing-id listing-id listing-id listing-id listing-id
+  listing-image-id listing-payment-id listing-state listings listings locale
+  location login-name login-name login-name lon lon lon long-name materials
+  materials materials mature message message-from-buyer message-from-payment
+  message-from-seller message-to-seller meta-description meta-keywords meta-title
+  name name name name name name name name num-children num-favorers num-favorers
+  num-listings occasion order-id order-id origin-country-id origin-country-id
+  origin-country-name original-creation-tsz overdue-balance page-description
+  page-title paid-tsz param-name payment-email payment-id payment-method
+  payment-template-id paypal-email pct-discount policy-additional
+  policy-additional policy-payment policy-payment policy-refunds policy-refunds
+  policy-seller-info policy-seller-info policy-shipping policy-shipping
+  policy-updated-tsz policy-welcome policy-welcome post post-id posted-fees
+  posted-gross posted-net price price price primary-cost primary-cost
+  primary-email purchase-quantity purchase-state quantity quantity rank rank
+  receipt-id receipt-id receipt-id recipient red red reference-id
+  referred-by-user-id region region region-id region-id region-name reports
+  running-balance sale-message sale-message saturation saturation saturation score
+  second-line second-line second-line second-line secondary-cost secondary-cost
+  seller-active seller-email seller-feedback-id seller-user-id seller-user-id
+  seller-user-id sequence shares shipped-date shipped-tsz shipping-address-id
+  shipping-carrier shipping-cost shipping-cost shipping-discount-amount
+  shipping-info-id shipping-note shipping-template-entry-id shipping-template-id
+  shipping-template-id shipping-tracking-code shipping-tracking-url
+  shipping-user-id shop-id shop-id shop-id shop-id shop-name shop-name shop-name
+  shop-section-id shop-section-id shop-section-id short-name slug state state
+  state state state state state state-tsz status style style style-id subtotal
+  subtotal tag tags tags tags tags tags target-user-id target-user-id tax-cost
+  tax-discount-amount thread-id title title title title title title title title
+  title title total total-balance total-price total-shipping-cost total-tax-cost
+  transaction-buy-count transaction-id transaction-id transaction-sold-count
+  transaction-type treasury-id treasury-owner-id type type type type-id type-id
+  update-date update-date update-date url url url url url url-170x135 url-570xn
+  url-75x75 url-fullxfull user-address-id user-avatar-id user-id user-id user-id
+  user-id user-id user-id user-id user-id user-id user-id user-id user-id user-id
+  user-id user-id user-id user-id user-name user-profile-id vacation-autoreply
+  vacation-autoreply vacation-message vacation-message value views views was-paid
+  was-shipped weight when-made who-made world-bank-country-code zip zip zip zip)
 
  ---
- our 240 unique symbols 
+ our 259 unique slot-names symbols 
+ (active-date active-listing-count adjusted-fees adjusted-gross adjusted-net
+  alchemy-message allow-bt allow-cc allow-check allow-mo allow-other
+  allow-paypal amount amount-fees amount-gross amount-net
+  announcement avatar-id balance-due bill-charge-id bill-payment-id
+  billing-address-id bio birth-day birth-month birth-year blue
+  brightness buyer-email buyer-feedback-id buyer-user-id cart-id
+  category-id category-name category-path city clicks comment-count
+  count country-id country-name counts coupon-code coupon-id
+  create-date creation-month creation-tsz creation-year
+  creator-user-id credit-amount currency currency-code data
+  data-type-values date-due date-overdue debit-amount description
+  destination-country-id destination-country-name
+  destination-region-id discount-amount discount-amt domestic-only
+  ending-tsz entry-type favorite-listing-id favorite-user-id
+  featured-rank feedback-id feedback-info first-line first-name
+  free-shipping full-height full-width ga-code gender grandtotal
+  green group-id hex-code homepage hotness hotness-color hue id
+  image-feedback-id image-id image-listing-id image-url-155x125
+  image-url-25x25 image-url-75x75 image-url-760x100
+  image-url-fullxfull is-black-and-white is-overdue
+  is-refusing-alchemy is-seller is-supply is-vacation
+  iso-country-code join-tsz language languages last-edit-time
+  last-modified-tsz last-name last-updated-tsz lat ledger-entry-id
+  ledger-id listing-active-count listing-id listing-image-id
+  listing-payment-id listing-state listings locale location
+  login-name lon long-name materials mature message
+  message-from-buyer message-from-payment message-from-seller
+  message-to-seller meta-description meta-keywords meta-title name
+  num-children num-favorers num-listings occasion order-id
+  origin-country-id origin-country-name original-creation-tsz
+  overdue-balance page-description page-title paid-tsz param-name
+  payment-email payment-id payment-method payment-template-id
+  paypal-email pct-discount policy-additional policy-payment
+  policy-refunds policy-seller-info policy-shipping
+  policy-updated-tsz policy-welcome post post-id posted-fees
+  posted-gross posted-net price primary-cost primary-email
+  purchase-quantity purchase-state quantity rank receipt-id
+  recipient red reference-id referred-by-user-id region region-id
+  region-name reports running-balance sale-message saturation score
+  second-line secondary-cost seller-active seller-email
+  seller-feedback-id seller-user-id sequence shares shipped-date
+  shipped-tsz shipping-address-id shipping-carrier shipping-cost
+  shipping-discount-amount shipping-info-id shipping-note
+  shipping-template-entry-id shipping-template-id
+  shipping-tracking-code shipping-tracking-url shipping-user-id
+  shop-id shop-name shop-section-id short-name slug state state-tsz
+  status style style-id subtotal tag tags target-user-id tax-cost
+  tax-discount-amount thread-id title total total-balance
+  total-price total-shipping-cost total-tax-cost
+  transaction-buy-count transaction-id transaction-sold-count
+  transaction-type treasury-id treasury-owner-id type type-id
+  update-date url url-170x135 url-570xn url-75x75 url-fullxfull
+  user-address-id user-avatar-id user-id user-name user-profile-id
+  vacation-autoreply vacation-message value views was-paid
+  was-shipped weight when-made who-made world-bank-country-code zip)
 
- (active-date active-listing-count alchemy-message allow-bt allow-cc allow-check
-  allow-mo allow-other allow-paypal amount announcement avatar-id balance-due
-  bill-charge-id bill-payment-id bio birth-day birth-month birth-year blue
-  brightness buyer-email buyer-feedback-id buyer-user-id cart-id category-id
-  category-name category-path city clicks comment-count count country-id
-  country-name counts coupon-code coupon-id create-date creation-month
-  creation-tsz creation-year creator-user-id currency-code data data-type-values
-  date-due date-overdue description destination-country-id
-  destination-country-name destination-region-id discount-amount discount-amt
-  domestic-only ending-tsz favorite-listing-id favorite-user-id featured-rank
-  feedback-id feedback-info first-line first-name free-shipping full-height
-  full-width ga-code gender grandtotal green group-id hex-code homepage hotness
-  hotness-color hue id image-feedback-id image-id image-listing-id
-  image-url-155x125 image-url-25x25 image-url-75x75 image-url-760x100
-  image-url-fullxfull is-black-and-white is-overdue is-refusing-alchemy
-  is-seller is-supply is-vacation iso-country-code join-tsz language languages
-  last-edit-time last-modified-tsz last-name last-updated-tsz lat
-  listing-active-count listing-id listing-image-id listing-payment-id
-  listing-state listings locale location login-name lon long-name materials
-  mature message message-from-buyer message-from-payment message-from-seller
-  message-to-seller meta-description meta-keywords meta-title name num-children
-  num-favorers num-listings occasion order-id origin-country-id
-  origin-country-name original-creation-tsz overdue-balance page-description
-  page-title paid-tsz param-name payment-email payment-method
-  payment-template-id paypal-email pct-discount policy-additional policy-payment
-  policy-refunds policy-seller-info policy-shipping policy-updated-tsz
-  policy-welcome post post-id price primary-cost primary-email purchase-quantity
-  purchase-state quantity rank receipt-id recipient red referred-by-user-id
-  region region-id region-name reports sale-message saturation score second-line
-  secondary-cost seller-active seller-email seller-feedback-id seller-user-id
-  shares shipped-tsz shipping-carrier shipping-cost shipping-discount-amount
-  shipping-info-id shipping-note shipping-template-entry-id shipping-template-id
-  shipping-tracking-code shipping-tracking-url shop-id shop-name shop-section-id
-  short-name slug state state-tsz style style-id subtotal tag tags
-  target-user-id tax-cost tax-discount-amount thread-id title total
-  total-balance total-price total-shipping-cost total-tax-cost
-  transaction-buy-count transaction-id transaction-sold-count transaction-type
-  treasury-id treasury-owner-id type type-id update-date url url-170x135
-  url-570xn url-75x75 url-fullxfull user-address-id user-avatar-id user-id
-  user-name user-profile-id vacation-autoreply vacation-message value views
-  was-paid was-shipped weight when-made who-made world-bank-country-code zip
-  defaults http-method params visibility uri)
 
  ---
  counting occurences of each symbol with mon:freqs
@@ -1327,7 +1454,7 @@ url-fullxfull
  (loop 
    with ht = (make-hash-table)
    with rtn = ()
-   for (key . val) in (mon:freqs '<408-SLOT-LIST>)
+   for (key . val) in (mon:freqs '<443-SLOT-LIST>)
    do (multiple-value-bind (set foundp) (gethash val ht)
         (if foundp
             (if set
