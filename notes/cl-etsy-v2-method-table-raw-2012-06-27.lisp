@@ -169,6 +169,7 @@ Used in conjunction with the JSONP output format to specify a callback function 
 ApiMethod
 Int
 String
+Dict
 
 Country
  - "findAllCountry", "getCountry"
@@ -201,8 +202,9 @@ UserAddress
   (format v ":API-CLASSES")
   (dolist (i '("Avatar" "BillCharge" "BillingOverview" "BillPayment" "Cart" "CartListing"
                "Category" "Country" "Coupon" "DataType" "FavoriteListing" "FavoriteUser"
-               "FeaturedTreasury" "Feedback" "FeedbackInfo" "ForumPost" "Listing"
-               "ListingImage" "ListingTranslation" "Order" "ParamList" "PaymentTemplate"
+               "FeaturedTreasury" "Feedback" "FeedbackInfo" "ForumPost"
+               "Ledger" "LedgerEntry" "Listing"
+               "ListingImage" "ListingTranslation" "Order" "ParamList" "Payment" "PaymentTemplate"
                "Receipt" "Region" "ShippingInfo" "ShippingTemplate" "ShippingTemplateEntry"
                "Shop" "ShopSection" "ShopSectionTranslation" "ShopTranslation" "Style" "Tag"
                "Team" "Transaction" "Treasury" "TreasuryCounts" "TreasuryListing"
@@ -904,8 +906,7 @@ UserAddress
    (:VISIBILITY   . "private")
    (:HTTP-METHOD  . "GET"))
 
-  ;; !!!!     
-  ((:NAME        . "findPayment")
+   ((:NAME        . "findPayment")
    (:DESCRIPTION . "Get a Direct Checkout Payment")
    (:URI         . "/payments/:payment_id")
    (:PARAMS
@@ -1482,7 +1483,6 @@ UserAddress
    (:VISIBILITY   . "private")
    (:HTTP-METHOD  . "DELETE"))
 
-  ;; !!!!     
   ((:NAME        . "findLedger")
    (:DESCRIPTION . "Get a Shop Payment Account Ledger")
    (:URI         . "/shops/:shop_id/ledger/")
@@ -1493,7 +1493,6 @@ UserAddress
    (:VISIBILITY   . "private")
    (:HTTP-METHOD  . "GET"))
 
-  ;; !!!!
   ((:NAME        . "findLedgerEntries")
    (:DESCRIPTION . "Get a Shop Payment Account Ledger's Entries")
    (:URI         . "/shops/:shop_id/ledger/entries")
@@ -2679,6 +2678,7 @@ UserAddress
  ---
  The 43 distinct types (or 152 total) returned by the etsy API methods:
  :NOTE "String" is not particularly useful/informative as only the ping API method has this type.
+ :NOTE "Dict" is also a potential type 2012-07-23. Maybe they will remove it though ???
 
  (loop 
    for method in *api-method-table*

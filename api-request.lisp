@@ -121,6 +121,9 @@ Following errors successfully:
 
 
 (defun %parsed-api-call-values (parsed-response object-as)
+"Return the keys of a succesfully parsed Etsy API method call as as cl:values.
+Values are returned in the following order for these keys:
+ :results :count :type :params :pagination"
   (declare (parsed-object-type object-as))
   (ecase object-as
     (:alist 

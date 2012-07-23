@@ -7,6 +7,9 @@
 
  (URL `http://www.etsy.com/developers/documentation/reference/apimethod')
 
+:NOTE Each successfully parsed Etsy API method call returns the following keys:
+ :results, :count, :type, :params, :pagination
+
 ----
 API-METHODS
 
