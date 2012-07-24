@@ -8,6 +8,72 @@
 
 (in-package #:cl-etsy)
 
+(symbol-munger::english->studly-case (substitute #\Space #\- (string 'favorite-listing)))
+
+;; (equal (api-class-name-as-studly-caps-string 'favorite-listing) "FavoriteListing")
+(defun api-class-name-as-studly-caps-string (api-class-symbol)
+  "Convert API-CLASS-SYMBOL to a studly caps string.
+:EXAMPLE
+\(equal \(api-class-name-as-studly-caps-string 'favorite-listing\) \"FavoriteListing\"\)
+:SEE-ALSO `api-class-slot-name-as-underscored-string', `api-class-slot-name-as-lispy-string'."
+  (symbol-munger::english->studly-case (substitute #\Space #\- (string api-class-symbol))))
+
+(defun api-class-slot-name-as-lispy-string (api-class-slot-name)
+  "Return the cl:string representation of symbol API-CLASS-SLOT-NAME.
+:SEE-ALSO `api-class-slot-name-as-lispy-strings'."
+  (string api-class-slot-name))
+
+(defun api-class-slot-name-as-underscored-string (api-class-slot-name)
+    "Convert API-CLASS-SLOT-NAME to an underscored string.
+:EXAMPLE
+ \(equal \(api-class-slot-name-as-underscored-string 'listing-id\) \"listing_id\"\)
+:SEE-ALSO `api-class-slot-names-as-underscored-strings', `api-class-name-as-studly-caps-string'
+`api-class-slot-name-as-lispy-string'."
+  (symbol-munger:lisp->underscores api-class-slot-name))
+
+(defun %each-a-string-p (string-list)
+  (every #'(lambda (x) (and (stringp x) 
+                            (not (zerop (length x)))))
+         string-list))
+
+(defun %each-a-symbol-p (symbol-list)
+  (every #'(lambda (sym) (and (symbolp t) 
+                              (not (typep sym 'boolean))))
+             symbol-list))
+
+(defun api-string-or-symbol-list-hash-for-object-key-fn (string-or-symbol-list munging-function 
+                                                         &key (hash-table *api-response-string-symbol-hash-for-object-key-fn*)
+                                                              element-type)
+  "STRING-OR-SYMBOL-LIST is a proper list with every element of type string or symbol but not both.
+MUNGING-FUNCTION is a function designator for a function wich accepts a
+single argument a string or symbol and returns a symbol or string equivalent.
+HASH-TABLE is a hash-table to cache symbol/string and string/symbol mappings generated with MUNGING-FUNCTION.
+Default is value of `*api-response-string-symbol-hash-for-object-key-fn*'.
+Keyword ELEMENT-TYPE designates whether every element of is a string or symbol.
+Valid argumetns are one of :string or :symbol
+When STRING-OR-SYMBOL is :symbol the elements of STRING-OR-SYMBOL-LIST must not contain the symbol T or nil.
+When STRING-OR-SYMBOL is :string the elements of STRING-OR-SYMBOL-LIST must not contain the empty string.
+:SEE-ALSO "
+  (declare ((or (eql :string) (eql :symbol)) element-type))
+  (ecase element-type
+    ;; (null (error ":FUNCTION `api-string-or-symbol-list-hash-for-object-key-fn'~% ~
+    ;;                -- argument to keyword ELEMENT-TYPE was null but must be either :string or :symbol"))
+    (:string 
+     (assert (%each-a-string-p string-or-symbol-list)))
+    (:symbol
+     (assert (%each-a-symbol-p string-or-symbol-list))))
+  (loop 
+    for api-string-or-symbol in string-or-symbol-list
+    for munged = (funcall munging-function api-string-or-symbol)
+    do (multiple-value-bind (val foundp) (gethash api-string-or-symbol hash-table)
+         (unless (and val foundp)
+           (setf (gethash api-string-or-symbol hash-table)
+                 munged)))
+       (multiple-value-bind (val foundp) (gethash munged hash-table)
+         (unless (and val foundp)
+           (setf (gethash munged hash-table)
+                 api-string-or-symbol)))))
+
 (defun %api-class-slot-freqs (seq &key (test #'eql) (key #'identity))
   (declare (sequence seq)
            (cl:type (function (t t) t) test)

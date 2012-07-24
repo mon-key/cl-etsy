@@ -1,63 +1,60 @@
 ;;; :FILE-CREATED <Timestamp: #{2012-07-21T16:37:24-04:00Z}#{12296} - by MON>
-;;; :FILE cl-etsy/api-response.lisp
+;;; :FILE #P"cl-etsy/api-response.lisp"
 ;;; ==============================
+
+#|
+
+|#
 
 (in-package #:cl-etsy)
 
-(defun ensure-api-class-finalized (class)
+
+(defun ensure-api-class-finalized (api-class)
   ;; By default cl:find-class errors when class does not exist.
-  (let ((found-class (find-class class)))
+  (let ((found-class (find-class api-class)))
     (if (closer-mop:class-finalized-p found-class)
         found-class
         (closer-mop:ensure-finalized found-class))))
 
-(defun api-class-direct-slot-definition-names (class)
+(defun api-class-direct-slot-definition-names (api-class)
   ;; 
   (map 'list #'closer-mop:slot-definition-name
-       (closer-mop:class-direct-slots (ensure-api-class-finalized class))))
+       (closer-mop:class-direct-slots (ensure-api-class-finalized api-class))))
 
-(defun api-class-slot-names-as-lispy-strings (class)
+(defun api-class-slot-names-as-lispy-strings (api-class)
   ;; (api-class-slot-names-as-lispy-strings 'api-method)
-  (map 'list #'string
-       (api-class-direct-slot-definition-names class)))
+  (map 'list #'api-class-slot-name-as-lispy-string
+       (api-class-direct-slot-definition-names api-class)))
 
 ;; (symbol-munger:lisp->underscores 
-(defun api-class-slot-names-as-underscored-strings (class)
-  (map 'list #'symbol-munger:lisp->underscores
-       (api-class-direct-slot-definition-names class)))
-
-(defun api-response-hash-string-list-for-object-key-fn (string-list munging-function)
-  (loop 
-    for api-string in string-list
-    for munged = (funcall munging-function api-string)
-    do (multiple-value-bind (val foundp) (gethash api-string *api-response-string-symbol-hash-for-object-key-fn*)
-         (unless (and val foundp)
-           (setf (gethash api-string *api-response-string-symbol-hash-for-object-key-fn*)
-                 munged)))
-       (multiple-value-bind (val foundp) (gethash munged *api-response-string-symbol-hash-for-object-key-fn*)
-         (unless (and val foundp)
-           (setf (gethash munged *api-response-string-symbol-hash-for-object-key-fn*)
-                 api-string)))))
+(defun api-class-slot-names-as-underscored-strings (api-class)
+  (map 'list #'api-class-slot-name-as-underscored-string
+       (api-class-direct-slot-definition-names api-class)))
 
 (defun api-response-string-to-symbol-lookup (string)
   (or (gethash string *api-response-string-symbol-hash-for-object-key-fn*)
       string))
 
+;; (gethash "pagination" *api-response-string-symbol-hash-for-object-key-fn*)
+
 ;; Once we start evaluating #'api-class-slot-names-as-underscored-strings
 ;; the following form will need to come _after_ the ASDF api-class component.
 (eval-when (:compile-toplevel :load-toplevel :execute)
   ;; standard response value
-  (api-response-hash-string-list-for-object-key-fn
-   '("pagination" ; :PAGINATION
+  (api-string-or-symbol-list-hash-for-object-key-fn
+   (list
+    "pagination" ; :PAGINATION
      "type"       ; :TYPE 
      "params"     ; :PARAMS 
      "count"      ; :COUNT
      "results")   ; :RESULTS
-   #'symbol-munger:underscores->keyword)
+   #'symbol-munger:underscores->keyword
+   :element-type :string)
   
   ;; api-method class
-  (api-response-hash-string-list-for-object-key-fn
-   '("name"
+  (api-string-or-symbol-list-hash-for-object-key-fn
+   (list
+    "name"
      "description"
      "uri"
      "params"
@@ -65,19 +62,31 @@
      "type"
      "visibility"
      "http_method")
-   #'symbol-munger:underscores->keyword)
+   #'symbol-munger:underscores->keyword
+   :element-type :string)
 
   ;; standard parameter types
-  (api-response-hash-string-list-for-object-key-fn
-   '("page" 
-     "offset"
-     "limit")
-   #'symbol-munger:underscores->keyword)
+  (api-string-or-symbol-list-hash-for-object-key-fn
+   (list 
+    "page" 
+    "offset"
+    "limit")
+   #'symbol-munger:underscores->keyword
+   :element-type :string)
 
-
+  ;; AFAIK these don't appear in the car position of a response object but we
+  ;; can prob. safely add them to the hash none-the-less
+  ;; (api-string-or-symbol-list-hash-for-object-key-fn
+  ;;  (list 
+  ;;   "public"
+  ;;   "private")
+  ;; #'symbol-munger:underscores->keyword
+  ;; :element-type :string)
+         
   ;; (cadadr '(api-class-slot-names-as-underscored-strings 'avatar))
 
   ;; (api-class-slot-names-as-underscored-strings 'avatar)
+  ;; (api-class-slot-names-as-underscored-strings 'api-method)
   ;; (api-class-slot-names-as-underscored-strings 'bill-charge)
   ;; (api-class-slot-names-as-underscored-strings 'billing-overview)
   ;; (api-class-slot-names-as-underscored-strings 'bill-payment)
@@ -98,6 +107,7 @@
   ;; (substitute "url_570xN" "url_570xn" (api-class-slot-names-as-underscored-strings 'listing-image) :test #'string=)
   ;; (api-class-slot-names-as-underscored-strings 'listing-translation)
   ;; (api-class-slot-names-as-underscored-strings 'order)
+  ;; (api-class-slot-names-as-underscored-strings 'param-list)
   ;; (api-class-slot-names-as-underscored-strings 'payment)
   ;; (api-class-slot-names-as-underscored-strings 'payment-template)
   ;; (api-class-slot-names-as-underscored-strings 'receipt)
