@@ -96,7 +96,8 @@
 
 (in-package #:cl-etsy)
 
-(defvar *api-random-state* (make-random-state))
+
+;; (defvar *api-random-state* (make-random-state))
 
 (defun get-access-token-endpoint ()
   (concatenate 'string *base-url* "/oauth/access_token"))
