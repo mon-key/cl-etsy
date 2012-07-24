@@ -26,34 +26,39 @@ Valid settings are either:
 
   Developers will need to authenticate their OAuth-based apps separately against the sandbox API.
   OAuth tokens obtained from the sandbox API will not work with the production API.\"
-:SEE-ALSO `set-etsy-environment', `etsy-environment'.
-:SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_entry_points')")
+:SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_entry_points')
+:SEE-ALSO `set-etsy-environment', `etsy-environment'.")
 
 (defvar *api-key* "You need to set your *API-KEY*"
 "This can be found at: (URL `https://www.etsy.com/developers/your-apps')
-:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*', `make-api-consumer-token', `set-api-consumer-token'.")
+:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
+`*api-default-permission-scope*', `make-api-consumer-token',
+`set-api-consumer-token'.")
 
 (defvar *api-shared-secret* "You need to set your *api-shared-secret*"
 "This can be found at: (URL `https://www.etsy.com/developers/your-apps')
 :SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
-`make-api-consumer-token', `set-api-consumer-token'.")
+`*api-default-permission-scope*', `make-api-consumer-token',
+`set-api-consumer-token'.")
 
 (defvar *api-consumer-token* nil
   "A `cl-auth:consumer-token' object generated with `make-api-consumer-token'.
 Value should be set at runtime with `set-api-consumer-token'.
 :SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
-`make-api-consumer-token', `set-api-consumer-token'.")
-
-(defvar *api-request-token* nil)
-
-(defvar *api-access-token* nil)
+`*api-default-permission-scope*', `make-api-consumer-token', `set-api-consumer-token'.")
 
 (defvar *api-default-permission-scope* 
   (list "email_r" "listings_r" "listings_w" "listings_d" "transactions_r"
         "transactions_w" "billing_r" "profile_r" "profile_w" "address_r" "address_w"
         "favorites_rw" "shops_rw" "cart_rw" "recommend_rw" "feedback_r" "treasury_w")
-  "The default permission-scope's we request authorization to consume.
-For use with `get-default-permission-scope-parameter'.")
+  "The default Etsy API permission-scope's we request authorization for API method calls to consume.
+For use with `get-default-permission-scope-parameter'.
+:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
+`*api-default-permission-scope*', `make-api-consumer-token', `set-api-consumer-token'.")
+
+(defvar *api-request-token* nil)
+
+(defvar *api-access-token* nil)
 
 ;; :NOTE make-api-consumer-token and set-api-consumer-token should stay with
 ;; this file b/c they depend on the initial string values of *api-key* and
@@ -177,7 +182,20 @@ KEY and SECRET keyword arguments of `cl-oauth:make-consumer-token'.
      ("WF" . "WALLIS AND FUTUNA") ("EH" . "WESTERN SAHARA") ("YE" . "YEMEN")
      ("ZM" . "ZAMBIA") ("ZW" . "ZIMBABWE"))
     do (setf (gethash code ht) country)
-    finally (return ht)))
+    finally (return ht))
+"A proper alist of ISO 3166 Country codes.
+Each element of alist is acons of the form:
+ \(\"<AA>\" . \"<COUNTRY-NAME>\"\)
+Element at car of each cons is a string comprised of two characters representing
+the country code of a country with each character of the string satisfying
+`cl:upper-case-p'.
+Element at cdr of each cons is a string designating the country name to which
+the country code corresponds with each character of the string satisfying
+`cl:upper-case-p'.
+:NOTE The Etsy API may not recognize all elements of this list as valid country codes.
+:SEE-ALSO `language-code-p', `iso-4217-code-p', `iso-3166-1-alpha-2-code-p',
+`*iso-4217-codes*' `*iso-3166-1-alpha-2-codes*' `language', `currency',
+`region'.")
 
 (defvar *iso-4217-codes* 
   (loop 
@@ -260,7 +278,19 @@ KEY and SECRET keyword arguments of `cl-oauth:make-consumer-token'.
          ("ZAR" . "South Africa Rand") ("ZMK" . "Zambia Kwacha")
          ("ZWD" . "Zimbabwe Dollar"))
     do (setf (gethash code ht) country)
-    finally (return ht)))
+    finally (return ht))
+"A proper alist of ISO 4217 currency codes.
+Each element of alist is a cons with the format:
+ \(\"<AAA>\" . \"<COUNTRY-NAME>\"\)
+The element at car of each cons is a string comprised of three characters
+representing the currency code of a country each character of string should
+satisfy `cl:upper-case-p'.
+The element at cdr of each cons is a string designating the long form name of the
+currency to which the currency code corresponds.
+:NOTE The Etsy API may not recognize all elements of this list as valid currency codes.
+:SEE-ALSO `language-code-p', `iso-4217-code-p', `iso-3166-1-alpha-2-code-p',
+`*iso-4217-codes*' `*iso-3166-1-alpha-2-codes*' `language', `currency',
+`region'.")
 
 (defparameter *api-classes-and-slots*
   '((api-method
@@ -445,16 +475,23 @@ KEY and SECRET keyword arguments of `cl-oauth:make-consumer-token'.
       join-tsz materials country-id region city location avatar-id lat lon
       transaction-buy-count transaction-sold-count is-seller image-url-75x75
       first-name last-name)))
-  "A list symbols each element of list has the form:
-    (api-class (slots-of-api-class ...))
+  "A proper list of symbols feach element of list has the form:
+Each element of the proper-list CLASS-WITH-CLASS-SLOT-LIST is a two
+element list with each element of the list having the form:
+ (<API-CLASS> (<SLOTS-OF-API-CLASS> ...))
+where <API-CLASS> is a symbol designating a class modeling some aspect of an Etsy API response
+where <SLOTS-OF-API-CLASS> is a list of symbols designating the the slots of <API-CLASS>.
 Used for generating defgeneric forms of cl-etsy/api-class/etsy-class-generic.lisp
-with `api-class-output-defgeneric-forms'.")
+with `api-class-output-defgeneric-forms'
+:SEE-ALSO `api-class-all-direct-slots', `api-class-all-direct-slot-name-stats',
+`api-class-output-defgeneric-forms', `*api-classes-and-slots*'.")
 
 (defparameter *api-response-string-symbol-hash-for-object-key-fn* (make-hash-table :test #'equal)
   "Hash-table mapping Etsy API strings to Lispy symbols/keywords.
 :EXAMPLE
  \(gethash \"type\" *api-response-string-symbol-hash-for-object-key-fn*\)
  \(gethash :type *api-response-string-symbol-hash-for-object-key-fn*\)")
+
 
 ;;; ==============================
 ;;; EOF

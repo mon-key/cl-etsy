@@ -9,42 +9,50 @@
 (in-package #:cl-etsy)
 
 (defun %api-class-slot-freqs (seq &key (test #'eql) (key #'identity))
-   (declare (sequence seq)
-            (cl:type (function (t t) t) test)
-            (cl:type (function (t) t) key)
-            (optimize (speed 3)))
-   #-sbcl (assert (sequencep seq))
-   (unless (zerop (length seq));(sequence-zerop seq)
-     (sort
-      (reduce #'(lambda (res el)
-                  (let ((fi (assoc el res :test test)))
-                    (cond (fi
-                           (incf (cdr fi))
-                           res)
-                          ((acons el 1 res)))))
-              seq :key key :initial-value nil)
-      #'> :key #'cdr)))
+  (declare (sequence seq)
+           (cl:type (function (t t) t) test)
+           (cl:type (function (t) t) key)
+           (optimize (speed 3)))
+  (assert (typep seq 'sequence))
+  (unless (zerop (length seq))
+    (sort
+     (reduce #'(lambda (res el)
+                 (let ((fi (assoc el res :test test)))
+                   (cond (fi
+                          (incf (cdr fi))
+                          res)
+                         ((acons el 1 res)))))
+             seq :key key :initial-value nil)
+     #'> :key #'cdr)))
 
- (defun api-class-all-direct-slots (&key (class-with-class-slot-list *api-classes-and-slots*))
-   ;; nth-value 0 is a list of all direct slots including duplicates
-   ;; nth-value 1 is a list of all direct slots with duplicates removed
-   ;; nth-value 3 is a cons - its car is the count of nth-value 0 its cdr is the cnt of nth-value 1
-   (loop 
-     with dups = ()
-     for (class slots) in class-with-class-slot-list
-     for dup = (loop 
-                 for slot in slots
-                 summing (or (and (find slot gthr) 0)
-                             (and (push slot dups) 1)))
-     summing (length slots) into cnt
-     summing dup into dup-cnt
-     appending slots into gthr
-     finally (return (values (sort gthr #'string<) 
-                             (sort dups #'string<)
-                             (cons cnt dup-cnt)))))
+(defun api-class-all-direct-slots (&key (class-with-class-slot-list *api-classes-and-slots*))
+  "Return as cl:values all slot components of the proper-list CLASS-WITH-CLASS-SLOT-LIST.
+ - nth-value 0 is a sorted list of symbols (including duplicates) each of which designates a direct slot
+   in one or more of the <API-CLASS> classes in car of each element of CLASS-WITH-CLASS-SLOT-LIST
+ - nth-value 1 is a sorted list of all direct slots with duplicates removed
+ - nth-value 3 is a cons - car is the count of nth-value 0, cdr is the count of nth-value 1
+CLASS-WITH-CLASS-SLOT-LIST is a proper list structured as per `*api-classes-and-slots*'. 
+:SEE-ALSO `api-class-all-direct-slots', `api-class-all-direct-slot-name-stats',
+`api-class-output-defgeneric-forms', `*api-classes-and-slots*'."
+  (loop 
+    with dups = ()
+    for (class slots) in class-with-class-slot-list
+    for dup = (loop 
+                for slot in slots
+                summing (or (and (find slot gthr) 0)
+                            (and (push slot dups) 1)))
+    summing (length slots) into cnt
+    summing dup into dup-cnt
+    appending slots into gthr
+    finally (return (values (sort gthr #'string<) 
+                            (sort dups #'string<)
+                            (cons cnt dup-cnt)))))
 
 (defun api-class-all-direct-slot-name-stats (&key (class-with-class-slot-list *api-classes-and-slots*))
-  ;; Return stats for the slot-names of CLASS-WITH-CLASS-SLOT-LIST.
+  "Return stats for the slot-names of CLASS-WITH-CLASS-SLOT-LIST.
+CLASS-WITH-CLASS-SLOT-LIST is a proper list structured as per `*api-classes-and-slots*'.
+:SEE-ALSO `api-class-all-direct-slots', `api-class-all-direct-slot-name-stats',
+`api-class-output-defgeneric-forms', `*api-classes-and-slots*'."
   (let (all-slots unique-slots slot-counts)
     (multiple-value-bind (all unique counts)
         (api-class-all-direct-slots :class-with-class-slot-list class-with-class-slot-list)
@@ -71,12 +79,25 @@
                                     :total-slots-count  (cdr slot-counts)
                                     :unique-slots unique-slots))))))
 
+
 (defun api-class-output-defgeneric-forms (&key (class-with-class-slot-list *api-classes-and-slots*)
                                                (output-stream nil))
-  ;; class-with-class-slot-list is a proper-list the elements of which are
-  ;; symbols with each element of the list having the form:
-  ;; (api-class (slots-of-api-class ...))
-  ;; output-stream is a stream
+  "Output defgeneric forms for accessors of each unique slot in CLASS-WITH-CLASS-SLOT-LIST.
+CLASS-WITH-CLASS-SLOT-LIST is a proper list structured as per `*api-classes-and-slots*'.
+OUTPUT-STREAM is a valid output stream. 
+For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
+
+ ;; <N> classes: <API-CLASS>*
+ (defgeneric <API-CLASS-SLOT> (object))
+ (defgeneric (setf <API-CLASS-SLOT>) (<API-CLASS-SLOT> object))
+
+ - <API-CLASS-SLOT> is a symbol designating an accessor for a slot. 
+   <API-CLASS-SLOT> is used as the setf argument in the generic function lambda list.
+ - <N> is a count of the api-class(es) the <API-CLASS-SLOT> appears in
+ - <API-CLASS>* is an enumeration of the <N> api-class(es)
+
+:SEE-ALSO `api-class-all-direct-slots', `api-class-all-direct-slot-name-stats',
+`api-class-output-defgeneric-forms', `*api-classes-and-slots*'."
   (declare ((or boolean stream) output-stream)
            (cons class-with-class-slot-list))
   (loop 
@@ -99,9 +120,8 @@
                         (let ((*print-right-margin* 360))
                           (loop for (srtd-slot  srtd-clss) in gthr
                                 do (format output-stream "~%;; ~D classes: ~{~A~^ ~}~%(defgeneric ~S (object))~%(defgeneric (setf ~S) (~S object))~%" 
-                                           (length srtd-clss) srtd-clss srtd-slot srtd-slot srtd-slot)))
-                        ;; (format t "~:{ ~2%slot-name: ~S~%~2Tclasses: ~S~}" gthr)
-                ))))
+                                           (length srtd-clss) srtd-clss srtd-slot srtd-slot srtd-slot)))))))
+
 
 ;;; ==============================
 ;;; EOF
