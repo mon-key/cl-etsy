@@ -55,13 +55,14 @@
 (defun api-string-or-symbol-list-hash-for-object-key-fn (string-or-symbol-list munging-function 
                                                          &key (hash-table *api-response-string-symbol-hash-for-object-key-fn*)
                                                               element-type)
-  "STRING-OR-SYMBOL-LIST is a proper list with every element of type string or symbol but not both.
+  "Return as cl:values `cl:hash-table-count' of HASH-TABLE befor hashing strings/symbols and the count after.
+STRING-OR-SYMBOL-LIST is a proper list with every element of type string or symbol but not both.
 MUNGING-FUNCTION is a function designator for a function wich accepts a
 single argument a string or symbol and returns a symbol or string equivalent.
 HASH-TABLE is a hash-table to cache symbol/string and string/symbol mappings generated with MUNGING-FUNCTION.
 Default is value of `*api-response-string-symbol-hash-for-object-key-fn*'.
 Keyword ELEMENT-TYPE designates whether every element of is a string or symbol.
-Valid argumetns are one of :string or :symbol
+Valid arguments are one of :string or :symbol
 When STRING-OR-SYMBOL is :symbol the elements of STRING-OR-SYMBOL-LIST must not contain the symbol T or nil.
 When STRING-OR-SYMBOL is :string the elements of STRING-OR-SYMBOL-LIST must not contain the empty string.
 :SEE-ALSO "
@@ -74,6 +75,7 @@ When STRING-OR-SYMBOL is :string the elements of STRING-OR-SYMBOL-LIST must not 
     (:symbol
      (assert (%each-a-symbol-p string-or-symbol-list))))
   (loop 
+    with start-hash-count = (hash-table-count hash-table)
     for api-string-or-symbol in string-or-symbol-list
     for munged = (funcall munging-function api-string-or-symbol)
     do (multiple-value-bind (val foundp) (gethash api-string-or-symbol hash-table)
@@ -83,7 +85,8 @@ When STRING-OR-SYMBOL is :string the elements of STRING-OR-SYMBOL-LIST must not 
        (multiple-value-bind (val foundp) (gethash munged hash-table)
          (unless (and val foundp)
            (setf (gethash munged hash-table)
-                 api-string-or-symbol)))))
+                 api-string-or-symbol)))
+    finally (return (values start-hash-count (hash-table-count hash-table)))))
 
 
 ;;; ==============================
@@ -106,18 +109,26 @@ Return a list of symbols designating the slot-names of the direct-slot of API-CL
   (map 'list #'closer-mop:slot-definition-name
        (closer-mop:class-direct-slots (ensure-api-class-finalized api-class))))
 
-;; (cadr (assoc 'api-method *api-classes-and-slots*))
-;; (api-class-direct-slot-definition-names 'api-method)
-(loop 
-  for api-class in (mapcar #'car *api-classes-and-slots*)
-  for direct-slots = (api-class-direct-slot-definition-names api-class)
-  for hardwired = (cadr (assoc api-class *api-classes-and-slots*))
-  for set-diff = (set-difference direct-slots hardwired)
-  collect (list api-class :difference set-diff))
+;; :TODO Add function which invokes cl:warn when list element returned from the
+;; following function has a non-null value for :difference.
+(defun api-class-direct-slot-definition-names-compare (&optional (api-class-list (mapcar #'car *api-classes-and-slots*)))
+  "Return a list of class-names and any set-difference between 
+the return value of of `api-class-direct-slot-definition-names' and 
+the class slot-names specified in the cadr of each element of API-CLASS-LIST.
+Each element of return value as the form:
+ \(<API-CLASS-NAME> :difference \( <SLOT-NAME>* \)\)
+:EXAMPLE 
+ \(api-class-direct-slot-definition-names-compare\)
+ \(api-class-direct-slot-definition-names-compare '\(api-method\)\)"
+  (declare ((and list (not null)) api-class-list))
+  (assert (typep api-class-list '(and list (not null))))
+  (loop 
+    for api-class in api-class-list
+    for direct-slots = (api-class-direct-slot-definition-names api-class)
+    for hardwired = (cadr (assoc api-class *api-classes-and-slots*))
+    for set-diff = (set-difference direct-slots hardwired)
+    collect (list api-class :difference set-diff)))
 
-;; (set-difference (api-class-direct-slot-definition-names 'api-method)
-;;                 (cadr (assoc 'api-method *api-classes-and-slots*))
-;;                 )
 
 (defun api-class-direct-slot-definition-initarg-names (api-class)
 "API-CLASS is a symbol designating a class modeling aspects of an Etsy API representation.
@@ -195,6 +206,9 @@ Return a list of conses of the form:
 ;; We can't reasonably finalize an api-class prior to the establishing a
 ;; defclass form for the class!
 (eval-when (:compile-toplevel :load-toplevel :execute)
+  ;; We want mappings for standard response value and api-method params in our
+  ;; environment early... like now.
+
   ;; standard response value
   (api-string-or-symbol-list-hash-for-object-key-fn
    (list
@@ -225,6 +239,10 @@ Return a list of conses of the form:
    (list  "page" "offset" "limit")
    #'symbol-munger:underscores->keyword
    :element-type :string)
+  
+  ;; this form must come after api-request.lisp
+  ;;
+  ;; (api-method-unique-parameter-names-hashed)
 
   ;; Establish mappings for each symbols naming an api-class to/from studly caps strings
   ;; Maybe this hash to a different table b/c "Tag" tag :tag 
@@ -424,6 +442,155 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
                           (loop for (srtd-slot  srtd-clss) in gthr
                                 do (format output-stream "~%;; ~D classes: ~{~A~^ ~}~%(defgeneric ~S (object))~%(defgeneric (setf ~S) (~S object))~%" 
                                            (length srtd-clss) srtd-clss srtd-slot srtd-slot srtd-slot)))))))
+
+;; (api-method-unique-parameter-names)
+
+(defun api-method-param-name-as-keyword (api-method-param-name)
+  (symbol-munger:underscores->keyword api-method-param-name))
+
+;;; ==============================
+;; This variant can be run before the functions of api-request.lisp are in our environment.
+;; Should we decide that the function `api-method-unique-parameter-names' as
+;; currently defined can not be invoked early enough we could use this instead:
+;;
+;; (multiple-value-bind (response-body response-code)
+;;     (drakma:http-request (concatenate 'string *base-url* "/")
+;;                          :parameters (acons "api_key" *api-key* nil))
+;;   (unless (eql response-code 200)
+;;     (error "early fetch of Etsy api method table failed."))
+;;   (loop 
+;;     for method in (or (cdr (assoc "results"
+;;                                   (yason:parse (flexi-streams:octets-to-string response-body)
+;;                                                :object-as :alist)
+;;                                   :test #'equal))
+;;                       (loop-finish))
+;;     for params = (mapcar #'car (cdr (assoc "params" method :test #'equal)))
+;;     nconcing params into gthr
+;;     finally (return (sort (delete-duplicates gthr :test #'equal)  #'string<))))
+;; (api-method-unique-parameter-names)
+(defun api-method-unique-parameter-names ()
+  "Return all unique paramter names for each api-method returned by Etsy API method \"getMethodTable\"."
+  (loop 
+    ;; This version assumes `get-method-table' is already in our environment. It won't be.
+    ;; for method in (get-method-table)
+    ;;
+    ;; This version can be run after the functions of api-request.lisp are in our environment.
+    for method in (parsed-api-call (concatenate 'string *base-url* "/") 
+                                   :object-as :alist
+                                   :object-key-fn #'api-response-string-to-symbol-lookup)
+    for params = (mapcar #'car (cdr (assoc :params method)))
+    nconcing params into gthr
+    finally (return (sort (remove-if-not #'stringp (delete-duplicates gthr :test #'equal)) #'string>))))
+
+;; (clrhash *api-response-string-symbol-hash-for-object-key-fn*)
+;; (api-method-unique-parameter-names-hashed)
+(defun api-method-unique-parameter-names-hashed (&key (hash-table *api-response-string-symbol-hash-for-object-key-fn*))
+  (let ((maybe-method-string-list (api-method-unique-parameter-names))
+        (start-hash-count  (hash-table-count hash-table)))
+    (if maybe-method-string-list
+        (api-string-or-symbol-list-hash-for-object-key-fn maybe-method-string-list
+                                                            #'api-method-param-name-as-keyword
+                                                            :hash-table hash-table
+                                                            :element-type :string)
+        (values start-hash-count start-hash-count))))
+
+;; can call after api-request.lisp
+(defun api-method-unique-parameter-types ()
+  ;; return a list of all unique parameter types returned a yason:parsed equivalent of "getMethodTable".
+  (loop 
+    for method in ;; (get-method-table)
+       (parsed-api-call (concatenate 'string *base-url* "/") 
+                        :object-as :alist
+                        :object-key-fn #'api-response-string-to-symbol-lookup)
+    for verify-params =  (loop 
+                           for (param . type) in (cdr (assoc :params method))
+                           ;; unless (keywordp param)
+                           ;;collect (cons method param))
+                           collect type)
+    nconcing verify-params into gthr
+    finally (return (sort (delete-duplicates gthr :test #'string=) #'string<))))
+
+
+;; Sanity
+(defun api-method-unique-parameter-names-hashed-verify-all-keyword-p ()
+  ;; Return as cl:values.
+  ;; nth-value 0 is T if `api-method-unique-parameter-names-hashed' processed every unique parameter name as a keyword.
+  ;; nth-value 1 is null when nth-value 1 is T otherwise it is a list of consed pairs each cons has the form:
+  ;;  ( <API-METHOD-NAME> . <PARAM-NAME> )
+  ;; api-method-name and param-name are strings designating the camel-cased Etsy
+  ;; API method name and the parameter name of that method which we failed to
+  ;; hash as a string/keyword keyword/string pair.
+  (loop 
+    for method in ;; (get-method-table)
+       (parsed-api-call (concatenate 'string *base-url* "/") 
+                        :object-as :alist
+                        :object-key-fn #'api-response-string-to-symbol-lookup)
+    for verify-params =  (loop 
+                           for (param . type) in (cdr (assoc :params method))
+                           unless (keywordp param)
+                           collect (cons method param))
+    collect verify-params into gthr
+    finally (setf gthr (remove-if #'null gthr))
+            (return (values (null gthr)
+                            gthr))))
+                                                        
+
+#|
+
+ - The 109 unique api-method parameter names returned  on 2012-07-24:
+
+  (loop 
+    for method in (parsed-api-call (concatenate 'string *base-url* "/") 
+                                   :object-as :alist
+                                   :object-key-fn #'api-response-string-to-symbol-lookup)
+    for params = (mapcar #'car (cdr (assoc :params method)))
+    nconcing params into gthr
+    finally (return (sort (delete-duplicates gthr :test #'equal) #'string<)))
+
+ (:alchemy-message :allow-cc :allow-check :allow-mo :allow-other :allow-paypal
+  :announcement :cart-id :category :category-id :city :color :color-accuracy
+  :country-id :coupon-code :coupon-id :data-version :description
+  :destination-country-id :destination-region-id :distance-max :domestic-only
+  :featured-treasury-id :first-line :free-shipping :geo-level :image
+  :is-refusing-alchemy :is-supply :keywords :language :lat :limit :listing-id
+  :listing-ids :listing-image-id :location :lon :materials :max-created
+  :max-price :message :message-from-buyer :message-from-seller
+  :message-to-seller :min-created :min-price :name :occasion :offset :order-id
+  :origin-country-id :owner-id :page :payment-adjustment-id
+  :payment-adjustment-item-id :payment-id :payment-template-id :paypal-email
+  :pct-discount :policy-additional :policy-payment :policy-refunds
+  :policy-seller-info :policy-shipping :policy-welcome :price :primary-cost
+  :private :quantity :rank :receipt-id :recipient :region :region-id :renew
+  :sale-message :second-line :secondary-cost :seller-active :shipping-info-id
+  :shipping-template-entry-id :shipping-template-id :shop-id :shop-name
+  :shop-section-id :sort-on :sort-order :src :state :status :style :subsubtag
+  :subtag :tag :tags :target-user-id :team-id :team-ids :title :transaction-id
+  :treasury-key :user-address-id :user-id :was-paid :was-shipped :when-made
+  :who-made :zip))
+
+ ("alchemy_message" "allow_cc" "allow_check" "allow_mo" "allow_other"
+  "allow_paypal" "announcement" "cart_id" "category" "category_id" "city"
+  "color" "color_accuracy" "country_id" "coupon_code" "coupon_id" "data_version"
+  "description" "destination_country_id" "destination_region_id" "distance_max"
+  "domestic_only" "featured_treasury_id" "first_line" "free_shipping"
+  "geo_level" "image" "is_refusing_alchemy" "is_supply" "keywords" "language"
+  "lat" "limit" "listing_id" "listing_ids" "listing_image_id" "location" "lon"
+  "materials" "max_created" "max_price" "message" "message_from_buyer"
+  "message_from_seller" "message_to_seller" "min_created" "min_price" "name"
+  "occasion" "offset" "order_id" "origin_country_id" "owner_id" "page"
+  "payment_adjustment_id" "payment_adjustment_item_id" "payment_id"
+  "payment_template_id" "paypal_email" "pct_discount" "policy_additional"
+  "policy_payment" "policy_refunds" "policy_seller_info" "policy_shipping"
+  "policy_welcome" "price" "primary_cost" "private" "quantity" "rank"
+  "receipt_id" "recipient" "region" "region_id" "renew" "sale_message"
+  "second_line" "secondary_cost" "seller_active" "shipping_info_id"
+  "shipping_template_entry_id" "shipping_template_id" "shop_id" "shop_name"
+  "shop_section_id" "sort_on" "sort_order" "src" "state" "status" "style"
+  "subsubtag" "subtag" "tag" "tags" "target_user_id" "team_id" "team_ids"
+  "title" "transaction_id" "treasury_key" "user_address_id" "user_id" "was_paid"
+  "was_shipped" "when_made" "who_made" "zip")
+
+|#
 
 
 ;;; ==============================
