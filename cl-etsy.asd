@@ -23,20 +23,19 @@
   :serial t
   :components ((:file "package")
                (:file "specials")
-               (:file "api-mappings")
-               (:file "api-parameter-types")
-               (:file "utils")
                (:file "environment")
+               (:file "api-parameter-types")
+               (:file "api-mappings")
+               (:file "utils")
                (:file "authorize")
                (:file "request-timer")
                (:file "api-request")
                (:file "api-response")
                (:module "api-class"
                 :components (
-                             
                              (:file "etsy-class-generic")
-                             (:file "etsy-epoch")
                              (:file "etsy-base-class")
+                             (:file "etsy-epoch")
                              (:file "etsy-permission-scope-class")
                              (:file "etsy-api-method-class")
                              (:file "etsy-avatar-class")
