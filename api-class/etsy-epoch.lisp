@@ -17,23 +17,36 @@
 
 
 ;; (epoch-to-timestring (cadr (assoc "results" (get-server-epoch) :test #'equal)))
-(defun get-server-epoch ()
-    "
-:EXAMPLE 
- (get-server-epoch)
-:API-METHOD \"getServerEpoch\""
-  (yason:parse 
-   (api-call (concatenate 'string *base-url* "/server/epoch"))
-   :object-as :alist))
-
-(defun ping ()
+(defun get-server-epoch (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+                              (object-as :alist)
+                              (return-values t))
   "
 :EXAMPLE 
- \(ping\)
+ (get-server-epoch)
+ (get-server-epoch :return-values nil)
+:API-METHOD \"getServerEpoch\""
+  (declare (api-request-parse-object-as object-as)
+           (boolean return-values))
+  (parsed-api-call (concatenate 'string *base-url* "/server/epoch") 
+                   :object-as object-as
+                   :object-key-fn object-key-fn
+                   :return-values return-values))
+
+(defun ping (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+                  (object-as :alist)
+                  (return-values t))
+  "
+:EXAMPLE 
+ (ping)
+ (ping :return-values nil)
 :API-METHOD \"ping\""
-  (yason:parse 
-   (api-call (concatenate 'string *base-url* "/server/ping"))
-   :object-as :alist))
+  (declare (api-request-parse-object-as object-as)
+           (boolean return-values))
+  ;; (yason:parse (api-call (concatenate 'string *base-url* "/server/ping")) :object-as :alist))
+  (parsed-api-call (concatenate 'string *base-url* "/server/ping")
+                   :object-as object-as
+                   :object-key-fn object-key-fn
+                   :return-values return-values))
 
 #|
 

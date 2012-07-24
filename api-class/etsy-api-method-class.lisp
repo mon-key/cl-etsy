@@ -15,6 +15,10 @@ API-METHODS
 
  "getMethodTable"
 
+----
+ (closer-mop:class-finalized-p (find-class 'api-method))
+ (api-class-slot-names-as-underscored-strings 'api-method)
+
 |#
 
 (in-package #:cl-etsy)

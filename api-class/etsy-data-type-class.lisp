@@ -94,48 +94,70 @@ Currently only applicable for the following enums:
 
 ;; :NOTE We need to transform the "values" field of returned results to ``data-type-values''
 ;;  e.g. (assoc "values" (car (describe-occasion-enum)) :test #'string=)
-(defun describe-occasion-enum (&key
-                               (object-as :alist))
+(defun describe-occasion-enum (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+                                    (object-as :alist)
+                                    (return-values t))
   "Describes the legal values for use as the occasion slot-value of class `listing'.
 Result when non-nil should contain fields which map to the slots of a `data-type' class.
 :EXAMPLE
  (describe-occasion-enum)
 :API-METHOD \"describeOccasionEnum\""
+  (declare (api-request-parse-object-as object-as)
+           (boolean return-values))
   (parsed-api-call (concatenate 'string *base-url* "/types/enum/occasion")
-                   :object-as object-as))
+                   :object-as object-as
+                   :object-key-fn object-key-fn
+                   :return-values return-values))
 
 ;; "describeRecipientEnum"
-(defun describe-recipient-enum (&key
-                                (object-as :alist))
+(defun describe-recipient-enum (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+                                     (object-as :alist)
+                                     (return-values t))
   "Describes the legal values for use as the recipient slot-value of class `listing'.
 Result when non-nil should contain fields which map to the slots of a `data-type' class.
 :EXAMPLE
  (describe-recipient-enum)
 :API-METHOD \"describeRecipientEnum\""
+  (declare (api-request-parse-object-as object-as)
+           (boolean return-values))
   (parsed-api-call (concatenate 'string *base-url* "/types/enum/recipient")
-                   :object-as object-as))
+                   :object-as object-as
+                   :object-key-fn object-key-fn
+                   :return-values return-values))
 
 ;; "describeWhenMadeEnum" 
-(defun describe-when-made-enum (&key
-                                (object-as :alist))
+(defun describe-when-made-enum (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+                                     (object-as :alist)
+                                     (return-values t))
   "Describes the legal values for use as the when-made slot-value of class `listing'.
 Result when non-nil should contain fields which map to the slots of a `data-type' class.
 :EXAMPLE
  (describe-when-made-enum)
 :API-METHOD \"describeWhenMadeEnum\""
+  (declare (api-request-parse-object-as object-as)
+           (boolean return-values))
   (parsed-api-call (concatenate 'string *base-url* "/types/enum/when_made")
-                   :object-as object-as))
+                   :object-as object-as
+                   :object-key-fn object-key-fn
+                   :return-values return-values))
+
 
 ;; "describeWhoMadeEnum" 
-(defun describe-who-made-enum (&key
-                                (object-as :alist))
+(defun describe-who-made-enum (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+                                    (object-as :alist)
+                                    (return-values t))
   "Describes the legal values for use as the who-made slot-value of class `listing'.
 Result when non-nil should contain fields which map to the slots of a `data-type' class.
 :EXAMPLE
  (describe-who-made-enum)
 :API-METHOD \"describeWhoMadeEnum\""
+  (declare (api-request-parse-object-as object-as)
+           (boolean return-values))
   (parsed-api-call (concatenate 'string *base-url* "/types/enum/who_made")
-                   :object-as object-as))
+                   :object-as object-as
+                   :object-key-fn object-key-fn
+                   :return-values return-values))
+
 
 
 #|
