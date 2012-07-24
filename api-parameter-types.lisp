@@ -225,7 +225,7 @@ Methods marked \"private\" may be entailed by a permission-scope and require Oau
        (null (typep nil 'api-request-visibility)))
   '(member :private :public))
 
-(deftype parsed-object-type ()
+(deftype api-request-parse-object-as ()
   "The valid parameter values for yason :object-as keywords 
 `yason:*parse-object-as*'"
   '(member :hash-table :plist :alist))
@@ -280,6 +280,21 @@ For the sake of completeness we define all ISO-3166-1 ALPHA-2 codes.
   '(satisfies language-code-p))
 
 (defun language-code-p (maybe-language-code)
+  "Whether MAYBE-ISO-CODE is a valid Etsy API language code.
+A valid language code is a two character string 
+which is string= one of:
+ \"en\" \"de\" \"fr\"
+:EXAMPLE
+ \(and \(language-code-p \"en\"\)
+      \(every #'null \(list \(language-code-p \"EN\"\)
+                          \(language-code-p \"En\"\)
+                          \(language-code-p \"eN\"\)\)\)\)
+:NOTE Currently we return true of MAYBE-LANGUAGE-CODE only if each character of
+satisfies `cl:lower-case-p'. The Etsy API documentation does not clarify if
+case-insensitivity is a concern so we assume it isn't.
+:SEE-ALSO `language-code-p', `iso-4217-code-p', `iso-3166-1-alpha-2-code-p',
+`*iso-4217-codes*' `*iso-3166-1-alpha-2-codes*' `language', `currency',
+`region'."
   (and (stringp maybe-language-code)
        (eql (length maybe-language-code) 2)
        (or (string= maybe-language-code "en")

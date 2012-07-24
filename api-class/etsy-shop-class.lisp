@@ -406,7 +406,8 @@ API-METHODS
   ;;  :policy-updated-tsz nil :vacation-autoreply nil :ga-code nil :name nil
   ;;  :url nil :image-url-760x100 nil :num-favorers nil :languages nil)
 
-  (:documentation "Represents a shop with listings for sale.  Each shop is owned by one user.
+  (:documentation "Represents a shop with listings for sale.
+Each shop is owned by one user.
  (URL `http://www.etsy.com/developers/documentation/reference/shop')"))
 
 #|

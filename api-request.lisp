@@ -124,7 +124,7 @@ Following errors successfully:
 "Return the keys of a succesfully parsed Etsy API method call as as cl:values.
 Values are returned in the following order for these keys:
  :results :count :type :params :pagination"
-  (declare (parsed-object-type object-as))
+  (declare (api-request-parse-object-as object-as))
   (ecase object-as
     (:alist 
      (values
@@ -195,7 +195,7 @@ keyword object-key-fn is a function is as per `yason:parse'. Default is dynamic 
                  :object-as :alist\)
 
 "
-  (declare (parsed-object-type object-as)
+  (declare (api-request-parse-object-as object-as)
            (boolean return-values json-arrays-as-vectors json-booleans-as-symbols))
   (let ((parsed-response 
           (yason::parse

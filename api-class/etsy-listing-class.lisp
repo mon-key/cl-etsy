@@ -452,7 +452,7 @@ renew them before they can be sold again.
                                                         (object-as :alist))
   "Finds all listings for a certain FeaturedTreasury.
 Result when non-nil should contain fields which map to the slots of class `listing'."
-  (declare (parsed-object-type object-as))
+  (declare (api-request-parse-object-as object-as))
   (assert (int-or-int-string-p featured-treasury-id))
   (yason:parse 
    (api-call (concatenate 'string *base-url* 
@@ -465,7 +465,7 @@ Result when non-nil should contain fields which map to the slots of class `listi
   "Finds all active listings for a certain FeaturedTreasury.
 Result when non-nil should contain fields which map to the slots of class `listing'.
 :API-METHOD \"findAllActiveListingsForFeaturedTreasuryId\""
-  (declare (parsed-object-type object-as))
+  (declare (api-request-parse-object-as object-as))
   (assert (int-or-int-string-p featured-treasury-id))
   (yason:parse 
    (api-call (concatenate 'string 
@@ -486,7 +486,7 @@ Result when non-nil should contain fields which map to the slots of class `listi
 :API-METHOD \"findAllFeaturedListings\""
   (declare (api-request-offset-range offset)
            (api-request-limit-range limit)
-           (parsed-object-type object-as))
+           (api-request-parse-object-as object-as))
   (yason:parse 
    (api-call (concatenate 'string 
                           *base-url*
@@ -503,7 +503,7 @@ Result when non-nil should contain fields which map to the slots of class `listi
   "Finds FeaturedTreasury listings that are currently displayed on a regional homepage.
 :API-METHOD \"findAllCurrentFeaturedListings\""
   (declare ;; (string region)
-   (parsed-object-type object-as))
+   (api-request-parse-object-as object-as))
   (yason:parse 
    (api-call (concatenate 'string 
                           *base-url*
@@ -521,7 +521,7 @@ Result when non-nil should contain fields which map to the slots of class `listi
 Value of keyword arg LISTING-ID should be of type `int-or-int-string'.
 Result when non-nil should contain fields which map to the slots of class `listing'.
 :API-METHOD \"getListing\""
-  (declare (parsed-object-type object-as)
+  (declare (api-request-parse-object-as object-as)
            (int-or-int-string listing-id))
   (yason:parse 
    (api-call (concatenate 'string 
