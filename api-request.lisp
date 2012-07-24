@@ -128,7 +128,7 @@ Values are returned in the following order for these keys:
   (ecase object-as
     (:alist 
      (values
-      (cdr (assoc :results    parsed-response))
+      (cdr (assoc :results    parsed-response)) ;; is this better as cadr?
       (cdr (assoc :count      parsed-response))
       (cdr (assoc :type       parsed-response))
       (cdr (assoc :params     parsed-response))

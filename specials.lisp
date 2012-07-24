@@ -2,12 +2,15 @@
 ;;; :FILE cl-etsy/specials.lisp
 ;;; ==============================
 
+#|
+
+|#
 
 (in-package #:cl-etsy)
 
-;; v1 "http://beta-api.etsy.com/v1"
-(defvar *base-url* "http://openapi.etsy.com/v2" ; "http://sandbox.openapi.etsy.com/v2"
-  
+;; :NOTE The v1 Etsy API had the following URL: "http://beta-api.etsy.com/v1"
+(defvar *base-url* "http://openapi.etsy.com/v2"  ; :production endpoint-type
+  ;; "http://sandbox.openapi.etsy.com/v2" ; :sandbox endpoint-type
 "Value should be a string referencing a URL for an Etsy API endpoint.
 Valid settings are either:
 
@@ -27,7 +30,7 @@ Valid settings are either:
   Developers will need to authenticate their OAuth-based apps separately against the sandbox API.
   OAuth tokens obtained from the sandbox API will not work with the production API.\"
 :SEE (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_entry_points')
-:SEE-ALSO `set-etsy-environment', `etsy-environment'.")
+:SEE-ALSO `set-etsy-environment', `etsy-environment', `endpoint-type'.")
 
 (defvar *api-key* "You need to set your *API-KEY*"
 "This can be found at: (URL `https://www.etsy.com/developers/your-apps')
@@ -330,7 +333,9 @@ currency to which the currency code corresponds.
      (coupon-id coupon-code seller-active pct-discount free-shipping domestic-only))
 
     (data-type
-     (type data-type-values))
+     (type 
+      ;; this is values but we changed it to 
+      data-type-values)) 
 
     (favorite-listing
      (listing-id user-id listing-state create-date state creation-tsz favorite-listing-id))
@@ -355,6 +360,7 @@ currency to which the currency code corresponds.
     (ledger 
      (ledger-id shop-id currency create-date update-date))
 
+    ;; :NOTE sequence is a build-in-class and type specifier
     (ledger-entry
      (ledger-entry-id ledger-id sequence credit-amount debit-amount entry-type
       reference-id running-balance create-date))
