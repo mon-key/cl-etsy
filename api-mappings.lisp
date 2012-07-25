@@ -16,7 +16,6 @@
 :SEE-ALSO `api-class-slot-name-as-underscored-string', `api-class-slot-name-as-lispy-string'."
   (symbol-munger::english->studly-case (substitute #\Space #\- (string api-class-symbol))))
 
-
 ;; (api-string-or-symbol-list-hash-for-object-key-fn
 ;;  (api-class-name-as-studly-caps-strings)
 ;;  #'api-class-name-as-studly-caps-string
@@ -27,7 +26,6 @@
   ;; (api-class-names-as-studly-cap-strings (list 'api-method 'param-list))
   (declare ((and list (not null)) api-class-list))
   (map 'list #'api-class-name-as-studly-caps-string api-class-list))
-
 
 (defun api-class-slot-name-as-lispy-string (api-class-slot-name)
   "Return the cl:string representation of symbol API-CLASS-SLOT-NAME.
@@ -42,11 +40,11 @@
 `api-class-slot-name-as-lispy-string'."
   (symbol-munger:lisp->underscores api-class-slot-name))
 
-(defun api-class-slot-names-list-as-underscored-strings (api-class-slot-name-list)
-  "Return  list of underscored strings as if by `api-class-slot-name-as-underscored-string'.
+(defun api-class-slot-names-as-underscored-strings (api-class-slot-name-list)
+  "Return a list of underscored strings as if by `api-class-slot-name-as-underscored-string'.
 API-CLASS-SLOT-NAME-LIST is a list symbols each designating a slot-name.
 :EXAMPLE
- (api-class-slot-names-list-as-underscored-strings )
+ (api-class-slot-names-as-underscored-strings )
 :SEE-ALSO `api-implicit-class-direct-slot-names-as-underscored-strings', `api-class-name-as-studly-caps-string'
 `api-class-slot-name-as-lispy-string'."
   (map 'list #'api-class-slot-name-as-underscored-string api-class-slot-name-list))
@@ -197,8 +195,40 @@ API-CLASS is a symbol designating a class modeling aspects of an Etsy API repres
 Return a list of conses of the form:
 :EXAMPLE
  \(api-implicit-class-direct-slot-names-as-underscored-strings 'api-method\)"
-  (api-class-slot-names-list-as-underscored-strings
+  (api-class-slot-names-as-underscored-strings
    (api-implicit-class-direct-slot-definition-names api-class)))
+
+(defun api-implicit-class-and-slot-names-as-etsy-strings (&optional (api-class-list (mapcar #'car *api-classes-and-slots*)))
+  "Return a list of the string representation of the api-classes and their direct slots as seen in a JSON response object.
+ API-CLASS-LIST is a list
+of symbols each designating an api-class.  like
+`api-explicit-class-and-slot-names-as-etsy-strings' but the the names of
+the direct slots of each API-CLASS are acquired with MOP introspection as
+if by `api-implicit-class-direct-slot-names-as-underscored-strings'."
+  (loop 
+    for api-class-sym = api-class-list
+    for api-class-string = (api-class-name-as-studly-caps-string api-class-sym)
+    for class-direct-slot-strings = (api-implicit-class-direct-slot-names-as-underscored-strings api-class-sym)
+    collect (list api-class-string class-direct-slot-strings)))
+
+(defun api-explicit-class-and-slot-names-as-etsy-strings (&optional (class-with-class-slot-list *api-classes-and-slots*))
+"Return a list of the string representation of the api-classes and their direct
+slots as seen in a JSON response object.
+CLASS-WITH-CLASS-SLOT-LIST is a proper list structured as per `*api-classes-and-slots*'. 
+Each element of list returned has the format:
+ \(\"StudlyClassName\"  \( \"underscored_slot_name\"* \) \)
+:EXAMPLE
+ \(api-explicit-class-and-slot-names-as-etsy-strings\)
+\(equalp
+ \(api-explicit-class-and-slot-names-as-etsy-strings 
+  '\(\(studly-class-name \(underscored-slot-name-foo underscored-slot-name-bar underscored-slot-name-baz\)\)\)\)
+ '\(\(\"StudlyClassName\"  \( \"underscored_slot_name_foo\" \"underscored_slot_name_bar\" \"underscored_slot_name_baz\"\)\)\)\)
+"
+  (loop 
+    for api-class in class-with-class-slot-list
+    for api-class-string = (api-class-name-as-studly-caps-string (car api-class))
+    for class-direct-slot-strings = (map 'list #'api-class-slot-name-as-underscored-string (cadr api-class))
+    collect (list api-class-string class-direct-slot-strings)))
 
 
 ;;; ==============================
@@ -342,39 +372,6 @@ Return a list of conses of the form:
 ;;; in lieu of automagically generating defgeneric accessors for each unique slot.
 ;;; ==============================
 
-(defun api-implicit-class-and-slot-names-as-etsy-strings (&optional (api-class-list (mapcar #'car *api-classes-and-slots*)))
- "Return a list of the string representation of the api-classes and their direct slots as seen in a JSON response object.
- API-CLASS-LIST is a list
-of symbols each designating an api-class.  like
-`api-explicit-class-and-slot-names-as-etsy-strings' but the the names of
-the direct slots of each API-CLASS are acquired with MOP introspection as
-if by `api-implicit-class-direct-slot-names-as-underscored-strings'."
-  
-  (loop 
-    for api-class-sym = api-class-list
-    for api-class-string = (api-class-name-as-studly-caps-string api-class-sym)
-    for class-direct-slot-strings = (api-implicit-class-direct-slot-names-as-underscored-strings api-class-sym)
-    collect (list api-class-string class-direct-slot-strings)))
-
-(defun api-explicit-class-and-slot-names-as-etsy-strings (&optional (class-with-class-slot-list *api-classes-and-slots*))
-"Return a list of the string representation of the api-classes and their direct
-slots as seen in a JSON response object.
-CLASS-WITH-CLASS-SLOT-LIST is a proper list structured as per `*api-classes-and-slots*'. 
-Each element of list returned has the format:
- \(\"StudlyClassName\"  \( \"underscored_slot_name\"* \) \)
-:EXAMPLE
- \(api-explicit-class-and-slot-names-as-etsy-strings\)
-\(equalp
- \(api-explicit-class-and-slot-names-as-etsy-strings 
-  '\(\(studly-class-name \(underscored-slot-name-foo underscored-slot-name-bar underscored-slot-name-baz\)\)\)\)
- '\(\(\"StudlyClassName\"  \( \"underscored_slot_name_foo\" \"underscored_slot_name_bar\" \"underscored_slot_name_baz\"\)\)\)\)
-"
-  (loop 
-    for api-class in class-with-class-slot-list
-    for api-class-string = (api-class-name-as-studly-caps-string (car api-class))
-    for class-direct-slot-strings = (map 'list #'api-class-slot-name-as-underscored-string (cadr api-class))
-    collect (list api-class-string class-direct-slot-strings)))
-
 (defun %api-class-slot-freqs (seq &key (test #'eql) (key #'identity))
   (declare (cl:sequence seq)
            (cl:type (function (t t) t) test)
@@ -392,15 +389,15 @@ Each element of list returned has the format:
              seq :key key :initial-value nil)
      #'> :key #'cdr)))
 
-(defun api-class-all-direct-slots (&key (class-with-class-slot-list *api-classes-and-slots*))
+(defun api-class-all-slot-names-unique (&key (class-with-class-slot-list *api-classes-and-slots*))
   "Return as cl:values all slot components of the proper-list CLASS-WITH-CLASS-SLOT-LIST.
  - nth-value 0 is a sorted list of symbols (including duplicates) each of which designates a direct slot
    in one or more of the <API-CLASS> classes in car of each element of CLASS-WITH-CLASS-SLOT-LIST
  - nth-value 1 is a sorted list of all direct slots with duplicates removed
  - nth-value 3 is a cons - car is the count of nth-value 0, cdr is the count of nth-value 1
 CLASS-WITH-CLASS-SLOT-LIST is a proper list structured as per `*api-classes-and-slots*'. 
-:SEE-ALSO `api-class-all-direct-slots', `api-class-all-direct-slot-name-stats',
-`api-class-output-defgeneric-forms', `*api-classes-and-slots*'."
+:SEE-ALSO `api-class-all-slot-names-unique', `api-class-all-slot-name-stats',
+`api-explicit-class-output-defgeneric-forms', `*api-classes-and-slots*'."
   (loop 
     with dups = ()
     for (class slots) in class-with-class-slot-list
@@ -415,14 +412,14 @@ CLASS-WITH-CLASS-SLOT-LIST is a proper list structured as per `*api-classes-and-
                             (sort dups #'string<)
                             (cons cnt dup-cnt)))))
 
-(defun api-class-all-direct-slot-name-stats (&key (class-with-class-slot-list *api-classes-and-slots*))
+(defun api-class-all-slot-name-stats (&key (class-with-class-slot-list *api-classes-and-slots*))
   "Return stats for the slot-names of CLASS-WITH-CLASS-SLOT-LIST.
 CLASS-WITH-CLASS-SLOT-LIST is a proper list structured as per `*api-classes-and-slots*'.
-:SEE-ALSO `api-class-all-direct-slots', `api-class-all-direct-slot-name-stats',
-`api-class-output-defgeneric-forms', `*api-classes-and-slots*'."
+:SEE-ALSO `api-class-all-slot-names-unique', `api-class-all-slot-name-stats',
+`api-explicit-class-output-defgeneric-forms', `*api-classes-and-slots*'."
   (let (all-slots unique-slots slot-counts)
     (multiple-value-bind (all unique counts)
-        (api-class-all-direct-slots :class-with-class-slot-list class-with-class-slot-list)
+        (api-class-all-slot-names-unique :class-with-class-slot-list class-with-class-slot-list)
       (setf all-slots all
             unique-slots unique 
             slot-counts counts))
@@ -446,9 +443,8 @@ CLASS-WITH-CLASS-SLOT-LIST is a proper list structured as per `*api-classes-and-
                                     :total-slots-count  (cdr slot-counts)
                                     :unique-slots unique-slots))))))
 
-
-(defun api-class-output-defgeneric-forms (&key (class-with-class-slot-list *api-classes-and-slots*)
-                                               (output-stream nil))
+(defun api-explicit-class-output-defgeneric-forms (&key (class-with-class-slot-list *api-classes-and-slots*)
+                                                        (output-stream nil))
   "Output defgeneric forms for accessors of each unique slot in CLASS-WITH-CLASS-SLOT-LIST.
 CLASS-WITH-CLASS-SLOT-LIST is a proper list structured as per `*api-classes-and-slots*'.
 OUTPUT-STREAM is a valid output stream. 
@@ -463,8 +459,8 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
  - <N> is a count of the api-class(es) the <API-CLASS-SLOT> appears in
  - <API-CLASS>* is an enumeration of the <N> api-class(es)
 
-:SEE-ALSO `api-class-all-direct-slots', `api-class-all-direct-slot-name-stats',
-`api-class-output-defgeneric-forms', `*api-classes-and-slots*'."
+:SEE-ALSO `api-class-all-slot-names-unique', `api-class-all-slot-name-stats',
+`api-explicit-class-output-defgeneric-forms', `*api-classes-and-slots*'."
   (declare ((or boolean stream) output-stream)
            (cons class-with-class-slot-list))
   (loop 

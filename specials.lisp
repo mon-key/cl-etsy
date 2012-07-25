@@ -487,9 +487,9 @@ Each element of the proper-list of has the form:
 <API-CLASS> is a symbol designating a class modeling some aspect of an Etsy API response
 <SLOTS-OF-API-CLASS> is a list of symbols designating the the slots of <API-CLASS>.
 Used for generating defgeneric forms of cl-etsy/api-class/etsy-class-generic.lisp
-with `api-class-output-defgeneric-forms'
-:SEE-ALSO `api-class-all-direct-slots', `api-class-all-direct-slot-name-stats',
-`api-class-output-defgeneric-forms', `*api-classes-and-slots*'.")
+with `api-explicit-class-output-defgeneric-forms'
+:SEE-ALSO `api-class-all-slot-names-unique', `api-class-all-slot-name-stats',
+`api-explicit-class-output-defgeneric-forms', `*api-classes-and-slots*'.")
 
 (defparameter *api-response-string-symbol-hash-for-object-key-fn* (make-hash-table :test #'equal)
   "Hash-table mapping Etsy API strings to Lispy symbols/keywords.
