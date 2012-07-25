@@ -15,7 +15,7 @@ We should probably move this further up the class lattice.
 
 ----
  (closer-mop:class-finalized-p (find-class 'param-list))
- (api-class-slot-names-as-underscored-strings 'param-list)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'param-list)
 
 |#
 

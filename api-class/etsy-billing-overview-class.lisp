@@ -13,7 +13,7 @@ API-METHODS
 
 
  ;; (closer-mop:class-finalized-p (find-class 'billing-overview))
- ;; (api-class-slot-names-as-underscored-strings  'billing-overview)
+ ;; (api-implicit-class-direct-slot-names-as-underscored-strings  'billing-overview)
 
 
 |#

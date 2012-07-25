@@ -8,7 +8,7 @@
 
 ----
  (closer-mop:class-finalized-p (find-class 'feedback-info))
- (api-class-slot-names-as-underscored-strings 'feedback-info)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'feedback-info)
 
 |#
 

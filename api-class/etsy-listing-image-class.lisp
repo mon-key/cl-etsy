@@ -25,8 +25,8 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'listing-image))
- (api-class-slot-names-as-underscored-strings 'listing-image)
- (substitute "url_570xN" "url_570xn" (api-class-slot-names-as-underscored-strings 'listing-image) :test #'string=)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'listing-image)
+ (substitute "url_570xN" "url_570xn" (api-implicit-class-direct-slot-names-as-underscored-strings 'listing-image) :test #'string=)
  
 
 |#

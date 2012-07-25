@@ -56,7 +56,7 @@ Methods
 
 ----
  (closer-mop:class-finalized-p (find-class 'feedback))
- (api-class-slot-names-as-underscored-strings 'feedback)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'feedback)
 
 |#
 (in-package #:cl-etsy)

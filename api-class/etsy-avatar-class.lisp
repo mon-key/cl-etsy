@@ -13,7 +13,7 @@ API-METHODS
 "uploadAvatar"
 
  (closer-mop:class-finalized-p  (find-class 'avatar))
- (api-class-slot-names-as-underscored-strings 'avatar)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'avatar)
 
 |#
 

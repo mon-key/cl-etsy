@@ -32,7 +32,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'payment-template))
- (api-class-slot-names-as-underscored-strings 'payment-template)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'payment-template)
 
 |#
 

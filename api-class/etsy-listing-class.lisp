@@ -100,7 +100,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'listing))
- (api-class-slot-names-as-underscored-strings 'listing)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'listing)
 
 |#
 

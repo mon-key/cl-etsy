@@ -14,7 +14,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'payment))
- (api-class-slot-names-as-underscored-strings 'payment)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'payment)
 
 |#
 

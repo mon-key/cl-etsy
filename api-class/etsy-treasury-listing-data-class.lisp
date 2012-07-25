@@ -9,7 +9,7 @@
 
 ----
  (closer-mop:class-finalized-p (find-class 'treasury-listing-data))
- (api-class-slot-names-as-underscored-strings 'treasury-listing-data)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'treasury-listing-data)
 
 |#
 

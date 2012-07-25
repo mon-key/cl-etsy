@@ -38,7 +38,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'shipping-info))
- (api-class-slot-names-as-underscored-strings 'shipping-info)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'shipping-info)
 
 |#
 

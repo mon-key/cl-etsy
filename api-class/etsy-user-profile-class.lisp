@@ -23,7 +23,7 @@ description:      The country in which the user lives.
 
 ----
  (closer-mop:class-finalized-p (find-class 'user-profile))
- (api-class-slot-names-as-underscored-strings 'user-profile)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'user-profile)
 
 |#
 

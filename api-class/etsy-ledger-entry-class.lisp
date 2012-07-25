@@ -19,7 +19,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'ledger-entry))
- (api-class-slot-names-as-underscored-strings 'ledger-entry)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'ledger-entry)
 
 |#
 

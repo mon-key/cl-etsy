@@ -49,7 +49,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'transaction))
- (api-class-slot-names-as-underscored-strings 'transaction)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'transaction)
 
 |#
 

@@ -14,7 +14,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p  (find-class 'bill-charge))
- (api-class-slot-names-as-underscored-strings 'bill-charge)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'bill-charge)
 
 |#
 

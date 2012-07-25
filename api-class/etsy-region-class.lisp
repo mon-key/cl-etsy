@@ -14,7 +14,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'region))
- (api-class-slot-names-as-underscored-strings 'region)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'region)
 
 |#
 

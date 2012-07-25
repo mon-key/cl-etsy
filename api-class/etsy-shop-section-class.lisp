@@ -38,7 +38,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'shop-section))
- (api-class-slot-names-as-underscored-strings 'shop-section)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'shop-section)
 
 |#
 

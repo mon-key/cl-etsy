@@ -101,7 +101,7 @@ permission scopes should be separated with spaces."
 
 ----
  (closer-mop:class-finalized-p (find-class 'permission-scope))
- (api-class-slot-names-as-underscored-strings 'permission-scope)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'permission-scope)
 
 |#
 

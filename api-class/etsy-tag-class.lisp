@@ -26,7 +26,7 @@ and documentation entirely.
 
 ----
  (closer-mop:class-finalized-p (find-class 'tag))
- (api-class-slot-names-as-underscored-strings 'tag)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'tag)
 
 |#
 

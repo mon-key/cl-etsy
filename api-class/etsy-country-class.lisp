@@ -17,9 +17,53 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'country))
- (api-class-slot-names-as-underscored-strings  'country)
+ (api-implicit-class-direct-slot-names-as-underscored-strings  'country)
+
+----
+:NOTE  On 2012-07-25 we learned that some countries (mostly Islands) do not have a lat or lon values
+ (loop 
+   for country in (parsed-api-call (concatenate 'string *base-url* "/countries") :object-as :alist)
+   for lon-float = (cdr (assoc :lon country))
+   for lat-float = (cdr (assoc :lat country))
+  ;; collect (list lon-float lat-float))
+  when (or (null lon-float)
+           (null lat-float))
+  collect (cdr (assoc :name country)))
+
+   
+=> ("American Samoa" "Andorra" "Anguilla" "Antigua and Barbuda" "Aruba" "Bahamas"
+     "Bahrain" "Barbados" "Bouvet Island" "British Indian Ocean Territory"
+     "British Virgin Islands" "Cayman Islands" "Christmas Island"
+     "Cocos (Keeling) Islands" "Comoros" "Cook Islands" "Dominica"
+     "Falkland Islands (Malvinas)" "Faroe Islands" "Fiji" "French Polynesia"
+     "French Southern Territories" "Gibraltar" "Grenada" "Guadeloupe" "Guam"
+     "Heard Island and McDonald Islands" "Holy See (Vatican City State)"
+     "Isle of Man" "Kiribati" "Kosovo" "Liechtenstein" "Macao" "Maldives" "Malta"
+     "Marshall Islands" "Martinique" "Mauritius" "Mayotte"
+     "Micronesia, Federated States of" "Monaco" "Montserrat" "Nauru"
+     "Netherlands Antilles" "New Caledonia" "Niue" "Norfolk Island"
+     "Northern Mariana Islands" "Palau" "Palestinian Territory, Occupied"
+     "Saint Helena" "Saint Kitts and Nevis" "Saint Lucia"
+     "Saint Martin (French part)" "Saint Pierre and Miquelon"
+     "Saint Vincent and the Grenadines" "Samoa" "San Marino"
+     "Sao Tome and Principe" "Seychelles" "Solomon Islands"
+     "South Georgia and the South Sandwich Islands" "Svalbard and Jan Mayen"
+     "Timor-Leste" "Tokelau" "Tonga" "Turks and Caicos Islands" "Tuvalu"
+     "United States Minor Outlying Islands" "U.S. Virgin Islands")
+
+ (parsed-api-call (concatenate 'string *base-url* "/listings/active")
+                 :parameters '(;; Mali
+                               ;; ("lat" . "-3.31")
+                               ;; ("lon" . "17.33")
+                               ;; France
+                               ("lon" . "2.72")
+                               ("lat" . "46.53"))
+                 :object-as :alist) 
+ 
 
 |#
+
+
 
 (in-package #:cl-etsy)
 
@@ -77,7 +121,8 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type float
-    :documentation "The country's latitude.")
+    :documentation "The country's latitude.
+:NOTE on 2012-07-25 we notice that some countries (mostly islands) have a null value.")
 
    ;; lon
    (lon
@@ -86,7 +131,8 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type float
-    :documentation "The country's longitude."))
+    :documentation "The country's longitude.
+:NOTE on 2012-07-25 we notice that some countries (mostly islands) have a null value."))
 
   ;; (:default-initargs 
   ;;  :country-id nil :iso-country-code nil :world-bank-country-code nil :name nil

@@ -34,7 +34,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'favorite-user))
- (api-class-slot-names-as-underscored-strings 'favorite-user)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'favorite-user)
 
 |#
 

@@ -47,7 +47,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'data-type))
- (api-class-slot-names-as-underscored-strings 'data-type)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'data-type)
 
 |#
 

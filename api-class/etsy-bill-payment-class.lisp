@@ -12,7 +12,7 @@ API-METHODS
 "findAllUserPayments"
 
  ;; (closer-mop:class-finalized-p (find-class 'bill-payment))
- ;; (api-class-slot-names-as-underscored-strings  'bill-payment)
+ ;; (api-implicit-class-direct-slot-names-as-underscored-strings  'bill-payment)
 
 |#
 

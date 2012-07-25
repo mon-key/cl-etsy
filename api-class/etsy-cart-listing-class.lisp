@@ -7,7 +7,7 @@
 
 ----
  (closer-mop:class-finalized-p (find-class 'cart-listing))
- (api-class-slot-names-as-underscored-strings  'cart-listing)
+ (api-implicit-class-direct-slot-names-as-underscored-strings  'cart-listing)
 
 |#
 

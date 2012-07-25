@@ -19,7 +19,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'coupon))
- (api-class-slot-names-as-underscored-strings 'coupon)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'coupon)
 
 |#
 

@@ -30,7 +30,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'order))
- (api-class-slot-names-as-underscored-strings 'order)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'order)
 
 |#
 

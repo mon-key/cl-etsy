@@ -17,7 +17,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'api-method))
- (api-class-slot-names-as-underscored-strings 'api-method)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'api-method)
 
 |#
 
@@ -132,6 +132,8 @@ As of 2012-07-21 following are counts of public and private Etsy API methods:
                          (return-values t)
                          (object-as :alist)
                          (object-key-fn #'api-response-string-to-symbol-lookup)
+                         (json-arrays-as-vectors   yason:*parse-json-arrays-as-vectors*)
+                         (json-booleans-as-symbols yason:*parse-json-booleans-as-symbols*)
                          )
   "Return a yason:parsed object representing all Etsy API methods currently exposed.
 :API-METHOD \"getMethodTable\""
@@ -144,7 +146,10 @@ As of 2012-07-21 following are counts of public and private Etsy API methods:
   (parsed-api-call (concatenate 'string *base-url* "/")
                    :return-values return-values
                    :object-as object-as
-                   :object-key-fn object-key-fn))
+                   :object-key-fn object-key-fn
+                   :json-arrays-as-vectors json-arrays-as-vectors
+                   :json-booleans-as-symbols json-booleans-as-symbols
+                   ))
 
 #|
 

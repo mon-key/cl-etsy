@@ -38,9 +38,18 @@
   "Convert API-CLASS-SLOT-NAME to an underscored string.
 :EXAMPLE
  \(equal \(api-class-slot-name-as-underscored-string 'listing-id\) \"listing_id\"\)
-:SEE-ALSO `api-class-slot-names-as-underscored-strings', `api-class-name-as-studly-caps-string'
+:SEE-ALSO `api-implicit-class-direct-slot-names-as-underscored-strings', `api-class-name-as-studly-caps-string'
 `api-class-slot-name-as-lispy-string'."
   (symbol-munger:lisp->underscores api-class-slot-name))
+
+(defun api-class-slot-names-list-as-underscored-strings (api-class-slot-name-list)
+  "Return  list of underscored strings as if by `api-class-slot-name-as-underscored-string'.
+API-CLASS-SLOT-NAME-LIST is a list symbols each designating a slot-name.
+:EXAMPLE
+ (api-class-slot-names-list-as-underscored-strings )
+:SEE-ALSO `api-implicit-class-direct-slot-names-as-underscored-strings', `api-class-name-as-studly-caps-string'
+`api-class-slot-name-as-lispy-string'."
+  (map 'list #'api-class-slot-name-as-underscored-string api-class-slot-name-list))
 
 (defun %each-a-string-p (string-list)
   (every #'(lambda (x) (and (stringp x) 
@@ -88,61 +97,61 @@ When STRING-OR-SYMBOL is :string the elements of STRING-OR-SYMBOL-LIST must not 
                  api-string-or-symbol)))
     finally (return (values start-hash-count (hash-table-count hash-table)))))
 
+
 
 ;;; ==============================
 ;;; Functions for introspecting and subsequently munging around the direct-slot
-;;; slot-names and initargs of an API class.
+;;; slot-names and initargs of an API class using MOP introspection via closer-mop
 ;;; ==============================
 
-(defun ensure-api-class-finalized (api-class)
+(defun api-implicit-class-ensure-finalized (api-class)
   ;; By default cl:find-class errors when class does not exist.
   (let ((found-class (find-class api-class)))
     (if (closer-mop:class-finalized-p found-class)
         found-class
         (closer-mop:ensure-finalized found-class))))
 
-(defun api-class-direct-slot-definition-names (api-class)
+(defun api-implicit-class-direct-slot-definition-names (api-class)
   "API-CLASS is a symbol designating a class modeling aspects of an Etsy API representation.
 Return a list of symbols designating the slot-names of the direct-slot of API-CLASS.
 :EXAMPLE
- \(api-class-direct-slot-definition-names 'api-method\)"
+ \(api-implicit-class-direct-slot-definition-names 'api-method\)"
   (map 'list #'closer-mop:slot-definition-name
-       (closer-mop:class-direct-slots (ensure-api-class-finalized api-class))))
+       (closer-mop:class-direct-slots (api-implicit-class-ensure-finalized api-class))))
 
 ;; :TODO Add function which invokes cl:warn when list element returned from the
 ;; following function has a non-null value for :difference.
-(defun api-class-direct-slot-definition-names-compare (&optional (api-class-list (mapcar #'car *api-classes-and-slots*)))
+(defun api-implicit-class-direct-slot-definition-names-compare (&optional (api-class-list (mapcar #'car *api-classes-and-slots*)))
   "Return a list of class-names and any set-difference between 
-the return value of of `api-class-direct-slot-definition-names' and 
+the return value of of `api-implicit-class-direct-slot-definition-names' and 
 the class slot-names specified in the cadr of each element of API-CLASS-LIST.
 Each element of return value as the form:
  \(<API-CLASS-NAME> :difference \( <SLOT-NAME>* \)\)
 :EXAMPLE 
- \(api-class-direct-slot-definition-names-compare\)
- \(api-class-direct-slot-definition-names-compare '\(api-method\)\)"
+ \(api-implicit-class-direct-slot-definition-names-compare\)
+ \(api-implicit-class-direct-slot-definition-names-compare '\(api-method\)\)"
   (declare ((and list (not null)) api-class-list))
   (assert (typep api-class-list '(and list (not null))))
   (loop 
     for api-class in api-class-list
-    for direct-slots = (api-class-direct-slot-definition-names api-class)
+    for direct-slots = (api-implicit-class-direct-slot-definition-names api-class)
     for hardwired = (cadr (assoc api-class *api-classes-and-slots*))
     for set-diff = (set-difference direct-slots hardwired)
     collect (list api-class :difference set-diff)))
 
-
-(defun api-class-direct-slot-definition-initarg-names (api-class)
+(defun api-implicit-class-direct-slot-definition-initarg-names (api-class)
 "API-CLASS is a symbol designating a class modeling aspects of an Etsy API representation.
 Return a list of initargs (keywords) for the direct slots of API-CLASS.
 If a direct-slot of API-CLASS does not have an initarg the corresponding
 element of the list is null.
 :EXAMPLE
- \(api-class-direct-slot-definition-initarg-names 'api-method\)"
+ \(api-implicit-class-direct-slot-definition-initarg-names 'api-method\)"
   (flet ((slot-init-arg-name (direct-slot)
            (car (closer-mop:slot-definition-initargs direct-slot))))
     (map 'list #'slot-init-arg-name
-         (closer-mop:class-direct-slots (ensure-api-class-finalized api-class)))))
+         (closer-mop:class-direct-slots (api-implicit-class-ensure-finalized api-class)))))
 
-(defun api-class-direct-slot-definition-name-and-initarg (api-class)
+(defun api-implicit-class-direct-slot-definition-name-and-initarg (api-class)
   "API-CLASS is a symbol designating a class modeling aspects of an Etsy API representation.
 Return a list of conses of the form:
  (<SLOT-NAME> . <INITARG-NAME-OR-NULL>)
@@ -150,14 +159,14 @@ Return a list of conses of the form:
  - <INITARG-NAME-OR-NULL> is either an initarg (a keyword) of a direct-slot of
    API-CLASS or null if the direct-slot does not have an initarg.
 :EXAMPLE
- \(api-class-direct-slot-definition-name-and-initarg 'api-method\)"
+ \(api-implicit-class-direct-slot-definition-name-and-initarg 'api-method\)"
   (flet ((slot-name-and-init (direct-slot)
            (cons (closer-mop:slot-definition-name direct-slot)
                  (car (closer-mop:slot-definition-initargs direct-slot)))))
     (map 'list #'slot-name-and-init
-         (closer-mop:class-direct-slots (ensure-api-class-finalized api-class)))))
+         (closer-mop:class-direct-slots (api-implicit-class-ensure-finalized api-class)))))
 
-(defun api-class-direct-slot-definition-name-as-underscored-string-and-initarg (api-class)
+(defun api-implicit-class-direct-slot-definition-name-as-underscored-string-and-initarg (api-class)
   "API-CLASS is a symbol designating a class modeling aspects of an Etsy API representation.
 Return a list of conses of the form:
  (<SLOT-NAME-AS-UNDERSCORED-STRING> . <INITARG-NAME-OR-NULL>)
@@ -165,31 +174,35 @@ Return a list of conses of the form:
  - <INITARG-NAME-OR-NULL> is either an initarg (a keyword) of a direct-slot of
    API-CLASS or null if the direct-slot does not have an initarg.
 :EXAMPLE
-\(api-class-direct-slot-definition-name-as-underscored-string-and-initarg 'api-method\)"
+\(api-implicit-class-direct-slot-definition-name-as-underscored-string-and-initarg 'api-method\)"
   (flet ((slot-name-and-init (direct-slot)
            (cons (api-class-slot-name-as-underscored-string (closer-mop:slot-definition-name direct-slot))
                  (car (closer-mop:slot-definition-initargs direct-slot)))))
     (map 'list #'slot-name-and-init
-         (closer-mop:class-direct-slots (ensure-api-class-finalized api-class)))))
+         (closer-mop:class-direct-slots (api-implicit-class-ensure-finalized api-class)))))
 
-(defun api-class-slot-names-as-lispy-strings (api-class)
+(defun api-implicit-class-direct-slot-names-as-lispy-strings (api-class)
 "Return a list strings as if by `api-class-slot-name-as-lispy-string'.
 Each element of list is the string name of a direct-slot slot-name of API-CLASS.
 API-CLASS is a symbol designating a class modeling aspects of an Etsy API representation.
 :EXAMPLE
- (api-class-slot-names-as-lispy-strings 'api-method)"
+ (api-implicit-class-direct-slot-names-as-lispy-strings 'api-method)"
   (map 'list #'api-class-slot-name-as-lispy-string
-       (api-class-direct-slot-definition-names api-class)))
+       (api-implicit-class-direct-slot-definition-names api-class)))
 
-(defun api-class-slot-names-as-underscored-strings (api-class)
+(defun api-implicit-class-direct-slot-names-as-underscored-strings (api-class)
   "Return a list strings as if by `api-class-slot-names-as-underscored-string'.
 Each element of the list corresponds with a direct-slot slot-name of API-CLASS.
 API-CLASS is a symbol designating a class modeling aspects of an Etsy API representation.
 Return a list of conses of the form:
 :EXAMPLE
- \(api-class-slot-names-as-underscored-strings 'api-method\)"
-  (map 'list #'api-class-slot-name-as-underscored-string
-       (api-class-direct-slot-definition-names api-class)))
+ \(api-implicit-class-direct-slot-names-as-underscored-strings 'api-method\)"
+  (api-class-slot-names-list-as-underscored-strings
+   (api-implicit-class-direct-slot-definition-names api-class)))
+
+
+;;; ==============================
+
 
 ;;; :TODO Might this be better named `api-symbol/string-lookup'?
 (defun api-response-string-to-symbol-lookup (string)
@@ -200,8 +213,8 @@ Return a list of conses of the form:
 
 ;; (gethash "pagination" *api-response-string-symbol-hash-for-object-key-fn*)
 
-;; :NOTE Once we start evaluating #'api-class-slot-names-as-underscored-strings
-;; any of the following forms which invoke `ensure-api-class-finalized' must to
+;; :NOTE Once we start evaluating #'api-implicit-class-direct-slot-names-as-underscored-strings
+;; any of the following forms which invoke `api-implicit-class-ensure-finalized' must to
 ;; come _after_ the files of ASDF the api-class component.
 ;; We can't reasonably finalize an api-class prior to the establishing a
 ;; defclass form for the class!
@@ -266,55 +279,55 @@ Return a list of conses of the form:
   ;; #'symbol-munger:underscores->keyword
   ;; :element-type :string)
          
-  ;; (cadadr '(api-class-slot-names-as-underscored-strings 'avatar))
+  ;; (cadadr '(api-implicit-class-direct-slot-names-as-underscored-strings 'avatar))
 
-  ;; (api-class-slot-names-as-underscored-strings 'avatar)
-  ;; (api-class-slot-names-as-underscored-strings 'api-method)
-  ;; (api-class-slot-names-as-underscored-strings 'bill-charge)
-  ;; (api-class-slot-names-as-underscored-strings 'billing-overview)
-  ;; (api-class-slot-names-as-underscored-strings 'bill-payment)
-  ;; (api-class-slot-names-as-underscored-strings 'cart)
-  ;; (api-class-slot-names-as-underscored-strings 'cart-listing)
-  ;; (api-class-slot-names-as-underscored-strings 'category)
-  ;; (api-class-slot-names-as-underscored-strings 'country)
-  ;; (api-class-slot-names-as-underscored-strings 'coupon)
-  ;; (api-class-slot-names-as-underscored-strings 'favorite-listing)
-  ;; (api-class-slot-names-as-underscored-strings 'favorite-user)
-  ;; (api-class-slot-names-as-underscored-strings 'featured-treasury)
-  ;; (api-class-slot-names-as-underscored-strings 'feedback)
-  ;; (api-class-slot-names-as-underscored-strings 'feedback-info)
-  ;; (api-class-slot-names-as-underscored-strings 'forum-post)
-  ;; (api-class-slot-names-as-underscored-strings 'ledger)
-  ;; (api-class-slot-names-as-underscored-strings 'ledger-entry)
-  ;; (api-class-slot-names-as-underscored-strings 'listing)
-  ;; (substitute "url_570xN" "url_570xn" (api-class-slot-names-as-underscored-strings 'listing-image) :test #'string=)
-  ;; (api-class-slot-names-as-underscored-strings 'listing-translation)
-  ;; (api-class-slot-names-as-underscored-strings 'order)
-  ;; (api-class-slot-names-as-underscored-strings 'param-list)
-  ;; (api-class-slot-names-as-underscored-strings 'payment)
-  ;; (api-class-slot-names-as-underscored-strings 'payment-template)
-  ;; (api-class-slot-names-as-underscored-strings 'receipt)
-  ;; (api-class-slot-names-as-underscored-strings 'region)
-  ;; (api-class-slot-names-as-underscored-strings 'shipping-info)
-  ;; (api-class-slot-names-as-underscored-strings 'shipping-template)
-  ;; (api-class-slot-names-as-underscored-strings 'shipping-template-entry)
-  ;; (api-class-slot-names-as-underscored-strings 'shop)
-  ;; (api-class-slot-names-as-underscored-strings 'shop-section)
-  ;; (api-class-slot-names-as-underscored-strings 'shop-section-translation)
-  ;; (api-class-slot-names-as-underscored-strings 'shop-translation)
-  ;; (api-class-slot-names-as-underscored-strings 'style)
-  ;; (api-class-slot-names-as-underscored-strings 'tag)
-  ;; (api-class-slot-names-as-underscored-strings 'team)
-  ;; (api-class-slot-names-as-underscored-strings 'transaction)
-  ;; (api-class-slot-names-as-underscored-strings 'treasury)
-  ;; (api-class-slot-names-as-underscored-strings 'treasury-counts)
-  ;; (api-class-slot-names-as-underscored-strings 'treasury-listing)
-  ;; (api-class-slot-names-as-underscored-strings 'treasury-listing-data)
-  ;; (api-class-slot-names-as-underscored-strings 'user)
-  ;; (api-class-slot-names-as-underscored-strings 'user-address)
-  ;; (api-class-slot-names-as-underscored-strings 'user-profile)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'avatar)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'api-method)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'bill-charge)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'billing-overview)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'bill-payment)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'cart)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'cart-listing)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'category)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'country)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'coupon)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'favorite-listing)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'favorite-user)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'featured-treasury)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'feedback)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'feedback-info)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'forum-post)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'ledger)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'ledger-entry)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'listing)
+  ;; (substitute "url_570xN" "url_570xn" (api-implicit-class-direct-slot-names-as-underscored-strings 'listing-image) :test #'string=)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'listing-translation)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'order)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'param-list)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'payment)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'payment-template)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'receipt)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'region)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'shipping-info)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'shipping-template)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'shipping-template-entry)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'shop)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'shop-section)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'shop-section-translation)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'shop-translation)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'style)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'tag)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'team)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'transaction)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'treasury)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'treasury-counts)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'treasury-listing)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'treasury-listing-data)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'user)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'user-address)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'user-profile)
   ;;
-  ;; (api-class-slot-names-as-underscored-strings 'data-type)
+  ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'data-type)
   ;; :data-type-values "values"
   ;; "values" :data-type-values
   ;;
@@ -328,6 +341,39 @@ Return a list of conses of the form:
 ;;; Functions for examining the unique slot slot-names of the api-classes 
 ;;; in lieu of automagically generating defgeneric accessors for each unique slot.
 ;;; ==============================
+
+(defun api-implicit-class-and-slot-names-as-etsy-strings (&optional (api-class-list (mapcar #'car *api-classes-and-slots*)))
+ "Return a list of the string representation of the api-classes and their direct slots as seen in a JSON response object.
+ API-CLASS-LIST is a list
+of symbols each designating an api-class.  like
+`api-explicit-class-and-slot-names-as-etsy-strings' but the the names of
+the direct slots of each API-CLASS are acquired with MOP introspection as
+if by `api-implicit-class-direct-slot-names-as-underscored-strings'."
+  
+  (loop 
+    for api-class-sym = api-class-list
+    for api-class-string = (api-class-name-as-studly-caps-string api-class-sym)
+    for class-direct-slot-strings = (api-implicit-class-direct-slot-names-as-underscored-strings api-class-sym)
+    collect (list api-class-string class-direct-slot-strings)))
+
+(defun api-explicit-class-and-slot-names-as-etsy-strings (&optional (class-with-class-slot-list *api-classes-and-slots*))
+"Return a list of the string representation of the api-classes and their direct
+slots as seen in a JSON response object.
+CLASS-WITH-CLASS-SLOT-LIST is a proper list structured as per `*api-classes-and-slots*'. 
+Each element of list returned has the format:
+ \(\"StudlyClassName\"  \( \"underscored_slot_name\"* \) \)
+:EXAMPLE
+ \(api-explicit-class-and-slot-names-as-etsy-strings\)
+\(equalp
+ \(api-explicit-class-and-slot-names-as-etsy-strings 
+  '\(\(studly-class-name \(underscored-slot-name-foo underscored-slot-name-bar underscored-slot-name-baz\)\)\)\)
+ '\(\(\"StudlyClassName\"  \( \"underscored_slot_name_foo\" \"underscored_slot_name_bar\" \"underscored_slot_name_baz\"\)\)\)\)
+"
+  (loop 
+    for api-class in class-with-class-slot-list
+    for api-class-string = (api-class-name-as-studly-caps-string (car api-class))
+    for class-direct-slot-strings = (map 'list #'api-class-slot-name-as-underscored-string (cadr api-class))
+    collect (list api-class-string class-direct-slot-strings)))
 
 (defun %api-class-slot-freqs (seq &key (test #'eql) (key #'identity))
   (declare (cl:sequence seq)
@@ -496,7 +542,7 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
 
 ;; can call after api-request.lisp
 (defun api-method-unique-parameter-types ()
-  ;; return a list of all unique parameter types returned a yason:parsed equivalent of "getMethodTable".
+  ;; return a list of all unique parameter types returned by the equivalent of "getMethodTable".
   (loop 
     for method in ;; (get-method-table)
        (parsed-api-call (concatenate 'string *base-url* "/") 

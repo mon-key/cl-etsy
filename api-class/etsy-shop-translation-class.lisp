@@ -13,7 +13,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'shop-translation))
- (api-class-slot-names-as-underscored-strings 'shop-translation)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'shop-translation)
 
 |#
 

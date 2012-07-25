@@ -41,7 +41,7 @@
 
 ----
  (closer-mop:class-finalized-p (find-class 'category))
- (api-class-slot-names-as-underscored-strings  'category)
+ (api-implicit-class-direct-slot-names-as-underscored-strings  'category)
 
 |#
 

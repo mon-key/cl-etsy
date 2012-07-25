@@ -39,7 +39,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'cart))
- (api-class-slot-names-as-underscored-strings  'cart)
+ (api-implicit-class-direct-slot-names-as-underscored-strings  'cart)
 
 
 |#

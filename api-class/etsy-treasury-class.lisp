@@ -18,7 +18,7 @@
 
 ----
  (closer-mop:class-finalized-p (find-class 'treasury))
- (api-class-slot-names-as-underscored-strings 'treasury)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'treasury)
 
 |#
 

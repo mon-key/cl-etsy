@@ -31,7 +31,7 @@ API-METHODS
 
 ----
  (closer-mop:class-finalized-p (find-class 'user-address))
- (api-class-slot-names-as-underscored-strings 'user-address)
+ (api-implicit-class-direct-slot-names-as-underscored-strings 'user-address)
 
 |#
 
