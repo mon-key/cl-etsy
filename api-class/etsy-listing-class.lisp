@@ -124,7 +124,7 @@ API-METHODS
     ;; :perm-scope none
     ;; :type string
     :documentation "The current status state of a listing.
-A listings statsu may be one of:
+A listings status may be one of:
  active removed sold_out expired edit private unavailable alchemy create
 
 A state may be editable or non-editable. 
@@ -161,6 +161,7 @@ A state may be renewable or non-renewable.
  alchemy - [DEPRECATED] Please ignore.
  create  - [DEPRECATED] The Listing is currently being edited by the owner as
            part of the initial Listing creation.
+Can be interrogated `listing-state-p'.
 :SEE-ALSO the enum for ``state'' parameter of private POST API method \"createListing\".")
 
    ;; user_id

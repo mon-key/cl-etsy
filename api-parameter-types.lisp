@@ -237,7 +237,22 @@ creation_tsz 	public 	none 	int 	Time the listing was added to this Treasury, in
 User
 creation_tsz 	public 	none 	float 	The date and time the user was created, in epoch seconds. 
 
+
+----
+
+
+ 
+
+
+
+
+
+
+
+
+
 |#
+
 (in-package #:cl-etsy)
 
 ;; (deftype epoch ()
@@ -380,6 +395,23 @@ case-insensitivity is a concern so we assume it isn't.
        (eql (length maybe-iso-code) 2)
        (gethash maybe-iso-code *iso-4217-codes*)
        t))
+
+(deftype listing-state ()
+  "A value declared as permissible for the state field of a `listing' object.
+  active removed sold_out expired alchemy edit create private unavailable
+ (URL `http://www.etsy.com/developers/documentation/reference/listing#section_fields')
+:SEE-ALSO `listing-state-p'"
+  '(satisfies listing-state-p))
+
+(defun listing-state-p (state)
+  "Whether STATE is one of the valid values declared as permissible for the state field of a listing object.
+True when state is one of:
+ active removed sold_out expired alchemy edit create private unavailable
+:SEE (URL `http://www.etsy.com/developers/documentation/reference/listing#section_fields')"
+  (member state (list "active" "removed" "sold_out"
+                      "expired" "alchemy" "edit" "create"
+                      "private" "unavailable")
+          :test #'equal))
 
 ;; (and (int-string-p "88") (null (int-string-p "88.0")))
 (defun int-string-p (maybe-int-string)
