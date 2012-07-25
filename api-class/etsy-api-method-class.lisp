@@ -131,7 +131,7 @@ As of 2012-07-21 following are counts of public and private Etsy API methods:
 (defun get-method-table (&key
                          (return-values t)
                          (object-as :alist)
-                         (object-key-fn #'api-response-string-to-symbol-lookup)
+                         (object-key-fn #'api-string/symbol-lookup)
                          (json-arrays-as-vectors   yason:*parse-json-arrays-as-vectors*)
                          (json-booleans-as-symbols yason:*parse-json-booleans-as-symbols*)
                          )

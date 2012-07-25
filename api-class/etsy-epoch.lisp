@@ -17,7 +17,7 @@
 
 
 ;; (epoch-to-timestring (cadr (assoc "results" (get-server-epoch) :test #'equal)))
-(defun get-server-epoch (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+(defun get-server-epoch (&key (object-key-fn #'api-string/symbol-lookup)
                               (object-as :alist)
                               (return-values t))
   "
@@ -32,7 +32,7 @@
                    :object-key-fn object-key-fn
                    :return-values return-values))
 
-(defun ping (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+(defun ping (&key (object-key-fn #'api-string/symbol-lookup)
                   (object-as :alist)
                   (return-values t))
   "

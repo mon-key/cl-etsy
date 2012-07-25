@@ -55,6 +55,9 @@ API-METHODS
                  :parameters '(;; Mali
                                ;; ("lat" . "-3.31")
                                ;; ("lon" . "17.33")
+                               ;; Singapore
+                               ;; ("lat" . "1.3403")
+                               ;; ("lon" . "103.7758")
                                ;; France
                                ("lon" . "2.72")
                                ("lat" . "46.53"))

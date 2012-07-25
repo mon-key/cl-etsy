@@ -142,6 +142,52 @@ purchase-state slot of class `cart-listing'
  valid, invalid_quantity, invalid_shipping, 
  not_active, edited, invalid_currency, invalid_shipping_currency
 
+ Return all 41 unique parameter types
+ (api-method-unique-parameter-types)
+
+ ("boolean"
+  "cart_id"
+  "category"
+  "color_triplet"
+  "color_wiggle"
+  "epoch"
+  "float"
+  "forum_post"
+  "image"
+  "int"
+  "language"
+  "latitude"
+  "longitude"
+  "region"
+  "shop_id_or_name"
+  "string"
+  "string (length >= 3)"
+  "text"
+  "treasury_description"
+  "treasury_id"
+  "treasury_search_string"
+  "treasury_title"
+  "user_id_or_name"
+  "array(int)"
+  "array(shop_id_or_name)"
+  "array(string)"
+  "array(team_id_or_name)"
+  "array(user_id_or_name)"
+  "enum(active, draft)"
+  "enum(active, inactive, draft)"
+  "enum(active, invited, pending)"
+  "enum(anniversary, baptism, bar_or_bat_mitzvah, birthday, canada_day, chinese_new_year, cinco_de_mayo, confirmation, christmas, day_of_the_dead, easter, eid, engagement, fathers_day, get_well, graduation, halloween, hanukkah, housewarming, kwanza, prom, july_4th, mothers_day, new_baby, new_years, quinceanera, retirement, st_patricks_day, sweet_16, sympathy, thanksgiving, valentines, wedding)"
+  "enum(city, state, country)"
+  "enum(created, price)"
+  "enum(created, price, score)"
+  "enum(hotness, created)"
+  "enum(i_did, collective, someone_else)"
+  "enum(made_to_order, 2010_2012, 2000_2009, 1993_1999, before_1993, 1990_1992, 1980s, 1970s, 1960s, 1950s, 1940s, 1930s, 1920s, 1910s, 1900s, 1800s, 1700s, before_1700)"
+  "enum(men, women, unisex_adults, teen_boys, teen_girls, teens, boys, girls, children, baby_boys, baby_girls, babies, birds, cats, dogs, pets)"
+  "enum(open, unshipped, unpaid, completed, processing, all)"
+  "enum(up, down)"
+)
+
 ---
 :NOTE TreasuryListing and Treasury both specify that creation_tsz is an Int
 whereas all of the other representations specifty it as a float:
@@ -229,6 +275,11 @@ Methods marked \"private\" may be entailed by a permission-scope and require Oau
   "The valid parameter values for yason :object-as keywords 
 `yason:*parse-object-as*'"
   '(member :hash-table :plist :alist))
+
+;; (deftype api-request-parsed-object-type ()
+;;   "The valid types of objects returned by `yason:parse' as per the OBJECT-AS keyword.
+;; Either hash-table or list."
+;;   '(or list hash-table))
 
 (deftype int ()
   'integer)
@@ -400,6 +451,20 @@ Relavant for (at least) the following Etsy parameter types:
       collect ensured into gthr
       finally (return (format nil "~{~A~^,~}" gthr)))))
 
+#|
+ 
+ (defun api-method-param-type-lookup (parameter-type)
+  (declare (or null string parameter-type))
+  (when parameter-type
+    (let ((array-or-enum (subseq parameter-type 0 3)))
+      (cond ((string= array-or-enum "arr")
+             (etsy-array-type-to-lisp-type parameter-type))
+            ((string= array-or-enum "enu")
+             (etsy-enum-type-to-lisp-type parameter-type))
+            (t 
+             )))))
+
+|#
 
 ;;; ==============================
 ;;; EOF

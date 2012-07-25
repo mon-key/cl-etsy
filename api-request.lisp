@@ -119,6 +119,27 @@ Following errors successfully:
                        response-body)
                   (flexi-streams:octets-to-string response-body))))))
 
+;; :NOTE potentially we might use this for returning nested response objects. 
+;; But as it is right now we're prob. fine with just `%parsed-api-call-values'
+;; Also, it isn't clear how/whether to accomodate situations where
+;; :json-arrays-as-vectors is T
+;;
+;; (defun parsed-api-get-keyed-value-for-object-as (key keyed-value-object object-as &key (test #'eql))
+;;   ;; KEY is a key 
+;;   ;; TEST only relevant if OBJECT-AS is :alist
+;;   ;; :NOTE Yason's hash-table objects have `cl:hash-table-test' cl:equal see `yason::create-container'.
+;;   (declare 
+;;    ;; (api-request-parsed-object-type keyed-value-object)
+;;    ((or list hash-table) keyed-value-object)
+;;    (api-request-parse-object-as object-as))
+;;   (ecase object-as
+;;     (:alist
+;;      (cdr (assoc key keyed-value-object :test test)))
+;;     (:plist 
+;;      (getf keyed-value-object key))
+;;     (:hash-table
+;;      (and (hash-table-p keyed-value-object)
+;;           (gethash key keyed-value-object)))))
 
 (defun %parsed-api-call-values (parsed-response object-as)
 "Return the keys of a succesfully parsed Etsy API method call as as cl:values.
@@ -128,7 +149,7 @@ Values are returned in the following order for these keys:
   (ecase object-as
     (:alist 
      (values
-      (cdr (assoc :results    parsed-response)) ;; is this better as cadr?
+      (cdr (assoc :results    parsed-response))
       (cdr (assoc :count      parsed-response))
       (cdr (assoc :type       parsed-response))
       (cdr (assoc :params     parsed-response))
@@ -148,13 +169,18 @@ Values are returned in the following order for these keys:
       (gethash :params     parsed-response)
       (gethash :pagination parsed-response)))))
 
+;; :NOTE when yason:*parse-json-arrays-as-vectors* is T the vectors returned may
+;; have values of cl:array-total-size larger than their length. 
+;; :SEE `yason::+initial-array-size+' in `yason::parse-array' for details.
+;; Also, note that changing value of +initial-array-size+ to 0 results in a
+;; larger cl:array-total-size for the returned vector.
 (defun parsed-api-call (url &key (parameters nil) 
                                  (method :get)
                                  (content-type "application/json")
-                                 (object-key-fn 'api-response-string-to-symbol-lookup) ;yason:*parse-object-key-fn*
                                  (return-values t)
-                                 (object-as yason:*parse-object-as*)
-                                 (json-arrays-as-vectors yason:*parse-json-arrays-as-vectors*)
+                                 (object-as                yason:*parse-object-as*)
+                                 (object-key-fn            'api-string/symbol-lookup) ;yason:*parse-object-key-fn*
+                                 (json-arrays-as-vectors   yason:*parse-json-arrays-as-vectors*)
                                  (json-booleans-as-symbols yason:*parse-json-booleans-as-symbols*))
   "Request JSON data from resource at URL returning results as if by `yason:parse'.
 URL is a URL to request a resource from. 
@@ -197,17 +223,17 @@ keyword object-key-fn is a function is as per `yason:parse'. Default is dynamic 
 "
   (declare (api-request-parse-object-as object-as)
            (boolean return-values json-arrays-as-vectors json-booleans-as-symbols))
-  (let ((parsed-response 
+  (let ((parsed-response
           (yason::parse
            (api-call url
-                     :parameters parameters 
-                     :method  method 
+                     :parameters parameters
+                     :method  method
                      :content-type content-type)
            :object-key-fn object-key-fn
            :object-as object-as
            :json-arrays-as-vectors json-arrays-as-vectors
            :json-booleans-as-symbols json-booleans-as-symbols)))
-    (if (null return-values)  
+    (if (null return-values)
         parsed-response
         (%parsed-api-call-values parsed-response object-as))))
 

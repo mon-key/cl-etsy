@@ -230,12 +230,22 @@ Each element of list returned has the format:
     for class-direct-slot-strings = (map 'list #'api-class-slot-name-as-underscored-string (cadr api-class))
     collect (list api-class-string class-direct-slot-strings)))
 
+;; (api-class-all-slot-names-unique-as-underscored-strings)
+(defun api-class-all-slot-names-unique-as-underscored-strings (&key (class-with-class-slot-list *api-classes-and-slots*))
+  (api-class-slot-names-as-underscored-strings
+   (nth-value 1
+              (api-class-all-slot-names-unique :class-with-class-slot-list class-with-class-slot-list))))
+
 
 ;;; ==============================
 
 
 ;;; :TODO Might this be better named `api-symbol/string-lookup'?
-(defun api-response-string-to-symbol-lookup (string)
+(defun api-string/symbol-lookup (string)
+  ;; :EXAMPLE
+  ;; (equal (api-string/symbol-lookup :description) "description")
+  ;; (equal (api-string/symbol-lookup "description") :description)
+  ;; (equal (api-string/symbol-lookup "Description") "Description")
   (or (gethash string *api-response-string-symbol-hash-for-object-key-fn*)
       string))
 
@@ -283,17 +293,6 @@ Each element of list returned has the format:
    #'symbol-munger:underscores->keyword
    :element-type :string)
   
-  ;; this form must come after api-request.lisp
-  ;;
-  ;; (api-method-unique-parameter-names-hashed)
-
-  ;; Establish mappings for each symbols naming an api-class to/from studly caps strings
-  ;; Maybe this hash to a different table b/c "Tag" tag :tag 
-  ;; (api-string-or-symbol-list-hash-for-object-key-fn
-  ;;  (mapcar #'car *api-classes-and-slots*)
-  ;;  #'api-class-name-as-studly-caps-string
-  ;;  :element-type :symbol)
-
   ;; AFAIK these don't appear in the car position of a response object but we
   ;; can prob. safely add them to the hash none-the-less
   ;;
@@ -308,7 +307,31 @@ Each element of list returned has the format:
   ;;   "private")
   ;; #'symbol-munger:underscores->keyword
   ;; :element-type :string)
-         
+  ;;
+  ;; ---
+  ;; This form must come after api-request.lisp
+  ;;
+  ;; Hash each unique paramter name returend by "getMethodTable"
+  ;; (api-method-unique-parameter-names-hashed)
+  
+  ;; Establish mappings for each symbols naming an api-class to/from studly caps strings
+  ;;
+  ;; Maybe this hash to a different table b/c "Tag" tag :tag 
+  ;; (api-string-or-symbol-list-hash-for-object-key-fn
+  ;;  (mapcar #'car *api-classes-and-slots*)
+  ;;  #'api-class-name-as-studly-caps-string
+  ;;  :element-type :symbol)
+  ;;
+  ;; Establish mappings for each slot of each api-class we define.
+  ;; (api-string-or-symbol-list-hash-for-object-key-fn
+  ;;  (substitute "url_570xN" "url_570xn"
+  ;;              (remove "data_type_values"
+  ;;                      (api-class-all-slot-names-unique-as-underscored-strings )
+  ;;                      :test #'equal)
+  ;;              :test #'equal)
+  ;; #'symbol-munger:underscores->keyword
+  ;;  :element-type :string)
+  ;;
   ;; (cadadr '(api-implicit-class-direct-slot-names-as-underscored-strings 'avatar))
 
   ;; (api-implicit-class-direct-slot-names-as-underscored-strings 'avatar)
@@ -519,7 +542,7 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
     ;; This version can be run after the functions of api-request.lisp are in our environment.
     for method in (parsed-api-call (concatenate 'string *base-url* "/") 
                                    :object-as :alist
-                                   :object-key-fn #'api-response-string-to-symbol-lookup)
+                                   :object-key-fn #'api-string/symbol-lookup)
     for params = (mapcar #'car (cdr (assoc :params method)))
     nconcing params into gthr
     finally (return (sort (remove-if-not #'stringp (delete-duplicates gthr :test #'equal)) #'string>))))
@@ -531,9 +554,9 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
         (start-hash-count  (hash-table-count hash-table)))
     (if maybe-method-string-list
         (api-string-or-symbol-list-hash-for-object-key-fn maybe-method-string-list
-                                                            #'api-method-param-name-as-keyword
-                                                            :hash-table hash-table
-                                                            :element-type :string)
+                                                          #'api-method-param-name-as-keyword
+                                                          :hash-table hash-table
+                                                          :element-type :string)
         (values start-hash-count start-hash-count))))
 
 ;; can call after api-request.lisp
@@ -543,7 +566,7 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
     for method in ;; (get-method-table)
        (parsed-api-call (concatenate 'string *base-url* "/") 
                         :object-as :alist
-                        :object-key-fn #'api-response-string-to-symbol-lookup)
+                        :object-key-fn #'api-string/symbol-lookup)
     for verify-params =  (loop 
                            for (param . type) in (cdr (assoc :params method))
                            ;; unless (keywordp param)
@@ -566,7 +589,7 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
     for method in ;; (get-method-table)
        (parsed-api-call (concatenate 'string *base-url* "/") 
                         :object-as :alist
-                        :object-key-fn #'api-response-string-to-symbol-lookup)
+                        :object-key-fn #'api-string/symbol-lookup)
     for verify-params =  (loop 
                            for (param . type) in (cdr (assoc :params method))
                            unless (keywordp param)
@@ -584,7 +607,7 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
   (loop 
     for method in (parsed-api-call (concatenate 'string *base-url* "/") 
                                    :object-as :alist
-                                   :object-key-fn #'api-response-string-to-symbol-lookup)
+                                   :object-key-fn #'api-string/symbol-lookup)
     for params = (mapcar #'car (cdr (assoc :params method)))
     nconcing params into gthr
     finally (return (sort (delete-duplicates gthr :test #'equal) #'string<)))

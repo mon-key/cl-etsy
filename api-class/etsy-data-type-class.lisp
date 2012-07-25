@@ -94,7 +94,7 @@ Currently only applicable for the following enums:
 
 ;; :NOTE We need to transform the "values" field of returned results to ``data-type-values''
 ;;  e.g. (assoc "values" (car (describe-occasion-enum)) :test #'string=)
-(defun describe-occasion-enum (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+(defun describe-occasion-enum (&key (object-key-fn #'api-string/symbol-lookup)
                                     (object-as :alist)
                                     (return-values t))
   "Describes the legal values for use as the occasion slot-value of class `listing'.
@@ -110,7 +110,7 @@ Result when non-nil should contain fields which map to the slots of a `data-type
                    :return-values return-values))
 
 ;; "describeRecipientEnum"
-(defun describe-recipient-enum (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+(defun describe-recipient-enum (&key (object-key-fn #'api-string/symbol-lookup)
                                      (object-as :alist)
                                      (return-values t))
   "Describes the legal values for use as the recipient slot-value of class `listing'.
@@ -126,7 +126,7 @@ Result when non-nil should contain fields which map to the slots of a `data-type
                    :return-values return-values))
 
 ;; "describeWhenMadeEnum" 
-(defun describe-when-made-enum (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+(defun describe-when-made-enum (&key (object-key-fn #'api-string/symbol-lookup)
                                      (object-as :alist)
                                      (return-values t))
   "Describes the legal values for use as the when-made slot-value of class `listing'.
@@ -143,7 +143,7 @@ Result when non-nil should contain fields which map to the slots of a `data-type
 
 
 ;; "describeWhoMadeEnum" 
-(defun describe-who-made-enum (&key (object-key-fn #'api-response-string-to-symbol-lookup)
+(defun describe-who-made-enum (&key (object-key-fn #'api-string/symbol-lookup)
                                     (object-as :alist)
                                     (return-values t))
   "Describes the legal values for use as the who-made slot-value of class `listing'.
