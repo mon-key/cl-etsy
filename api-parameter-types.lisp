@@ -545,6 +545,18 @@ Relavant for (at least) the following Etsy parameter types:
       collect ensured into gthr
       finally (return (format nil "~{~A~^,~}" gthr)))))
 
+(defun %each-a-string-p (string-list)
+  ;; api-string-or-symbol-list-hash-for-object-key-fn
+  (every #'(lambda (x) (and (stringp x) 
+                            (not (zerop (length x)))))
+         string-list))
+
+(defun %each-a-symbol-p (symbol-list)
+  ;; api-string-or-symbol-list-hash-for-object-key-fn
+  (every #'(lambda (sym) (and (symbolp t) 
+                              (not (typep sym 'cl:boolean))))
+             symbol-list))
+
 #|
  
  (defun api-method-param-type-lookup (parameter-type)

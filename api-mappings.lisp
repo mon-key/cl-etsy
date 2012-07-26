@@ -49,15 +49,7 @@ API-CLASS-SLOT-NAME-LIST is a list symbols each designating a slot-name.
 `api-class-slot-name-as-lispy-string'."
   (map 'list #'api-class-slot-name-as-underscored-string api-class-slot-name-list))
 
-(defun %each-a-string-p (string-list)
-  (every #'(lambda (x) (and (stringp x) 
-                            (not (zerop (length x)))))
-         string-list))
 
-(defun %each-a-symbol-p (symbol-list)
-  (every #'(lambda (sym) (and (symbolp t) 
-                              (not (typep sym 'cl:boolean))))
-             symbol-list))
 
 (defun api-string-or-symbol-list-hash-for-object-key-fn (string-or-symbol-list munging-function 
                                                          &key (hash-table *api-response-string-symbol-hash-for-object-key-fn*)
@@ -250,8 +242,6 @@ Each element of list returned has the format:
 
 ;; (clrhash *api-response-string-symbol-hash-for-object-key-fn*)
 
-;; (gethash "pagination" *api-response-string-symbol-hash-for-object-key-fn*)
-
 ;; :NOTE Once we start evaluating #'api-implicit-class-direct-slot-names-as-underscored-strings
 ;; any of the following forms which invoke `api-implicit-class-ensure-finalized' must to
 ;; come _after_ the files of ASDF the api-class component.
@@ -324,7 +314,7 @@ Each element of list returned has the format:
   ;; Hash each unique paramter name returend by "getMethodTable"
   ;; (api-method-unique-parameter-names-hashed)
   
-  ;; Establish mappings for each symbols naming an api-class to/from studly caps strings
+  ;; Establish mappings for each symbol naming an api-class to/from studly caps strings
   ;;
   ;; Maybe this hash to a different table b/c "Tag" tag :tag 
   ;; (api-string-or-symbol-list-hash-for-object-key-fn
@@ -539,8 +529,6 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
                                 do (format output-stream "~%;; ~D classes: ~{~A~^ ~}~%(defgeneric ~S (object))~%(defgeneric (setf ~S) (~S object))~%" 
                                            (length srtd-clss) srtd-clss srtd-slot srtd-slot srtd-slot)))))))
 
-;; (api-method-unique-parameter-names)
-
 (defun api-method-param-name-as-keyword (api-method-param-name)
   (symbol-munger:underscores->keyword api-method-param-name))
 
@@ -567,9 +555,6 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
 (defun api-method-unique-parameter-names (method-table) ;; *api-method-table* (get-method-table)
   "Return all unique paramter names for each api-method returned by Etsy API method \"getMethodTable\"."
   (loop 
-    ;; This version assumes `get-method-table' is already in our environment. It won't be.
-    ;; for method in (get-method-table)
-    ;;
     ;; This version can be run after the functions of api-request.lisp are in our environment.
     for method in (or method-table
                       (parsed-api-call (concatenate 'string *base-url* "/") 
@@ -593,7 +578,9 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
 
 ;; can call after api-request.lisp
 (defun api-method-unique-parameter-types (method-table) ;; *api-method-table* (get-method-table)
-  ;; return a list of all unique parameter types returned by the equivalent of "getMethodTable".
+  "Return a list of all unique parameter types returned by the equivalent of \"getMethodTable\".
+:EXAMPLE
+ \(api-method-unique-parameter-types *api-method-table*\)"
   (loop 
     for method in (or method-table
                       (parsed-api-call (concatenate 'string *base-url* "/") 
@@ -608,15 +595,11 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
     finally (return (sort (delete-duplicates gthr :test #'string=) #'string<))))
 
 (defun api-method-find-methods-with-param-type (method-table param-type) ; *api-method-table* (get-method-table)
-  ;; "Return a list of all Etsy API api-method's in METHOD-TABLE with type PARAM-TYPE.
-  ;; (api-method-find-methods-with-param-type (get-method-table) "boolean")
+   "Return a list of all Etsy API api-method's in METHOD-TABLE with type PARAM-TYPE.
+:EXAMPLE
+ \(api-method-find-methods-with-param-type \(get-method-table\) \"boolean\"\)"
   (loop 
     for method in method-table
-    ;; *api-method-table*
-    ;; (get-method-table)
-    ;; (parsed-api-call (concatenate 'string *base-url* "/") 
-    ;;                  :object-as :alist
-    ;;                  :object-key-fn #'api-string/symbol-lookup)
     for verify-params =  (loop 
                            for (param . type) in (cdr (assoc :params method))
                            when (equal type param-type)
