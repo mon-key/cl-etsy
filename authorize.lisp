@@ -92,6 +92,10 @@
  | 
  | You can revoke this access at any time by visiting Your Account.
 
+
+----
+:NOTE `make-api-consumer-token' defined in specials.lisp
+
 |#
 
 (in-package #:cl-etsy)
@@ -106,8 +110,21 @@
 (defun get-request-token-endpoint ()
   (concatenate 'string *base-url* "/oauth/request_token"))
 
+(defun set-api-consumer-token ()
+  "Set value of `*api-consumer-token*' to return value of `make-api-consumer-token'.
+:EXAMPLE
+ (and (set-api-consumer-token)
+      (equal (slot-value  *api-consumer-token* 'cl-oauth::key) *api-key*)
+      (equal (slot-value  *api-consumer-token* 'cl-oauth::secret) *api-shared-secret*))
+:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
+`make-api-consumer-token', `set-api-consumer-token'."
+  (setf *api-consumer-token* (make-api-consumer-token)))
+
 ;; (make-api-request-token)
 (defun make-api-request-token (&key (permission-parameters *api-default-permission-scope*))
+  ;; :NOTE The returned request token will be generated with an endpoint
+  ;; as per current _dynamic_ value *base-url*. 
+  ;; See return value of (etsy-environment) for details.
   (when (null *api-consumer-token*)
     (error ":FUNCTION `make-api-request-token' -- value of *api-consumer-token* must not be null"))
   (assert (typep *api-consumer-token* 'cl-oauth:consumer-token))
@@ -130,6 +147,7 @@
    :secret secret
    ;; As of 2012-07-20 we can't get the sandbox to return a valid access token.
    ;; Until we can assume the token orignated from production URI.
+   ;; :origin-uri (get-access-token-endpoint)
    :origin-uri "http://openapi.etsy.com/v2/oauth/access_token"))
 
 (defun get-default-permission-scope-parameter (&key (permission-parameters *api-default-permission-scope*))

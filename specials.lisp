@@ -50,10 +50,11 @@ Value should be set at runtime with `set-api-consumer-token'.
 :SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
 `*api-default-permission-scope*', `make-api-consumer-token', `set-api-consumer-token'.")
 
-(defvar *api-default-permission-scope* 
-  (list "email_r" "listings_r" "listings_w" "listings_d" "transactions_r"
-        "transactions_w" "billing_r" "profile_r" "profile_w" "address_r" "address_w"
-        "favorites_rw" "shops_rw" "cart_rw" "recommend_rw" "feedback_r" "treasury_w")
+(defvar *api-default-permission-scope*
+  ;; (list 
+  '("email_r" "listings_r" "listings_w" "listings_d" "transactions_r"
+    "transactions_w" "billing_r" "profile_r" "profile_w" "address_r" "address_w"
+    "favorites_rw" "shops_rw" "cart_rw" "recommend_rw" "feedback_r" "treasury_w")
   "The default Etsy API permission-scope's we request authorization for API method calls to consume.
 For use with `get-default-permission-scope-parameter'.
 :SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
@@ -79,17 +80,6 @@ KEY and SECRET keyword arguments of `cl-oauth:make-consumer-token'.
               (equal *api-key* "You need to set your *API-KEY*"))
           (values nil *api-key*)
           (cl-oauth:make-consumer-token :key *api-key* :secret *api-shared-secret*))))
-
-(defun set-api-consumer-token ()
-  "Set value of `*api-consumer-token*' to return value of `make-api-consumer-token'.
-:EXAMPLE
- (and (set-api-consumer-token)
-      (equal (slot-value  *api-consumer-token* 'cl-oauth::key) *api-key*)
-      (equal (slot-value  *api-consumer-token* 'cl-oauth::secret) *api-shared-secret*))
-:SEE-ALSO `*api-shared-secret*',`*api-consumer-token*', `*api-key*',
-`make-api-consumer-token', `set-api-consumer-token'."
-  (setf *api-consumer-token* (make-api-consumer-token)))
-
 
 (defparameter *api-method-table-json-pathname* nil
   "For use with `set-api-method-table-from-parsed-json-pathname'.")
