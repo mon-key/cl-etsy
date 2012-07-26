@@ -12,9 +12,11 @@ Many API methods take one or more parameters, either as query parameters of the
 URL itself, or as POST parameters. The documentation for each method references
 these standard types:
 
+;; api-string
 string
 "Any string (up to 255 characters)."
 
+;; api-int
 ; deftype exists
 int
 "A whole number value."
@@ -23,10 +25,12 @@ epoch
 "A whole number value representing UNIX epoch time, or any string accepted by
 PHP's strtotime() function."
 
+;; api-float
 float
 "A number with or without a decimal point. 
 Represented in output as a string, to avoid precision errors."
 
+;; api-boolean
 boolean
 "A logical true or false value. 
 May be passed to API requests as the strings "true" or "false" or "1" and "0".
@@ -240,16 +244,43 @@ creation_tsz 	public 	none 	float 	The date and time the user was created, in ep
 
 ----
 
+By redefining the following two function `yason:parse' and  `yason::parse-constant' and adding 
+and adding yason::*parse-json-null-as-keyword* we can parse "null" as :null.
 
- 
+ (defvar yason::*parse-json-null-as-keyword* nil
+  "If set to a true value, JSON nulls will be read as the keyword :null.")
 
+ (defun yason::parse-constant (input)
+   (destructuring-bind (expected-string return-value)
+       (find (peek-char nil input nil)
+             `(("true" ,(if *parse-json-booleans-as-symbols* 'true t))
+               ("false" ,(if *parse-json-booleans-as-symbols* 'false nil))
+               ("null" nil))
+             :key (lambda (entry) (aref (car entry) 0))
+             :test #'eql)
+     (loop
+       for char across expected-string
+       unless (eql (read-char input nil) char)
+       do (error "invalid constant"))
+     return-value)) 
 
-
-
-
-
-
-
+ (defun yason:parse (input
+                     &key
+                     (object-key-fn yason:*parse-object-key-fn*)
+                     (object-as yason:*parse-object-as*)
+                     (json-arrays-as-vectors yason:*parse-json-arrays-as-vectors*)
+                     (json-booleans-as-symbols yason:*parse-json-booleans-as-symbols*)
+                     (json-nulls-as-keyword yason::*parse-json-null-as-keyword*))
+   "Parse INPUT, which needs to be a string or a stream, as JSON.
+  Returns the lisp representation of the JSON structure parsed.  The
+  keyword arguments can be used to override the parser settings as
+  defined by the respective special variables."
+   (let ((yason:*parse-object-key-fn* object-key-fn)
+         (yason:*parse-object-as* object-as)
+         (yason:*parse-json-arrays-as-vectors* json-arrays-as-vectors)
+         (yason:*parse-json-booleans-as-symbols* json-booleans-as-symbols)
+         (yason::*parse-json-null-as-keyword* json-booleans-as-symbols))
+     (yason::parse% input)))
 
 |#
 
@@ -296,7 +327,16 @@ Methods marked \"private\" may be entailed by a permission-scope and require Oau
 ;; Either hash-table or list."
 ;;   '(or list hash-table))
 
+;; (deftype api-null ()
+;;   (or :null null))
+
 (deftype int ()
+  "An Etsy API integer type
+The documentation describes an int as:
+ \"A whole number value.\"
+Following returns the API methods with parameter-types declared as type \"int\":
+\(api-method-find-methods-with-param-type *api-method-table* \"int\"\)
+"
   'integer)
 
 (deftype int-or-string ()
@@ -401,17 +441,39 @@ case-insensitivity is a concern so we assume it isn't.
   active removed sold_out expired alchemy edit create private unavailable
  (URL `http://www.etsy.com/developers/documentation/reference/listing#section_fields')
 :SEE-ALSO `listing-state-p'"
-  '(satisfies listing-state-p))
+  '(and string
+    (satisfies listing-state-p)))
 
 (defun listing-state-p (state)
   "Whether STATE is one of the valid values declared as permissible for the state field of a listing object.
 True when state is one of:
  active removed sold_out expired alchemy edit create private unavailable
 :SEE (URL `http://www.etsy.com/developers/documentation/reference/listing#section_fields')"
-  (member state (list "active" "removed" "sold_out"
-                      "expired" "alchemy" "edit" "create"
-                      "private" "unavailable")
-          :test #'equal))
+  (and (stringp state) 
+       (>= (length state) 4)
+       (loop for x in '("active" "removed" "sold_out"
+                        "expired" "alchemy" "edit" "create"
+                        "private" "unavailable")
+             thereis (equal state x))))
+
+
+;; (deftype api-boolean ()
+;; "A
+;; \(api-method-find-methods-with-param-type *api-method-table* \"boolean\"\)"
+;; '(...))
+;;
+;; one of either "false" or "true"
+;; The api-classes with slots declared to be an etsy-boolean.
+;; ((avatar (is-black-and-white ))
+;;  (billing-overview (is-overdue))
+;;  (coupon (is-overdue seller-active free-shipping domestic-only))
+;;  (listing (is-black-and-white is-supply))
+;;  (listing-image (is-black-and-white))
+;;  (payment-template (allow-bt allow-check allow-mo allow-other allow-paypal allow-cc))
+;;  (receipt (was-paid was-shipped))
+;;  (shop (is-vacation is-refusing-alchemy))
+;;  (treasury (mature))
+;;  (user-profile (is-seller)))
 
 ;; (and (int-string-p "88") (null (int-string-p "88.0")))
 (defun int-string-p (maybe-int-string)
