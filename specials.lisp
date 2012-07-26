@@ -90,6 +90,16 @@ KEY and SECRET keyword arguments of `cl-oauth:make-consumer-token'.
 `make-api-consumer-token', `set-api-consumer-token'."
   (setf *api-consumer-token* (make-api-consumer-token)))
 
+
+(defparameter *api-method-table-json-pathname* nil
+  "For use with `set-api-method-table-from-parsed-json-pathname'.")
+
+(defparameter *api-method-table* nil
+  "An a list containing the api-method's of Etsy API \"getMethodTable\" method after parsing with `yason:parsed'.
+Use for caching retrieved api-methods for automagically building cl-etsy.
+:SEE-ALSO `api-method-unique-parameter-types', `api-method-find-methods-with-param-type', `get-method-table',
+`api-method-unique-parameter-names', `api-method-unique-parameter-names-hashed-verify-all-keyword-p', `api-method'.")
+
 (defvar *iso-3166-1-alpha-2-codes* 
   (loop 
     with ht = (make-hash-table  :size 251 :test #'equal) 
@@ -334,7 +344,7 @@ currency to which the currency code corresponds.
 
     (data-type
      (type 
-      ;; this is values but we changed it to 
+      ;; this field is named values but we can't tolerate it.
       data-type-values)) 
 
     (favorite-listing

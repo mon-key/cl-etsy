@@ -56,7 +56,7 @@ API-CLASS-SLOT-NAME-LIST is a list symbols each designating a slot-name.
 
 (defun %each-a-symbol-p (symbol-list)
   (every #'(lambda (sym) (and (symbolp t) 
-                              (not (typep sym 'boolean))))
+                              (not (typep sym 'cl:boolean))))
              symbol-list))
 
 (defun api-string-or-symbol-list-hash-for-object-key-fn (string-or-symbol-list munging-function 
@@ -239,14 +239,13 @@ Each element of list returned has the format:
 
 ;;; ==============================
 
-
-;;; :TODO Might this be better named `api-symbol/string-lookup'?
-(defun api-string/symbol-lookup (string)
-  ;; :EXAMPLE
-  ;; (equal (api-string/symbol-lookup :description) "description")
-  ;; (equal (api-string/symbol-lookup "description") :description)
-  ;; (equal (api-string/symbol-lookup "Description") "Description")
-  (or (gethash string *api-response-string-symbol-hash-for-object-key-fn*)
+(defun api-string/symbol-lookup (string &optional (hash-table *api-response-string-symbol-hash-for-object-key-fn*))
+  "
+:EXAMPLE
+ \(equal \(api-string/symbol-lookup :description\) \"description\"\)
+ \(equal \(api-string/symbol-lookup \"description\"\) :description\)
+ \(equal \(api-string/symbol-lookup \"Description\"\) \"Description\"\)"
+  (or (gethash string hash-table)
       string))
 
 ;; (clrhash *api-response-string-symbol-hash-for-object-key-fn*)
@@ -277,13 +276,13 @@ Each element of list returned has the format:
   (api-string-or-symbol-list-hash-for-object-key-fn
    (list
     "name"
-     "description"
-     "uri"
-     "params"
-     "defaults"
-     "type"
-     "visibility"
-     "http_method")
+    "description"
+    "uri"
+    "params"
+    "defaults"
+    "type"
+    "visibility"
+    "http_method")
    #'symbol-munger:underscores->keyword
    :element-type :string)
 
@@ -292,7 +291,18 @@ Each element of list returned has the format:
    (list  "page" "offset" "limit")
    #'symbol-munger:underscores->keyword
    :element-type :string)
-  
+
+  ;; keys appearing when limit/offset are non-nil
+  (api-string-or-symbol-list-hash-for-object-key-fn
+   (list 
+    "next_page"
+    "effective_page"
+    "next_offset"
+    "effective_offset"
+    "effective_limit")
+   #'symbol-munger:underscores->keyword
+   :element-type :string)
+
   ;; AFAIK these don't appear in the car position of a response object but we
   ;; can prob. safely add them to the hash none-the-less
   ;;
@@ -389,6 +399,27 @@ Each element of list returned has the format:
   ;; "values" 'data-type-values ' 
   )
 
+
+(defun set-api-method-table-from-parsed-json-pathname ()
+  "Set value of `*api-method-table*' to object returned by `yason:parse' with
+INPUT as file designated by `*api-method-table-json-pathname*'.  :NOTE JSON
+object _MUST_ begin at second line of INPUT we use the first line as a comment
+to indicate when the file was last written."
+  (when (and *api-method-table-json-pathname*
+             (pathnamep *api-method-table-json-pathname*)
+             (probe-file *api-method-table-json-pathname*))
+    (with-open-file (f *api-method-table-json-pathname*
+                      :if-does-not-exist :error
+                      :element-type 'character
+                      :direction :input)
+      (let ((last-updated-string (read-line f)))
+        (setf *api-method-table*
+              (yason:parse f
+                           :object-as :alist
+                           :object-key-fn 'api-string/symbol-lookup))
+        (values *api-method-table*
+                last-updated-string)))))
+
 
 ;;; ==============================
 ;;; Functions for examining the unique slot slot-names of the api-classes 
@@ -484,7 +515,7 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
 
 :SEE-ALSO `api-class-all-slot-names-unique', `api-class-all-slot-name-stats',
 `api-explicit-class-output-defgeneric-forms', `*api-classes-and-slots*'."
-  (declare ((or boolean stream) output-stream)
+  (declare ((or cl:boolean stream) output-stream)
            (cons class-with-class-slot-list))
   (loop 
     with ht = (make-hash-table)
@@ -533,16 +564,17 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
 ;;     nconcing params into gthr
 ;;     finally (return (sort (delete-duplicates gthr :test #'equal)  #'string<))))
 ;; (api-method-unique-parameter-names)
-(defun api-method-unique-parameter-names ()
+(defun api-method-unique-parameter-names (method-table) ;; *api-method-table* (get-method-table)
   "Return all unique paramter names for each api-method returned by Etsy API method \"getMethodTable\"."
   (loop 
     ;; This version assumes `get-method-table' is already in our environment. It won't be.
     ;; for method in (get-method-table)
     ;;
     ;; This version can be run after the functions of api-request.lisp are in our environment.
-    for method in (parsed-api-call (concatenate 'string *base-url* "/") 
-                                   :object-as :alist
-                                   :object-key-fn #'api-string/symbol-lookup)
+    for method in (or method-table
+                      (parsed-api-call (concatenate 'string *base-url* "/") 
+                                       :object-as :alist
+                                       :object-key-fn #'api-string/symbol-lookup))
     for params = (mapcar #'car (cdr (assoc :params method)))
     nconcing params into gthr
     finally (return (sort (remove-if-not #'stringp (delete-duplicates gthr :test #'equal)) #'string>))))
@@ -560,24 +592,44 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
         (values start-hash-count start-hash-count))))
 
 ;; can call after api-request.lisp
-(defun api-method-unique-parameter-types ()
+(defun api-method-unique-parameter-types (method-table) ;; *api-method-table* (get-method-table)
   ;; return a list of all unique parameter types returned by the equivalent of "getMethodTable".
   (loop 
-    for method in ;; (get-method-table)
-       (parsed-api-call (concatenate 'string *base-url* "/") 
-                        :object-as :alist
-                        :object-key-fn #'api-string/symbol-lookup)
+    for method in (or method-table
+                      (parsed-api-call (concatenate 'string *base-url* "/") 
+                                       :object-as :alist
+                                       :object-key-fn #'api-string/symbol-lookup))
     for verify-params =  (loop 
                            for (param . type) in (cdr (assoc :params method))
                            ;; unless (keywordp param)
-                           ;;collect (cons method param))
+                           ;; collect (cons method param))
                            collect type)
     nconcing verify-params into gthr
     finally (return (sort (delete-duplicates gthr :test #'string=) #'string<))))
 
+(defun api-method-find-methods-with-param-type (method-table param-type) ; *api-method-table* (get-method-table)
+  ;; "Return a list of all Etsy API api-method's in METHOD-TABLE with type PARAM-TYPE.
+  ;; (api-method-find-methods-with-param-type (get-method-table) "boolean")
+  (loop 
+    for method in method-table
+    ;; *api-method-table*
+    ;; (get-method-table)
+    ;; (parsed-api-call (concatenate 'string *base-url* "/") 
+    ;;                  :object-as :alist
+    ;;                  :object-key-fn #'api-string/symbol-lookup)
+    for verify-params =  (loop 
+                           for (param . type) in (cdr (assoc :params method))
+                           when (equal type param-type)
+                           collect param into bool-params
+                           finally (when bool-params 
+                                     (return (list* (cdr (assoc :name method)) (sort bool-params #'string<)))))
+    when verify-params
+    collecting it into gthr 
+    finally (return (sort gthr #'string< :key #'car))))
+
 
 ;; Sanity
-(defun api-method-unique-parameter-names-hashed-verify-all-keyword-p ()
+(defun api-method-unique-parameter-names-hashed-verify-all-keyword-p (method-table) ;; *api-method-table* (get-method-table)
   ;; Return as cl:values.
   ;; nth-value 0 is T if `api-method-unique-parameter-names-hashed' processed every unique parameter name as a keyword.
   ;; nth-value 1 is null when nth-value 1 is T otherwise it is a list of consed pairs each cons has the form:
@@ -586,10 +638,10 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
   ;; API method name and the parameter name of that method which we failed to
   ;; hash as a string/keyword keyword/string pair.
   (loop 
-    for method in ;; (get-method-table)
-       (parsed-api-call (concatenate 'string *base-url* "/") 
-                        :object-as :alist
-                        :object-key-fn #'api-string/symbol-lookup)
+    for method in (or method-table ;; (get-method-table) *api-method-table*
+                      (parsed-api-call (concatenate 'string *base-url* "/") 
+                                       :object-as :alist
+                                       :object-key-fn #'api-string/symbol-lookup))
     for verify-params =  (loop 
                            for (param . type) in (cdr (assoc :params method))
                            unless (keywordp param)

@@ -1,3 +1,6 @@
+;;; :FILE-CREATED <Timestamp: #{2012-07-25T21:22:34-04:00Z}#{12303} - by MON>
+;;; :FILE #P"cl-etsy/cl-etsy.asd"
+;;; ==============================
 
 (cl:in-package #:cl-user)
 
@@ -109,11 +112,20 @@
 ;;       nil)
 ;;
 (defmethod asdf:perform :after ((op asdf:load-op) (system (eql (asdf:find-system :cl-etsy))))
-  
-  (when (member :IS-MON cl:*features*)
+  (let ((sys-dir (asdf:system-source-directory system)))
+    ;; (when (member :IS-MON cl:*features*)
     (let ((maybe-loadtime-bind-file 
-           (probe-file (merge-pathnames (make-pathname :name "loadtime-bind" :type "lisp")
-                                        (asdf:system-source-directory system))))) 
+            (probe-file (merge-pathnames (make-pathname :name "loadtime-bind" :type "lisp")
+                                         (sys-dir system))))) 
       (when maybe-loadtime-bind-file
-        (load maybe-loadtime-bind-file :verbose t :print t)))))
+        (load maybe-loadtime-bind-file :verbose t :print t))) ;)
+    (setf cl-etsy::*api-method-table-json-pathname*
+          (probe-file 
+           (merge-pathnames
+            (make-pathname :directory '(:relative "etsy-json")
+                           :name "api-methods"
+                           :type "json")
+            sys-dir)))))
 
+;;; ==============================
+;;; EOF
