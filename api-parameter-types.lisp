@@ -244,8 +244,8 @@ creation_tsz 	public 	none 	float 	The date and time the user was created, in ep
 
 ----
 
-By redefining the following two function `yason:parse' and  `yason::parse-constant' and adding 
-and adding yason::*parse-json-null-as-keyword* we can parse "null" as :null.
+ By redefining the following two function `yason:parse' and  `yason::parse-constant' and adding 
+ and adding yason::*parse-json-null-as-keyword* we can parse "null" as :null.
 
  (defvar yason::*parse-json-null-as-keyword* nil
   "If set to a true value, JSON nulls will be read as the keyword :null.")
@@ -264,23 +264,23 @@ and adding yason::*parse-json-null-as-keyword* we can parse "null" as :null.
        do (error "invalid constant"))
      return-value)) 
 
- (defun yason:parse (input
-                     &key
-                     (object-key-fn yason:*parse-object-key-fn*)
-                     (object-as yason:*parse-object-as*)
-                     (json-arrays-as-vectors yason:*parse-json-arrays-as-vectors*)
-                     (json-booleans-as-symbols yason:*parse-json-booleans-as-symbols*)
-                     (json-nulls-as-keyword yason::*parse-json-null-as-keyword*))
-   "Parse INPUT, which needs to be a string or a stream, as JSON.
+  (defun yason:parse (input
+                      &key
+                      (object-key-fn yason:*parse-object-key-fn*)
+                      (object-as yason:*parse-object-as*)
+                      (json-arrays-as-vectors yason:*parse-json-arrays-as-vectors*)
+                      (json-booleans-as-symbols yason:*parse-json-booleans-as-symbols*)
+                      (json-nulls-as-keyword yason::*parse-json-null-as-keyword*))
+    "Parse INPUT, which needs to be a string or a stream, as JSON.
   Returns the lisp representation of the JSON structure parsed.  The
   keyword arguments can be used to override the parser settings as
   defined by the respective special variables."
-   (let ((yason:*parse-object-key-fn* object-key-fn)
-         (yason:*parse-object-as* object-as)
-         (yason:*parse-json-arrays-as-vectors* json-arrays-as-vectors)
-         (yason:*parse-json-booleans-as-symbols* json-booleans-as-symbols)
-         (yason::*parse-json-null-as-keyword* json-booleans-as-symbols))
-     (yason::parse% input)))
+    (let ((yason:*parse-object-key-fn* object-key-fn)
+          (yason:*parse-object-as* object-as)
+          (yason:*parse-json-arrays-as-vectors* json-arrays-as-vectors)
+          (yason:*parse-json-booleans-as-symbols* json-booleans-as-symbols)
+          (yason::*parse-json-null-as-keyword* json-booleans-as-symbols))
+      (yason::parse% input)))
 
 |#
 
