@@ -49,8 +49,6 @@ API-CLASS-SLOT-NAME-LIST is a list symbols each designating a slot-name.
 `api-class-slot-name-as-lispy-string'."
   (map 'list #'api-class-slot-name-as-underscored-string api-class-slot-name-list))
 
-
-
 (defun api-string-or-symbol-list-hash-for-object-key-fn (string-or-symbol-list munging-function 
                                                          &key (hash-table *api-response-string-symbol-hash-for-object-key-fn*)
                                                               element-type)
