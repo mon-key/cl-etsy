@@ -26,10 +26,10 @@
   :serial t
   :components ((:file "package")
                (:file "specials")
+               (:file "utils")
                (:file "environment")
                (:file "api-parameter-types")
                (:file "api-mappings")
-               (:file "utils")
                (:file "authorize")
                (:file "request-timer")
                (:file "api-request")
