@@ -470,9 +470,6 @@ UserAddress
  ;; (api-call "http://openapi.etsy.com/v2/"
  ;;           `(("api_key" . ,*API-KEY*)))
 
-(defparameter *api-method-table* 
-(cdr
-(assoc :results
 
 '((:COUNT . 152)
  (:RESULTS
@@ -2846,7 +2843,6 @@ UserAddress
              "deleteShopBanner" "deleteShopSection" "deleteTreasury"
              "deleteTreasuryComment" "deleteUserAddress" "deleteUserFavoriteListings"
              "deleteUserFavoriteUsers" "removeCartListing")))
-
 
 |#
 

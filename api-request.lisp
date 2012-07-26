@@ -222,7 +222,7 @@ keyword object-key-fn is a function is as per `yason:parse'. Default is dynamic 
 
 "
   (declare (api-request-parse-object-as object-as)
-           (boolean return-values json-arrays-as-vectors json-booleans-as-symbols))
+           (cl:boolean return-values json-arrays-as-vectors json-booleans-as-symbols))
   (let ((parsed-response
           (yason::parse
            (api-call url
