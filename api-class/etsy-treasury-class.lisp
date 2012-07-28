@@ -150,7 +150,20 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type array(TreasuryListing)
-    :documentation "The listings that are in this collection.")
+    :documentation "The listings that are in this collection.
+Each non-null value of listings is repreasentative of a `treasury-listing'.
+Each `treasury-listing' contains data field which is representative of atomic `treasury-listing-data'.
+An alist representation of the general form of listings is as follows:
+ (:listings ((:creation-tsz . <CREATION-TSZ>)
+             (:data
+              (:user-id    . <USER-ID>)
+              (:title      . <TITLE>)
+              (:price      . <PRICE>)
+              (:listing-id . <LISTING-ID>)
+              (:state      . <STATE>)
+              (:shop-name  . <SHOP-NAME>)
+              (:image-id   . <IMAGE-ID>))
+             ...))")
 
    ;; creation_tsz
    (creation-tsz
@@ -177,6 +190,19 @@ with the corresponding treasury key.
 
 
 #|
+
+
+ | treasury_search_string
+ | "In the general case, this can be any string. However, there are four special
+ | prefixes that can be used.
+ |  shop:    will look for lists where one of the shop's listings is included.
+ |  curator: will find all the lists created by the person specified.
+ |  title:  will find lists with a specific title. 
+ |  tags:, listing_title:, listing_tags: follow the same pattern.
+ | Because the colon ":" is used as a special character to separate the special
+ | prefixes, you may only have 1 colon in your search string, and the text that
+ | comes before the colon must match one of the prefixes stated above."
+ | (URL `http://www.etsy.com/developers/documentation/getting_started/api_basics#section_parameter_types')
 
  ((:NAME        . "findAllTreasuries")
   (:DESCRIPTION . "Search Treasuries or else List all Treasuries")

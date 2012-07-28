@@ -22,7 +22,9 @@
     ;; :visibility public
     ;; :perm-scope none
     ;; :type treasury-listing-data
-    :documentation "The detailed fields of the listing.")
+    :documentation "The detailed fields of the listing.
+The fields of a listing are as per the slots of `treasury-listing-data', these are:
+ user-id title price listing-id state shop-name image-id")
 
    ;; creation_tsz
    (creation-tsz
@@ -35,7 +37,9 @@
 
   ;; (:default-initargs :data nil :creation-tsz nil)
   
-  (:documentation "A subset of the Listing resource stored in a Treasury."))
+  (:documentation "A subset of the Listing resource stored in a Treasury.
+Each listings slot of class treasury contains one or more `treasury-listing's.
+ (URL `http://www.etsy.com/developers/documentation/reference/treasurylisting')"))
 
 
 ;;; ==============================

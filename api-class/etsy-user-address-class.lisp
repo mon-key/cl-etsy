@@ -134,6 +134,19 @@ API-METHODS
 
 
 #|
+ :NOTE the "state" field  must be present and must correspond to a valid state within country_id and may not be either "" nor nil
+ (with-drakma-drakma-header-stream *standard-output*
+   (flexi-streams:octets-to-string
+    (cl-oauth:access-protected-resource 
+     (concatenate 'string *base-url* "/users/" "14888644" "/addresses") 
+     *api-access-token* 
+     :request-method :post
+     :user-parameters '(("name"       . "FOO BAR")
+                        ("first_line" . "42 Some Street")
+                        ("city"       . "Bazville")
+                        ("state"      . "FA") 
+                        ("zip"        . "00000")
+                        ("country_id" . "209")))))
 
  ((:NAME        . "findAllUserAddresses")
   (:DESCRIPTION . "Retrieves a set of UserAddress objects associated to a User.")

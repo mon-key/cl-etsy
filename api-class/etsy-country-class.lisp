@@ -123,9 +123,12 @@ API-METHODS
     :accessor lat
     ;; :visibility public
     ;; :perm-scope none
-    ;; :type float
+    ;; :type float ;; 
     :documentation "The country's latitude.
-:NOTE on 2012-07-25 we notice that some countries (mostly islands) have a null value.")
+:NOTE on 2012-07-25 we notice that some countries (mostly islands) have a null value.
+As of 2012-07-28 we notice that return value of \"findAllCountry\" does not return
+this field as an Etsy float which the docs say are represented as strings to
+avoid precision errors.")
 
    ;; lon
    (lon
@@ -135,7 +138,10 @@ API-METHODS
     ;; :perm-scope none
     ;; :type float
     :documentation "The country's longitude.
-:NOTE on 2012-07-25 we notice that some countries (mostly islands) have a null value."))
+:NOTE on 2012-07-25 we notice that some countries (mostly islands) have a null value.
+As of 2012-07-28 we notice that return value of \"findAllCountry\" does not return
+this field as an Etsy float which the docs say are represented as strings to
+avoid precision errors."))
 
   ;; (:default-initargs 
   ;;  :country-id nil :iso-country-code nil :world-bank-country-code nil :name nil

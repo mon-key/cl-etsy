@@ -80,7 +80,8 @@
 
   ;; (:default-initargs :user-id nil :title nil :price nil :listing-id nil :state nil :shop-name nil :image-id nil) 
 
-  (:documentation "The detailed fields of a TreasuryListing.
+  (:documentation "The detailed fields of a `treasury-listing'.
+A treasury-listing is used as an element in the listings slot of class `treasury'.
  (URL `http://www.etsy.com/developers/documentation/reference/treasurylistingdata')"))
 
 

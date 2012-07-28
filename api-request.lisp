@@ -49,6 +49,8 @@
 (in-package #:cl-etsy)
 
 ;; :TODO api-call should leverage cl-oauth:access-protected-resource when accessing :private resources
+;; :NOTE When making authenticated reqeuest we may substitute "__SELF__" for any embedded parameter
+;; referencing the authenticated account e.g. ":user_id"
 (defun api-call (url &key (parameters nil)
                           (method :get)
                           (content-type "application/json"))
