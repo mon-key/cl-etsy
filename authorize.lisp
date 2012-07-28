@@ -11,32 +11,40 @@
  are full of devs reporting hassles when attempting to access privately scoped
  fields on the sandbox.
 
- - Set the endpoint-type to :production.
+ - Set the endpoint-type to :production (or :sandbox as need dictates)
    (when (eql (nth-value 1 (etsy-environment)) :sandbox)
      (set-etsy-environment :endpoint-type :production))
 
- - generate a new request-token
-   (set-api-request-token)
+ - Generate a new request-token
+    Section 6.1 "The Consumer obtains an unauthorized Request Token."
+   (set-api-request-token :drakma-header-stream *standard-output*)
 
- - obtain a verification code by accessing the URL returned from:
+ - Obtain a verification code
+    Section 6.2 "The User authorizes the Request Token."
+   We do this  by accessing the URL returned from:
    (url-decode-login-url)
 
- - set the *api-request-token* verification-code slot to the code we recieved.
+ - Set the *api-request-token* verification-code slot to the code we obtained above.
    doing so has the effect that when we go to obtain the access code the
    authorization headers will contain the following key/value pair:
    oauth_verifier="<VERIFICATION-CODE>"
+   Note, although the request-token *api-request-token* _has_ a verification-code for it's
+   slot value it isn't meaningfull b/c the slot-value was simply init'd as (random-verification-code)
    (setf (cl-oauth:request-token-verification-code *api-request-token*) "<VERIFICATION-CODE>")
 
- - set the authorized-p slot to T
-   (cl-oauth:authorize-request-token *api-request-token*)
+ - Set the authorized-p slot to T
+    (cl-oauth:authorize-request-token *api-request-token*)
 
- - obtain an access-token
- (let ((drakma:*header-stream* *standard-output*))
-   (setf *api-access-token* (cl-oauth:obtain-access-token (get-access-token-endpoint) *api-request-token*)))
+ - Obtain an access-token
+    "Section 6.3 The Consumer exchanges the Request Token for an Access Token."
+   (with-drakma-drakma-header-stream *standard-output*
+     (setf *api-access-token* (cl-oauth:obtain-access-token (get-access-token-endpoint) *api-request-token*)))
 
  Holding onto our existing tokens:
   (defparameter *api-production-access-token* *api-access-token*)
+   (setf *api-production-access-token* *api-access-token*)
   (defparameter *api-production-request-token* *api-request-token*)
+   (setf *api-production-request-token* *api-request-token*)
 
 ---
  What the user sees when asked to grant an app permission to the user account:
@@ -120,35 +128,142 @@
 `make-api-consumer-token', `set-api-consumer-token'."
   (setf *api-consumer-token* (make-api-consumer-token)))
 
+;; 
 ;; (make-api-request-token)
-(defun make-api-request-token (&key (permission-parameters *api-default-permission-scope*))
+(defun make-api-request-token (&key (permission-parameters *api-default-permission-scope*)
+                                    (drakma-header-stream nil))
   ;; :NOTE The returned request token will be generated with an endpoint
   ;; as per current _dynamic_ value *base-url*. 
   ;; See return value of (etsy-environment) for details.
+  (declare ((or cl:boolean stream) drakma-header-stream))
   (when (null *api-consumer-token*)
     (error ":FUNCTION `make-api-request-token' -- value of *api-consumer-token* must not be null"))
   (assert (typep *api-consumer-token* 'cl-oauth:consumer-token))
-  (cl-oauth:obtain-request-token 
-   (get-request-token-endpoint) ;URI
-   *api-consumer-token* ; CONSUMER-TOKEN
-   :user-parameters (list (get-default-permission-scope-parameter :permission-parameters permission-parameters))))
+  (with-drakma-drakma-header-stream drakma-header-stream
+    (cl-oauth:obtain-request-token
+     (get-request-token-endpoint) ;URI
+     *api-consumer-token* ; CONSUMER-TOKEN
+     :user-parameters (list (get-default-permission-scope-parameter :permission-parameters permission-parameters)))))
 
+;; *api-request-token*
 ;; (set-api-request-token)
-(defun set-api-request-token (&key (permission-parameters *api-default-permission-scope*))
-  (setf *api-request-token*  (make-api-request-token :permission-parameters permission-parameters)))
+(defun set-api-request-token (&key (permission-parameters *api-default-permission-scope*)
+                                   (drakma-header-stream nil))
+  (declare ((or cl:boolean stream) drakma-header-stream))
+  (with-drakma-drakma-header-stream drakma-header-stream
+    (setf *api-request-token*  (make-api-request-token :permission-parameters permission-parameters))))
 
-;; (make-api-access-token :consumer *api-consumer-token* :key "<KEY>" :secret "<SECRET>")
-(defun make-api-access-token (&key consumer key secret)
-  (declare (cl:type cl-oauth:consumer-token consumer) ; cl:type is shadowed.
-           (string key secret))
-  (cl-oauth:make-access-token
-   :consumer consumer
-   :key key
-   :secret secret
-   ;; As of 2012-07-20 we can't get the sandbox to return a valid access token.
-   ;; Until we can assume the token orignated from production URI.
-   ;; :origin-uri (get-access-token-endpoint)
-   :origin-uri "http://openapi.etsy.com/v2/oauth/access_token"))
+
+(defun set-etsy-verification-code-for-request-token (etsy-verification-code &optional (request-token *api-request-token*))
+  (declare (string etsy-verification-code)
+           (cl:type cl-oauth:request-token request-token))
+  (assert (typep request-token cl-oauth:request-token))
+  (setf (cl-oauth:request-token-verification-code request-token) etsy-verification-code)
+  (if (cl-oauth:request-token-authorized-p request-token)
+      request-token
+      (cl-oauth:authorize-request-token request-token)))
+
+;; (cl-oauth:token-consumer *api-consumer-token*)
+;; (with-drakma-drakma-header-stream *standard-output*
+;;   (setf *api-access-token* (cl-oauth:obtain-access-token  (get-access-token-endpoint) *api-request-token*)))
+(defun set-access-token-verifying-request-token (etsy-verification-code 
+                                                 &optional (request-token *api-request-token*))
+  "Update unauthorized REQUEST-TOKEN with ETSY-VERIFICATION-CODE and usit it
+to obtain an access-token setting *api-request-token* to the access-token so obtained.
+:EXAMPLE
+ ; set *api-request-token* to a newly geneerated request-token
+ \(set-api-request-token\) ; 
+ ; Get a URL we should visit to obtain \"<VERIFICATION-CODE>\"
+ \(url-decode-login-url\) 
+ ; Set *api-access-token* to a newly generated access-token using \"<VERIFICATION-CODE>\"
+ \(set-access-token-verifying-request-token \"<VERIFICATION-CODE>\"\)
+:NOTE Once we've obtained valid credentials we no longer need to re-request new
+credentials for the authorized user. We can store the token-key and token-secret
+slots of the valid access-token to a file. Later, we can reinstantiate a valid
+acces key as follows:
+ \(write-api-credentials-to-file #P\"/path-to/etsy-access-token-key-and-secret\"\)
+ \(make-api-access-token-from-file-credentials #P\"/path-to/etsy-access-token-key-and-secret\"\)"
+  (declare (string etsy-verification-code)
+           (cl:type cl-oauth:request-token request-token))
+  (assert (typep request-token cl-oauth:request-token))
+  (setf *api-access-token*
+        (cl-oauth:obtain-access-token
+         (get-access-token-endpoint) 
+         (set-access-token-with-verified-request-token etsy-verification-code
+                                                       request-token))))
+
+;; (setf *api-access-token*
+;;   (make-api-access-token :consumer *api-consumer-token* :key "<KEY>" :secret "<SECRET>")
+(defun make-api-access-token (&key consumer key secret 
+                                   (origin-uri (get-access-token-endpoint))
+                                   (drakma-header-stream nil))
+  (declare (cl:type cl-oauth:consumer-token consumer)
+           (cl:string key secret)
+           ((or cl:boolean stream) drakma-header-stream))
+  (with-drakma-drakma-header-stream drakma-header-stream
+    (cl-oauth:make-access-token
+     :consumer consumer
+     :key key
+     :secret secret
+     ;; As of 2012-07-20 we can't get the sandbox to return a valid access token.
+     ;; Until we can assume the token orignated from production URI.
+     ;; :origin-uri "http://openapi.etsy.com/v2/oauth/access_token")))
+     :origin-uri origin-uri)))
+
+(defun write-api-credentials-to-file (pathname)
+  "Write the value of `*api-key*', `*api-shared-secret*' and key and secret
+slots of `*api-access-token*' to PATHNAME. Values written to PATHNAME should be
+be replayable for recreating a valid oauth access-token."
+  (with-open-file (tks pathname
+                       :if-exists :supersede
+                       :if-does-not-exist :create
+                       :direction :output)
+    (write 
+     (list (list :api-credentials
+                 (list (cons :api-key *api-key*)
+                       (cons :api-shared-secret *api-shared-secret*)))
+           (list :access-token-credentials
+                 (list (cons :access-token-key (cl-oauth:token-key *api-access-token*))
+                       (cons :access-token-secret (cl-oauth:token-secret *api-access-token*))))
+           (cons :origin-uri
+                 (get-access-token-endpoint)))
+     :stream tks)
+    t))
+
+(defun read-api-credentials-from-file (pathname)
+  "Read contents of PATHNAME and return a list of the credentials read.
+Elements of the returned list are strings the values of which correspond to the following credentials:
+ \(\"<API-KEY>\" \"<API-SHARED-SECRET>\" \"<ACCESS-TOKEN-KEY>\" \"<ACCESS-TOKEN-SECRET>\"\)
+The contents of PATHNAME should be contained of the output from `write-api-credentials-to-file'."
+  (let* ((keys-and-secrets 
+           (with-open-file (tks pathname :direction :input)
+             (read tks)))
+         (api-credentials 
+           (cadr (assoc :api-credentials keys-and-secrets)))
+         (access-token-credentials
+           (cadr (assoc :access-token-credentials keys-and-secrets)))
+         (api-key
+           (cdr (assoc :api-key api-credentials)))
+         (api-secret 
+           (cdr (assoc :api-shared-secret api-credentials)))
+         (access-token-key
+           (cdr (assoc :access-token-key access-token-credentials)))
+         (access-token-secret
+           (cdr (assoc :access-token-secret access-token-credentials)))
+         (origin-uri (cdr (assoc :origin-uri keys-and-secrets))))
+    (list api-key api-secret access-token-key access-token-secret origin-uri)))
+
+(defun make-api-access-token-from-file-credentials (pathname)
+  (destructuring-bind (api-key api-shared-secret access-token-key access-token-secret origin-uri)
+      (read-api-credentials-from-file pathname)
+    (setf
+     *api-key* api-key
+     *api-shared-secret api-shared-secret
+     *api-access-token* (make-api-access-token
+                         :consumer (set-api-consumer-token)
+                         :key    access-token-key
+                         :secret access-token-secret
+                         :origin-uri origin-uri))))
 
 (defun get-default-permission-scope-parameter (&key (permission-parameters *api-default-permission-scope*))
   "Return a permission-scope parameters as a consed pair.
