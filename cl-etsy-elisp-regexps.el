@@ -15,6 +15,25 @@
                ":association \\1\n:visibility  \\2\n:perm-scope  \\3\n:type        \\4\n:description \"\\5\"\n" t)))
         (widen)))))
 
+(defun etsy-convert-method-parameters (start end)
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+      (unwind-protect 
+          (progn
+            (narrow-to-region start end)
+            (goto-char -1)
+            (while 
+                (search-forward-regexp "\\(.*\\) \t\\(.*\\) \t\\(.*\\) \t\\(.*\\)" nil t)
+              (let ((match-dash (downcase (subst-char-in-string 95 45 (match-string-no-properties 1))))
+                    (match-req  (cond ((equal (match-string-no-properties 2) "Y")
+                                       "T")
+                                      ((equal (match-string-no-properties 2) "N")
+                                       "NIL")
+                                      (t (match-string-no-properties 2)))))
+                (replace-match (concat ":name      :" match-dash "\n:required  " match-req "\n:default   \\3\n:type      \"\\4\"\n") t))))
+        (widen)))))
+
 (defun etsy-convert-fields (start end)
   (interactive "r")
   (save-excursion
