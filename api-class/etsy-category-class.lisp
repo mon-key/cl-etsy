@@ -171,14 +171,83 @@ Subcatgories append a new tag to the end of their parent's category_name.
   ;; (:default-initargs :category-id nil :name nil :meta-title nil :meta-keywords nil
   ;; :meta-description nil :page-description nil :page-title nil
   ;; :category-name nil :short-name nil :long-name nil :num-children nil)
-  (:documentation "A category
+  (:documentation "A category.
+On 2012-07-28 the Etsy category taxonomy does not descend past 3 levels.
+The taxonomy has the basic format:
+  <TOP-CATEGORY>/<SUP-CATEGORY>/<SUB-SUB-CATEGORY>
+The following Etsy API request methods may be used to access categories at these levels:
+ \"findAllTopCategory\" \"findAllTopCategoryChildren\" \"findAllSubCategoryChildren\" 
+ \"getCategory\" \"getSubCategory\" \"getSubSubCategory\"
+These Etsy API methods are in turn modeled by the following functions:
+ `find-all-top-category' `find-all-top-category-children' `find-all-sub-category-children'
+ `get-category' `get-sub-category' `get-sub-sub-category'
  (URL `http://www.etsy.com/developers/documentation/reference/category')
  (URL `http://www.etsy.com/developers/documentation/reference/listing#section_categories_and_tags')"))
-
 
 ;; (defmethod print-object ((x category) stream)
 ;;   (dumb-printing stream x "~D: ~A" category-id name))
 
+;;(defparameter *tt--top-cat*
+
+;; :NOTE on 2012-07-28 there were 3879 categories. Accessing all of them required 507 api calls.
+(defun get-all-etsy-categories ()
+  (loop 
+    ;; 31 top categories - 1 API CALL
+    ;; "findAllTopCategory"
+    for cat-table = (make-hash-table :test #'equal)
+    for top-cat-alist in (parsed-api-call (concatenate 'string *base-url* "/taxonomy/categories/") :object-as :alist)
+    for top-cat-obj = (apply #'make-instance 'category (alexandria:alist-plist top-cat-alist))
+    for top-cat-obj-name = (category-name top-cat-obj)
+    do (setf (gethash top-cat-obj-name cat-table) top-cat-obj)
+       ;; 475 sub-categories - 31 API CALLS
+       (loop 
+         for top-cat-children = (unless (zerop (num-children top-cat-obj))
+                                  ;; "findAllTopCategoryChildren"
+                                  ;; "/taxonomy/categories/:tag"
+                                  (parsed-api-call
+                                   (concatenate 'string *base-url* "/taxonomy/categories/" top-cat-obj-name)
+                                   :object-as :alist))
+         do (loop 
+              for sub-cat-alist in top-cat-children
+              for sub-cat-obj  = (apply #'make-instance 'category (alexandria:alist-plist sub-cat-alist))
+              for sub-cat-obj-name = (category-name sub-cat-obj)
+              for sub-cat-children = (unless (zerop (num-children sub-cat-obj))
+                                       ;; "findAllSubCategoryChildren"
+                                       ;; "/taxonomy/categories/:tag/:subtag"
+                                       (parsed-api-call
+                                        (concatenate 'string *base-url* "/taxonomy/categories/" sub-cat-obj-name)
+                                        :object-as :alist))
+              do (setf (gethash sub-cat-obj-name cat-table) sub-cat-obj) 
+                 ;; 3373 sub-sub-categories - 475 API CALLS
+                 (loop 
+                   for sub-sub-cat-alist in sub-cat-children
+                   for sub-sub-cat-obj  = (apply #'make-instance 'category (alexandria:alist-plist sub-sub-cat-alist))
+                   for sub-sub-cat-name = (category-name sub-sub-cat-obj)
+                   do (setf (gethash sub-sub-cat-name cat-table) sub-sub-cat-obj))))
+    finally (return cat-table)))
+
+(defun dump-all-etsy-categories-to-file (output-pathname etsy-category-hash)
+  "Dump lispy representatin of all etsy category objects at hash-value of ETSY-CATEGORY-HASH to OUTPUT-PATHNAME."
+  (with-open-file (f output-pathname
+                    :if-does-not-exist :create
+                    :if-exists :supersede
+                    :element-type 'character
+                    :direction :output)
+    (with-standard-io-syntax
+      (let ((*print-pretty* t)
+            (*print-right-margin* 21)
+            (*print-miser-width*  8))
+        (loop 
+          with hash-keys = (sort (alexandria:hash-table-keys etsy-category-hash) #'string<)
+          for key in hash-keys 
+          for object = (gethash key etsy-category-hash)
+          do (loop 
+               for slot in (cadr (assoc 'category *api-classes-and-slots*))
+               for init-slot   = (find-symbol (string slot) :keyword)
+               for maybe-slot-value = (and (slot-boundp object slot)
+                                           (slot-value object slot))
+               collect (cons init-slot maybe-slot-value) into gthr
+               finally (format f "~2%;; ----~2%~S" gthr)))))))
 
 #|
   

@@ -313,10 +313,13 @@ currency to which the currency code corresponds.
     (bill-payment
      (bill-payment-id creation-tsz type type-id user-id
       amount currency-code creation-month creation-year))
-
+    
+    ;; order may be important here, we use this list to inform a
+    ;; presentationally pleasing slot order for
+    ;; `dump-all-etsy-categories-to-file'
     (category
-     (category-id name meta-title meta-keywords meta-description page-description
-      page-title category-name short-name long-name num-children))
+     (category-name category-id num-children long-name name short-name 
+      meta-title meta-description meta-keywords page-title page-description))
 
     (cart
      (cart-id shop-name message-to-seller destination-country-id coupon-code
