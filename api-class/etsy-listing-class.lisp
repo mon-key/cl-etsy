@@ -284,7 +284,7 @@ Can be interrogated `listing-state-p'.
     ;; :perm-scope none
     ;; :type array(string)
     :documentation "A list of materials used in the item.
-:NOTE As of 2012-07-19 a listing may have up to 10 materials.")
+:NOTE As of 2012-07-19 a listing may have up to 13 materials.")
 
    ;; shop_section_id
    (shop-section-id

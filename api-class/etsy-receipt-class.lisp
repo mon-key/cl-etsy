@@ -63,6 +63,28 @@ API-METHODS
 "findAllUserBuyerReceipts"
 
 ----
+2012/06/21 Justin Sheckler
+
+We've added an API method that can be used to create purchases on the
+sandbox API.  This should help you create test data in the sandbox API
+to develop against.
+
+ (URL `http://www.etsy.com/developers/documentation/reference/receipt#method_createreceiptonsandbox')
+
+Some notes:
+
+* This method will only work when called via http://sandbox.openapi.etsy.com.
+* This method requires OAuth.  The authenticated user will be the buyer.
+* Corresponding Order and Transaction resources are created along with
+  the new Receipt.
+* Multiple listing IDs can be passed, but they must all belong to the
+  same user ID
+* The buyer must have at least one UserAddress record. 
+  These aren't sync'd from prod, so you will need to create one using the API.
+
+ (URL `https://groups.google.com/forum/?fromgroups#!topic/etsy-api-v2/g6KuisWE3fg')
+
+----
  (closer-mop:class-finalized-p (find-class 'receipt))
  (api-implicit-class-direct-slot-names-as-underscored-strings 'receipt)
 
@@ -399,6 +421,8 @@ Free shipping Coupons are not refected here; check the Coupon object for these."
    (:TYPE         . "Receipt")
    (:VISIBILITY   . "private")
    (:HTTP-METHOD . "GET"))
+
+ | :SEE Note at top of file for additional details re "createReceiptOnSandbox"
 
  ((:NAME        . "createReceiptOnSandbox")
   (:DESCRIPTION . "Creates a purchase for the current OAuth user, including Order, Receipt and Transaction resources. This method is only available via the Sandbox API. Listing IDs must be active, and belong to the same seller user ID. The buyer must have at least one UserAddress record, or an error will be thrown.")
