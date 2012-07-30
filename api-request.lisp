@@ -100,6 +100,8 @@ Following errors successfully:
 (defun process-response (response-body response-code response-headers 
                          resonse-uri response-stream response-stream-closed
                          response-reason) ; &key (method :get))
+  ;; This fails should Etsy ever go down which does happen i.e. 2012-07-30T15:31
+  ;; https://groups.google.com/forum/?fromgroups#!topic/etsy-api-v2/lyZkWT0y1Jk
   (if (or (eql response-code 200) ; GET PUT DELETE
           (eql response-code 201)) ; POST only
       (values
@@ -176,7 +178,7 @@ Values are returned in the following order for these keys:
 ;; :SEE `yason::+initial-array-size+' in `yason::parse-array' for details.
 ;; Also, note that changing value of +initial-array-size+ to 0 results in a
 ;; larger cl:array-total-size for the returned vector.
-(defun parsed-api-call (url &key (parameters nil) 
+(defun parsed-api-call (url &key (parameters nil)
                                  (method :get)
                                  (content-type "application/json")
                                  (return-values t)
