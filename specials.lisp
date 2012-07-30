@@ -82,7 +82,8 @@ KEY and SECRET keyword arguments of `cl-oauth:make-consumer-token'.
           (cl-oauth:make-consumer-token :key *api-key* :secret *api-shared-secret*))))
 
 (defparameter *api-method-table-json-pathname* nil
-  "For use with `set-api-method-table-from-parsed-json-pathname'.")
+  "For use with `set-api-method-table-from-parsed-json-pathname'.
+:SEE-ALSO `*api-method-table*', `dump-api-method-table-json-response'.")
 
 (defparameter *api-method-table* nil
   "An a list containing the api-method's of Etsy API \"getMethodTable\" method after parsing with `yason:parsed'.
@@ -392,6 +393,12 @@ currency to which the currency code corresponds.
       adjusted-fees adjusted-net currency shipping-user-id
       shipping-address-id billing-address-id status shipped-date
       create-date update-date))
+
+    (payment-adjustment
+     )
+
+    (payment-adjustment-item
+     )
 
     (param-list
      (param-name))

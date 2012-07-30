@@ -387,12 +387,32 @@ Each element of list returned has the format:
   ;; "values" 'data-type-values ' 
   )
 
+(defun dump-api-method-table-json-response ()
+  "Write JSON response of getMethodTable to pathname designated by `*api-method-table-json-pathname*'.
+Return value of `*api-method-table-json-pathname*' or null if *api-method-table-json-pathname* is not `cl:pathnamep'.
+Contents of file written can be read with `set-api-method-table-from-parsed-json-pathname'.
+:SEE-ALSO `api-method-unique-parameter-types',
+`api-method-find-methods-with-param-type', `get-method-table',  `api-method'.
+`api-method-unique-parameter-names', `api-method-unique-parameter-names-hashed-verify-all-keyword-p'."
+  (if (pathnamep *api-method-table-json-pathname*)
+      (with-open-file (f *api-method-table-json-pathname*
+                        :direction :output
+                        :if-exists :supersede
+                        :if-does-not-exist :create)
+        ;;(write-string
+        (multiple-value-bind (sec min hr date month year) (get-decoded-time)
+          (format f ";; last updated ~D/~D/~D | with (write-string (api-call (concatenate 'string *base-url* \"/\")) ~S)~%"
+                  year month date *api-method-table-json-pathname*))
+        (write-string (api-call (concatenate 'string *base-url* "/")) f)
+        *api-method-table-json-pathname*)
+      (values nil (format nil "value of `*api-method-table-json-pathname*' not `cl:pathnamep'"))))
 
 (defun set-api-method-table-from-parsed-json-pathname ()
   "Set value of `*api-method-table*' to object returned by `yason:parse' with
-INPUT as file designated by `*api-method-table-json-pathname*'.  :NOTE JSON
-object _MUST_ begin at second line of INPUT we use the first line as a comment
-to indicate when the file was last written."
+INPUT as file designated by `*api-method-table-json-pathname*'.
+:NOTE JSON object _MUST_ begin at second line of INPUT we use the first line as a comment
+to indicate when the file was last written.
+:SEE-ALSO `dump-api-method-table-json-response'."
   (when (and *api-method-table-json-pathname*
              (pathnamep *api-method-table-json-pathname*)
              (probe-file *api-method-table-json-pathname*))
@@ -400,13 +420,19 @@ to indicate when the file was last written."
                       :if-does-not-exist :error
                       :element-type 'character
                       :direction :input)
-      (let ((last-updated-string (read-line f)))
-        (setf *api-method-table*
-              (yason:parse f
-                           :object-as :alist
-                           :object-key-fn 'api-string/symbol-lookup))
-        (values *api-method-table*
-                last-updated-string)))))
+      (let* ((last-updated-string (read-line f))
+             (parsed-api-methods (yason:parse f
+                                              :object-as :alist
+                                              :object-key-fn 'api-string/symbol-lookup))
+             (count (assoc :count parsed-api-methods)))
+        (values 
+         ;; (setf *api-method-table* (sort *api-method-table* #'equal :key #'(lambda (x) (cdr (assoc :type x)))))
+         (setf *api-method-table*
+               (loop 
+                 for method in (cdr (assoc :results parsed-api-methods))
+                 collect (nreverse method)))
+         count
+         last-updated-string)))))
 
 
 ;;; ==============================
