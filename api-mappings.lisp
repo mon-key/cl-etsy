@@ -399,10 +399,9 @@ Contents of file written can be read with `set-api-method-table-from-parsed-json
                         :direction :output
                         :if-exists :supersede
                         :if-does-not-exist :create)
-        ;;(write-string
         (multiple-value-bind (sec min hr date month year) (get-decoded-time)
-          (format f ";; last updated ~D/~D/~D | with (write-string (api-call (concatenate 'string *base-url* \"/\")) ~S)~%"
-                  year month date *api-method-table-json-pathname*))
+          (format f ";; last updated ~D/~D/~D | with (write-string (api-call (concatenate 'string *base-url* \"/\")) ~A)~%"
+                  year month date (quote *api-method-table-json-pathname*)))
         (write-string (api-call (concatenate 'string *base-url* "/")) f)
         *api-method-table-json-pathname*)
       (values nil (format nil "value of `*api-method-table-json-pathname*' not `cl:pathnamep'"))))
