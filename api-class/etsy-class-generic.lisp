@@ -72,6 +72,10 @@
 (defgeneric adjusted-net (object))
 (defgeneric (setf adjusted-net) (adjusted-net object))
 
+;; 1 classes: payment-adjustment-item
+(defgeneric adjustment-type (object))
+(defgeneric (setf adjustment-type) (adjustment-type object))
+
 ;; 1 classes: shop
 (defgeneric alchemy-message (object))
 (defgeneric (setf alchemy-message) (alchemy-message object))
@@ -100,7 +104,7 @@
 (defgeneric allow-paypal (object))
 (defgeneric (setf allow-paypal) (allow-paypal object))
 
-;; 2 classes: bill-charge bill-payment
+;; 3 classes: bill-charge bill-payment payment-adjustment-item
 (defgeneric amount (object))
 (defgeneric (setf amount) (amount object))
 
@@ -229,7 +233,7 @@
 (defgeneric coupon-id (object))
 (defgeneric (setf coupon-id) (coupon-id object))
 
-;; 6 classes: favorite-listing forum-post team ledger ledger-entry payment
+;; 8 classes: favorite-listing forum-post ledger ledger-entry payment payment-adjustment payment-adjustment-item team
 (defgeneric create-date (object))
 (defgeneric (setf create-date) (create-date object))
 
@@ -646,11 +650,19 @@
 (defgeneric param-name (object))
 (defgeneric (setf param-name) (param-name object))
 
+;; 2 classes: payment-adjustment payment-adjustment-item
+(defgeneric payment-adjustment-id (object))
+(defgeneric (setf payment-adjustment-id) (payment-adjustment-id object))
+
+;; 1 classes: payment-adjustment-item
+(defgeneric payment-adjustment-item-id (object))
+(defgeneric (setf payment-adjustment-item-id) (payment-adjustment-item-id object))
+
 ;; 1 classes: receipt
 (defgeneric payment-email (object))
 (defgeneric (setf payment-email) (payment-email object))
 
-;; 1 classes: payment
+;; 2 classes: payment payment-adjustment
 (defgeneric payment-id (object))
 (defgeneric (setf payment-id) (payment-id object))
 
@@ -745,6 +757,10 @@
 ;; 2 classes: listing-image shop-section
 (defgeneric rank (object))
 (defgeneric (setf rank) (rank object))
+
+;; 1 classes: payment-adjustment
+(defgeneric reason-code (object))
+(defgeneric (setf reason-code) (reason-code object))
 
 ;; 3 classes: receipt payment transaction
 (defgeneric receipt-id (object))
@@ -912,7 +928,7 @@
 (defgeneric state-tsz (object))
 (defgeneric (setf state-tsz) (state-tsz object))
 
-;; 1 classes: payment
+;; 2 classes: payment payment-adjustment
 (defgeneric status (object))
 (defgeneric (setf status) (status object))
 
@@ -962,9 +978,17 @@
 (defgeneric total (object))
 (defgeneric (setf total) (total object))
 
+;; 1 classes: payment-adjustment
+(defgeneric total-adjustment-amount (object))
+(defgeneric (setf total-adjustment-amount) (total-adjustment-amount object))
+
 ;; 1 classes: billing-overview
 (defgeneric total-balance (object))
 (defgeneric (setf total-balance) (total-balance object))
+
+;; 1 classes: payment-adjustment
+(defgeneric total-fee-adjustment-amount (object))
+(defgeneric (setf total-fee-adjustment-amount) (total-fee-adjustment-amount object))
 
 ;; 1 classes: receipt
 (defgeneric total-price (object))
@@ -982,7 +1006,7 @@
 (defgeneric transaction-buy-count (object))
 (defgeneric (setf transaction-buy-count) (transaction-buy-count object))
 
-;; 2 classes: feedback transaction
+;; 3 classes: feedback payment-adjustment-item transaction
 (defgeneric transaction-id (object))
 (defgeneric (setf transaction-id) (transaction-id object))
 
@@ -1015,7 +1039,7 @@
 (defgeneric type-id (object))
 (defgeneric (setf type-id) (type-id object))
 
-;; 3 classes: ledger payment team
+;; 4 classes: ledger payment payment-adjustment team
 (defgeneric update-date (object))
 (defgeneric (setf update-date) (update-date object))
 
@@ -1047,9 +1071,11 @@
 (defgeneric user-avatar-id (object))
 (defgeneric (setf user-avatar-id) (user-avatar-id object))
 
-;; 17 classes: avatar bill-charge bill-payment favorite-listing favorite-user
-;; forum-post listing order payment-template shipping-template shop shop-section
-;; treasury treasury-listing-data user user-address user-profile
+;; 18 classes: avatar bill-charge bill-payment
+;; favorite-listing favorite-user forum-post
+;; listing order payment-adjustment payment-template
+;; shipping-template shop shop-section treasury treasury-listing-data
+;; user user-address user-profile
 (defgeneric user-id (object))
 (defgeneric (setf user-id) (user-id object))
 
