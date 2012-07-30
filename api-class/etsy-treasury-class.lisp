@@ -189,6 +189,26 @@ with the corresponding treasury key.
  (URL `http://www.etsy.com/developers/documentation/reference/treasury')"))
 
 
+;; "findAllTreasuries"
+;; :NOTE The following fail when keywords has a "treasury_search_string" of the form: 
+;; "listing_tags:<TAG>"
+;; "listing_title:<TITLE>"
+;; Also, "curator:<USER-NAME>" works but "curator:<USER-ID>" does not
+;;
+;; (parsed-api-call
+;;  (concatenate 'string *base-url* "/treasuries")
+;;  :parameters '(
+;;                ;; ("keywords" . 
+;;                ;; "shop:prestonandolivia"
+;;                ;; "title:Dear Diary"
+;;                ;; "tags:trends"
+;;                ;; "curator:GlassRiverJewelry"
+;;                ;; "curator:7314960" ; doesn't work 
+;;                ;; "listing_tags:fascinator" ; doesn't work 
+;;                ;; "listing_title:Cucumber Mint  Corn Cob Cellulose Fiber Aroma Sachet" ; doesn't work 
+;;                ("limit" . "1"))
+;;  :object-as :alist)
+
 #|
 
 

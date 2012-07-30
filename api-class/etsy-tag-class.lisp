@@ -4,7 +4,7 @@
 
 #|
 
-(URL `http://www.etsy.com/developers/documentation/reference/tag')
+ (URL `http://www.etsy.com/developers/documentation/reference/tag')
 
 ---
 API-METHODS
@@ -22,7 +22,7 @@ features. This means they will return empty results sets in all cases.
 2) In a few weeks (no sooner than 2), we'll remove these 2 API methods
 and documentation entirely. 
 
-(URL `https://groups.google.com/forum/?fromgroups#!searchin/etsy-api-v2/tags/etsy-api-v2/swh3xwnu4HM/LeADxQUE0JQJ')
+ (URL `https://groups.google.com/forum/?fromgroups#!searchin/etsy-api-v2/tags/etsy-api-v2/swh3xwnu4HM/LeADxQUE0JQJ')
 
 ----
  (closer-mop:class-finalized-p (find-class 'tag))

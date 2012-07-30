@@ -516,20 +516,31 @@ Result when non-nil should contain fields which map to the slots of class `listi
 ;; (get-listing :listing-id 104071558)
 ;; (get-listing :listing-id "104071558")
 (defun get-listing (&key
+                    ;; (content-type "application/json")
+                    parameters 
                     listing-id
-                    (object-as :alist))
+                    (return-values t)
+                    (object-as :alist)
+                    (object-key-fn 'api-string/symbol-lookup)
+                    (json-arrays-as-vectors yason:*parse-json-arrays-as-vectors*)
+                    (json-booleans-as-symbols yason:*parse-json-booleans-as-symbols*))
   "Retrieve a listing by listing-id.
 Value of keyword arg LISTING-ID should be of type `int-or-int-string'.
 Result when non-nil should contain fields which map to the slots of class `listing'.
 :API-METHOD \"getListing\""
   (declare (api-request-parse-object-as object-as)
            (int-or-int-string listing-id))
-  (yason:parse 
-   (api-call (concatenate 'string 
-                          *base-url*
-                          "/listings/"
-                          (ensure-int-string listing-id)))
-   :object-as object-as))
+  (let ((ensured-listing-id (ensure-int-string listing-id)))
+    (parsed-api-call (concatenate 'string 
+                                  *base-url*
+                                  "/listings/"
+                                  ensured-listing-id)
+                     :parameters parameters
+                     :return-values return-values
+                     :object-as object-as
+                     :object-key-fn object-key-fn
+                     :json-arrays-as-vectors json-arrays-as-vectors
+                     :json-booleans-as-symbols json-booleans-as-symbols)))
  
 #|
 

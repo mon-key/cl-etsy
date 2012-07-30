@@ -53,7 +53,7 @@ A user may either select from suggested styles, or create a custom style.
  | "style_id"  <ID-INT>
 
  | "findSuggestedStyles"
- | (yason:parse (api-call (concatenate 'string *base-url* "/taxonomy/styles")) :object-as :alist)
+ | (parsed-api-call (concatenate 'string *base-url* "/taxonomy/styles") :object-as :alist)
 
  ((:NAME        . "findSuggestedStyles")
   (:DESCRIPTION . "Retrieve all suggested styles.")
