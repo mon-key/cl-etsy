@@ -187,47 +187,61 @@ These Etsy API methods are in turn modeled by the following functions:
 ;; (defmethod print-object ((x category) stream)
 ;;   (dumb-printing stream x "~D: ~A" category-id name))
 
-;;(defparameter *tt--top-cat*
-
-;; :NOTE on 2012-07-28 there were 3879 categories. Accessing all of them required 507 api calls.
-(defun get-all-etsy-categories ()
+(defun get-all-etsy-categories (&key (cat-table (make-hash-table :test #'equal)))
+  "Return CAT-TABLE populated with all current Etsy categories.
+All current Etsy categories are retrieved and converted to instances of class `category'.
+Each such instance is added to CAT-TABLE using its `category-name' as hash-key and instance as hash-value.
+Categories are retrieved as follows:
+ - all top level categories are retrieved as if by Etsy API request method \"findAllTopCategory\"
+ - for each top-level category retrieve any child categories it may have as if by Etsy API request method \"findAllTopCategoryChildren\"
+ - for each child-category retrieved retrieve any child categories it may have as if by Etsy API request method \"findAllSubCategoryChildren\"
+:NOTE On 2012-07-28 there were 3879 categories. Accessing all of them required 507 api calls."
   (loop 
     ;; 31 top categories - 1 API CALL
     ;; "findAllTopCategory"
-    for cat-table = (make-hash-table :test #'equal)
-    for top-cat-alist in (parsed-api-call (concatenate 'string *base-url* "/taxonomy/categories/") :object-as :alist)
-    for top-cat-obj = (apply #'make-instance 'category (alexandria:alist-plist top-cat-alist))
+    ;; for cat-table = (or cat-hash (make-hash-table :test #'equal))
+    ;; for top-cat-alist in ;;
+    with top-cat-alist = (parsed-api-call (concatenate 'string *base-url* "/taxonomy/categories/") :object-as :alist)
+    for top-cat in top-cat-alist
+    for top-cat-obj = (apply #'make-instance 'category (alexandria:alist-plist top-cat))
     for top-cat-obj-name = (category-name top-cat-obj)
     do (setf (gethash top-cat-obj-name cat-table) top-cat-obj)
-       ;; 475 sub-categories - 31 API CALLS
-       (loop 
-         for top-cat-children = (unless (zerop (num-children top-cat-obj))
-                                  ;; "findAllTopCategoryChildren"
-                                  ;; "/taxonomy/categories/:tag"
-                                  (parsed-api-call
-                                   (concatenate 'string *base-url* "/taxonomy/categories/" top-cat-obj-name)
-                                   :object-as :alist))
-         do (loop 
-              for sub-cat-alist in top-cat-children
-              for sub-cat-obj  = (apply #'make-instance 'category (alexandria:alist-plist sub-cat-alist))
+       (and (not (zerop (num-children top-cat-obj)))
+            (loop 
+              ;; 475 sub-categories - 31 API CALLS
+              ;; "findAllTopCategoryChildren"
+              ;; "/taxonomy/categories/:tag"       
+              with sub-cat-alist = (parsed-api-call
+                                    (concatenate 'string *base-url* "/taxonomy/categories/" top-cat-obj-name)
+                                    :object-as :alist)
+              for sub-cat in sub-cat-alist
+              for sub-cat-obj  = (apply #'make-instance 'category (alexandria:alist-plist sub-cat))
               for sub-cat-obj-name = (category-name sub-cat-obj)
-              for sub-cat-children = (unless (zerop (num-children sub-cat-obj))
-                                       ;; "findAllSubCategoryChildren"
-                                       ;; "/taxonomy/categories/:tag/:subtag"
-                                       (parsed-api-call
-                                        (concatenate 'string *base-url* "/taxonomy/categories/" sub-cat-obj-name)
-                                        :object-as :alist))
-              do (setf (gethash sub-cat-obj-name cat-table) sub-cat-obj) 
-                 ;; 3373 sub-sub-categories - 475 API CALLS
-                 (loop 
-                   for sub-sub-cat-alist in sub-cat-children
-                   for sub-sub-cat-obj  = (apply #'make-instance 'category (alexandria:alist-plist sub-sub-cat-alist))
-                   for sub-sub-cat-name = (category-name sub-sub-cat-obj)
-                   do (setf (gethash sub-sub-cat-name cat-table) sub-sub-cat-obj))))
+              do (setf (gethash sub-cat-obj-name cat-table) sub-cat-obj)
+                 (and (not (zerop (num-children sub-cat-obj)))
+                      (loop 
+                        ;; 3373 sub-sub-categories - 475 API CALLS
+                        ;; "findAllSubCategoryChildren"
+                        ;; "/taxonomy/categories/:tag/:subtag"                      
+                        with sub-cat-children-alist = (parsed-api-call
+                                                       (concatenate 'string *base-url* "/taxonomy/categories/" sub-cat-obj-name)
+                                                       :object-as :alist)
+                        for sub-sub-cat in sub-cat-children-alist
+                        for sub-sub-cat-obj = (apply #'make-instance 'category (alexandria:alist-plist sub-sub-cat))
+                        for sub-sub-cat-name = (category-name sub-sub-cat-obj)
+                        do (setf (gethash sub-sub-cat-name cat-table) sub-sub-cat-obj)))))
     finally (return cat-table)))
 
 (defun dump-all-etsy-categories-to-file (output-pathname etsy-category-hash)
-  "Dump lispy representatin of all etsy category objects at hash-value of ETSY-CATEGORY-HASH to OUTPUT-PATHNAME."
+  "Dump lispy representatin of all etsy category objects at hash-value of ETSY-CATEGORY-HASH to OUTPUT-PATHNAME.
+:EXAMPLE
+ \(dump-all-etsy-categories-to-file 
+  \(make-pathname 
+   :directory '\(:absolute \"<DIRECTORY-FOR-DUMPED-CATEGORIES>\"\)
+   :name \"all-etsy-categories\"
+   :type \"lisp\"\)
+  \(get-all-etsy-categories\)\)
+"
   (with-open-file (f output-pathname
                     :if-does-not-exist :create
                     :if-exists :supersede
