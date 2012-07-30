@@ -395,10 +395,12 @@ currency to which the currency code corresponds.
       create-date update-date))
 
     (payment-adjustment
-     )
+     (payment-adjustment-id payment-id status user-id reason-code
+      total-adjustment-amount total-fee-adjustment-amount create-date update-date))
 
     (payment-adjustment-item
-     )
+     (payment-adjustment-item-id payment-adjustment-id
+      adjustment-type amount transaction-id create-date))
 
     (param-list
      (param-name))
