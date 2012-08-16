@@ -36,7 +36,7 @@
   "Convert API-CLASS-SLOT-NAME to an underscored string.
 :EXAMPLE
  \(equal \(api-class-slot-name-as-underscored-string 'listing-id\) \"listing_id\"\)
-:SEE-ALSO `api-implicit-class-direct-slot-names-as-underscored-strings', `api-class-name-as-studly-caps-string'
+:SEE-ALSO `api-implicit-class-direct-slot-names-as-underscored-strings', `api-class-name-as-studly-caps-string',
 `api-class-slot-name-as-lispy-string'."
   (symbol-munger:lisp->underscores api-class-slot-name))
 
@@ -44,15 +44,15 @@
   "Return a list of underscored strings as if by `api-class-slot-name-as-underscored-string'.
 API-CLASS-SLOT-NAME-LIST is a list symbols each designating a slot-name.
 :EXAMPLE
- (api-class-slot-names-as-underscored-strings )
-:SEE-ALSO `api-implicit-class-direct-slot-names-as-underscored-strings', `api-class-name-as-studly-caps-string'
+ (api-class-slot-names-as-underscored-strings)
+:SEE-ALSO `api-implicit-class-direct-slot-names-as-underscored-strings', `api-class-name-as-studly-caps-string',
 `api-class-slot-name-as-lispy-string'."
   (map 'list #'api-class-slot-name-as-underscored-string api-class-slot-name-list))
 
 (defun api-string-or-symbol-list-hash-for-object-key-fn (string-or-symbol-list munging-function 
                                                          &key (hash-table *api-response-string-symbol-hash-for-object-key-fn*)
                                                               element-type)
-  "Return as cl:values `cl:hash-table-count' of HASH-TABLE befor hashing strings/symbols and the count after.
+  "Return as cl:values `cl:hash-table-count' of HASH-TABLE before hashing strings/symbols and the count after.
 STRING-OR-SYMBOL-LIST is a proper list with every element of type string or symbol but not both.
 MUNGING-FUNCTION is a function designator for a function wich accepts a
 single argument a string or symbol and returns a symbol or string equivalent.
@@ -62,7 +62,19 @@ Keyword ELEMENT-TYPE designates whether every element of is a string or symbol.
 Valid arguments are one of :string or :symbol
 When STRING-OR-SYMBOL is :symbol the elements of STRING-OR-SYMBOL-LIST must not contain the symbol T or nil.
 When STRING-OR-SYMBOL is :string the elements of STRING-OR-SYMBOL-LIST must not contain the empty string.
-:SEE-ALSO "
+:EXAMPLE
+ ;; Following form is evaluated at compile/load time to establish mappings for
+ ;; each slot of each api-class we define:
+  \(api-string-or-symbol-list-hash-for-object-key-fn
+   \(substitute \"url_570xN\" \"url_570xn\"
+               \(remove \"data_type_values\"
+                       \(api-class-all-slot-names-unique-as-underscored-strings\)
+                       :test #'equal\)
+               :test #'equal\)
+   #'symbol-munger:underscores->keyword
+   :element-type :string\)
+:SEE-ALSO `api-implicit-class-direct-slot-names-as-underscored-strings', `api-class-name-as-studly-caps-string',
+`api-class-slot-name-as-lispy-string'."
   (declare ((or (eql :string) (eql :symbol)) element-type))
   (ecase element-type
     ;; (null (error ":FUNCTION `api-string-or-symbol-list-hash-for-object-key-fn'~% ~
