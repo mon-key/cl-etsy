@@ -242,7 +242,7 @@ Each element of list returned has the format:
 ;;; ==============================
 
 (defun api-string/symbol-lookup (string &optional (hash-table *api-response-string-symbol-hash-for-object-key-fn*))
-  "
+  "If STRING is a hash-key in HASH-TABLE return its corresponding hash-value else return STRING.
 :EXAMPLE
  \(equal \(api-string/symbol-lookup :description\) \"description\"\)
  \(equal \(api-string/symbol-lookup \"description\"\) :description\)
@@ -403,6 +403,10 @@ Each element of list returned has the format:
   "Write JSON response of getMethodTable to pathname designated by `*api-method-table-json-pathname*'.
 Return value of `*api-method-table-json-pathname*' or null if *api-method-table-json-pathname* is not `cl:pathnamep'.
 Contents of file written can be read with `set-api-method-table-from-parsed-json-pathname'.
+:EXAMPLE
+ ;; Make sure we're using the production endpoint when making this request.
+ \(let \(\(*base-url* \"http://openapi.etsy.com/v2\"\)\)
+   \(dump-api-method-table-json-response\)\)
 :SEE-ALSO `api-method-unique-parameter-types',
 `api-method-find-methods-with-param-type', `get-method-table',  `api-method'.
 `api-method-unique-parameter-names', `api-method-unique-parameter-names-hashed-verify-all-keyword-p'."
@@ -423,6 +427,11 @@ Contents of file written can be read with `set-api-method-table-from-parsed-json
 INPUT as file designated by `*api-method-table-json-pathname*'.
 :NOTE JSON object _MUST_ begin at second line of INPUT we use the first line as a comment
 to indicate when the file was last written.
+:EXAMPLE
+ ;; Make sure we're using the production endpoint when making this request.
+ \(let* \(\(*base-url* \"http://openapi.etsy.com/v2\"\)
+        \(*api-method-table-json-pathname* \(dump-api-method-table-json-response\)\)\)
+   \(set-api-method-table-from-parsed-json-pathname\)\)
 :SEE-ALSO `dump-api-method-table-json-response'."
   (when (and *api-method-table-json-pathname*
              (pathnamep *api-method-table-json-pathname*)

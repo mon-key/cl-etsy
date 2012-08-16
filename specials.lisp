@@ -513,7 +513,11 @@ with `api-explicit-class-output-defgeneric-forms'
   "Hash-table mapping Etsy API strings to Lispy symbols/keywords.
 :EXAMPLE
  \(gethash \"type\" *api-response-string-symbol-hash-for-object-key-fn*\)
- \(gethash :type *api-response-string-symbol-hash-for-object-key-fn*\)")
+ \(gethash :type *api-response-string-symbol-hash-for-object-key-fn*\)
+:NOTE The bulk of the key/value pairs of this hash-table are set with
+`api-string-or-symbol-list-hash-for-object-key-fn' and
+`api-method-unique-parameter-names-hashed' which each use the value of this
+variable as the default for their HASH-TABLE parameter.")
 
 
 ;;; ==============================
