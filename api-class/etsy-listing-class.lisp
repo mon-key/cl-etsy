@@ -312,7 +312,19 @@ Can be interrogated `listing-state-p'.
     ;; :perm-scope none
     ;; :type float
     :documentation "The time at which the listing last changed state.")
-
+   
+   ;; :NOTE as of 2012/08/14 the following slots will be removed from the the default listing representation
+   ;; hue saturation is-black-and-white brightness
+   ;; 
+   ;; "The information is still available by providing the MainImage Association to the `includes` parameter on the request.
+   ;;  ...
+   ;;  it should be fairly simple to convert if you were using this information
+   ;;  simply include MainImage as an Association on your request and
+   ;;  consequently retrieve the data from MainImage"
+   ;; (URL `https://groups.google.com/group/etsy-api-v2/msg/4ec6c2e0cca91080')
+   ;;
+   
+   ;; 
    ;; replaces v1's hsv-color (mostly)
    (hue
     :initarg :hue
@@ -320,7 +332,8 @@ Can be interrogated `listing-state-p'.
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The hue of the listing's primary image (HSV color).")
+    :documentation "The hue of the listing's primary image (HSV color).
+[DEPRECATED] As of 2012/08/14 use association include MainImage to retrieve this information.")
 
    (saturation
     :initarg :saturation
@@ -328,7 +341,8 @@ Can be interrogated `listing-state-p'.
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The saturation of the listing's primary image (HSV color).")
+    :documentation "The saturation of the listing's primary image (HSV color).
+[DEPRECATED] As of 2012/08/14 use association include MainImage to retrieve this information.")
   
    (brightness
     :initarg :brightness
@@ -336,7 +350,8 @@ Can be interrogated `listing-state-p'.
     ;; :visibility public
     ;; :perm-scope none
     ;; :type int
-    :documentation "The value of the listing's primary image (HSV color).")
+    :documentation "The value of the listing's primary image (HSV color).
+[DEPRECATED] As of 2012/08/14 use association include MainImage to retrieve this information.")
 
    ;; is_black_and_white
    (is-black-and-white
@@ -345,7 +360,8 @@ Can be interrogated `listing-state-p'.
     ;; :visibility public
     ;; :perm-scope none
     ;; :type boolean
-    :documentation "True if the listing's primary image is in black & white.")
+    :documentation "True if the listing's primary image is in black & white.
+[DEPRECATED] As of 2012/08/14 use association include MainImage to retrieve this information.")
 
    (url
     :initarg :url
@@ -444,6 +460,20 @@ Each Listing is associated with a User, and with a Shop (Users own Shops.)
 Etsy Listings have a creation date, and are valid for approximately four months.
 Listings have a price and a quantity, and when they're sold out, the User must
 renew them before they can be sold again.
+
+:NOTE As of 2012/08/14 the following slots will be removed from the the default
+listing representation:
+ hue saturation is-black-and-white brightness
+
+Some discussion/rationale for this change is as follows:
+ \"The information is still available by providing the MainImage Association to
+  the `includes` parameter on the request.
+   ...
+   it should be fairly simple to convert if you were using this information
+   simply include MainImage as an Association on your request and
+   consequently retrieve the data from MainImage\"
+  (URL `https://groups.google.com/group/etsy-api-v2/msg/4ec6c2e0cca91080')
+
  (URL `http://www.etsy.com/developers/documentation/reference/listing')"))
 
 ;; (defmethod print-object ((x listing) stream)
