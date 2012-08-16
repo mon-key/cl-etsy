@@ -65,6 +65,12 @@ API-METHODS
  "findAllUsers"
  "getUser"
  "findAllUsersForTeam"
+ "getCirclesContainingUser"
+ "getConnectedUser"
+ "unconnectUsers"
+ "connectUsers"
+ "getConnectedUsers"
+
 
 ----
  (closer-mop:class-finalized-p (find-class 'user))
@@ -176,6 +182,63 @@ API-METHODS
   (:TYPE         . "User")
   (:VISIBILITY   . "public")
   (:HTTP-METHOD . "GET"))
+
+
+ ((:NAME . "getCirclesContainingUser")
+  (:DESCRIPTION . "Returns a list of users who have circled this user")
+  (:URI . "/users/:user_id/circles")
+  (:PARAMS
+   (:PAGE . "int")
+   (:OFFSET . "int")
+   (:LIMIT . "int")
+   (:USER-ID . "user_id_or_name"))
+  (:DEFAULTS
+   (:PAGE)
+   (:OFFSET . 0)
+   (:LIMIT . 25))
+  (:TYPE . "User")
+  (:VISIBILITY . "public")
+  (:HTTP-METHOD . "GET"))
+ 
+ ((:NAME . "getConnectedUser")
+  (:DESCRIPTION . "Returns details about a connection between users")
+  (:URI . "/users/:user_id/circles/:to_user_id")
+  (:PARAMS
+   (:PAGE . "int")
+   (:OFFSET . "int")
+   (:LIMIT . "int")
+   (:TO-USER-ID . "user_id_or_name")
+   (:USER-ID . "user_id_or_name"))
+  (:DEFAULTS
+   (:PAGE)
+   (:OFFSET . 0)
+   (:LIMIT . 25))
+  (:TYPE . "User")
+  (:VISIBILITY . "public")
+  (:HTTP-METHOD . "GET"))
+;; :TO-USER-ID  "to_user_id"
+((:NAME . "unconnectUsers")
+  (:DESCRIPTION
+   . "Removes a user (to_user_id) from the logged in user's (user_id) circle")
+  (:URI . "/users/:user_id/circles/:to_user_id")
+  (:PARAMS ("to_user_id" . "user_id_or_name") (:USER-ID . "user_id_or_name"))
+  (:DEFAULTS) (:TYPE . "User") (:VISIBILITY . "private")
+  (:HTTP-METHOD . "DELETE"))
+ 
+((:NAME . "getConnectedUsers")
+  (:DESCRIPTION . "Returns a list of users that are in this user's cricle")
+  (:URI . "/users/:user_id/connected_users")
+  (:PARAMS (:PAGE . "int") (:OFFSET . "int") (:LIMIT . "int")
+   (:USER-ID . "user_id_or_name"))
+  (:DEFAULTS (:PAGE) (:OFFSET . 0) (:LIMIT . 25)) (:TYPE . "User")
+  (:VISIBILITY . "public") (:HTTP-METHOD . "GET"))
+ 
+((:NAME . "connectUsers")
+  (:DESCRIPTION . "Adds user (to_user_id) to the user's (user_id) circle")
+  (:URI . "/users/:user_id/connected_users")
+  (:PARAMS ("to_user_id" . "user_id_or_name") (:USER-ID . "user_id_or_name"))
+  (:DEFAULTS) (:TYPE . "User") (:VISIBILITY . "private")
+  (:HTTP-METHOD . "POST"))
 
 |#
 
