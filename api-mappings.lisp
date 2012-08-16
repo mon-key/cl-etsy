@@ -243,6 +243,7 @@ Each element of list returned has the format:
 
 (defun api-string/symbol-lookup (string &optional (hash-table *api-response-string-symbol-hash-for-object-key-fn*))
   "If STRING is a hash-key in HASH-TABLE return its corresponding hash-value else return STRING.
+STRING is a string or symbol.
 :EXAMPLE
  \(equal \(api-string/symbol-lookup :description\) \"description\"\)
  \(equal \(api-string/symbol-lookup \"description\"\) :description\)
@@ -407,7 +408,7 @@ Contents of file written can be read with `set-api-method-table-from-parsed-json
  ;; Make sure we're using the production endpoint when making this request.
  \(let \(\(*base-url* \"http://openapi.etsy.com/v2\"\)\)
    \(dump-api-method-table-json-response\)\)
-:SEE-ALSO `api-method-unique-parameter-types',
+:SEE-ALSO `api-method-unique-parameter-names-hashed', `api-method-unique-parameter-types',
 `api-method-find-methods-with-param-type', `get-method-table',  `api-method'.
 `api-method-unique-parameter-names', `api-method-unique-parameter-names-hashed-verify-all-keyword-p'."
   (if (pathnamep *api-method-table-json-pathname*)
@@ -432,7 +433,12 @@ to indicate when the file was last written.
  \(let* \(\(*base-url* \"http://openapi.etsy.com/v2\"\)
         \(*api-method-table-json-pathname* \(dump-api-method-table-json-response\)\)\)
    \(set-api-method-table-from-parsed-json-pathname\)\)
-:SEE-ALSO `dump-api-method-table-json-response'."
+ ;; Update *api-response-string-symbol-hash-for-object-key-fn* with previously
+ ;; unhashed api-method param names:
+ (api-method-unique-parameter-names-hashed)
+:SEE-ALSO `dump-api-method-table-json-response', `api-method-unique-parameter-names-hashed',
+`api-method-unique-parameter-names', `api-method-unique-parameter-types', `api-method-find-methods-with-param-type',
+`get-method-table', `api-method',  `api-method-unique-parameter-names-hashed-verify-all-keyword-p'."
   (when (and *api-method-table-json-pathname*
              (pathnamep *api-method-table-json-pathname*)
              (probe-file *api-method-table-json-pathname*))
@@ -596,21 +602,67 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
 ;;     nconcing params into gthr
 ;;     finally (return (sort (delete-duplicates gthr :test #'equal)  #'string<))))
 ;; (api-method-unique-parameter-names)
-(defun api-method-unique-parameter-names (method-table) ;; *api-method-table* (get-method-table)
-  "Return all unique paramter names for each api-method returned by Etsy API method \"getMethodTable\"."
+;; (typep (or (eql element-type t) (eql element-type :string) (eql element-type :symbol)) '(member (:string :symbol t)))
+(defun api-method-unique-parameter-names (method-table); &key (element-type t)) ;; *api-method-table* (get-method-table)
+  "Return all unique paramter names for each api-method returned by Etsy API method \"getMethodTable\".
+:EXAMPLE
+ \(let* \(\(*base-url* \"http://openapi.etsy.com/v2\"\)\)
+   \(api-method-unique-parameter-names\)\)
+:SEE-ALSO `dump-api-method-table-json-response', `set-api-method-table-json-response', `api-method-unique-parameter-names-hashed',
+`api-method-unique-parameter-names', `api-method-unique-parameter-types', `api-method-find-methods-with-param-type',
+`api-method-unique-parameter-names-hashed-verify-all-keyword-p', `get-method-table', `api-method'."
+  ;; (declare (cl:type (or (eql t) (eql :string) (eql :keyword)) element-type))
   (loop 
     ;; This version can be run after the functions of api-request.lisp are in our environment.
     for method in (or method-table
+                      ;; (if (gethash "results" *api-response-string-symbol-hash-for-object-key-fn*)
+                      ;;     (parsed-api-call (concatenate 'string *base-url* "/")
+                      ;;                      :object-as :alist
+                      ;;                      :object-key-fn #'api-string/symbol-lookup)
+                      ;;     (cdr    
+                      ;;      (assoc "results"
+                      ;;             (parsed-api-call (concatenate 'string *base-url* "/")
+                      ;;                              :object-as :alist
+                      ;;                              :object-key-fn #'api-string/symbol-lookup
+                      ;;                              :return-values nil))
+                      ;;      :test #'equal))
                       (parsed-api-call (concatenate 'string *base-url* "/") 
                                        :object-as :alist
                                        :object-key-fn #'api-string/symbol-lookup))
     for params = (mapcar #'car (cdr (assoc :params method)))
     nconcing params into gthr
+    ;; finally (return
+    ;;           (sort 
+    ;;            (ecase element-type
+    ;;              (:string 
+    ;;               (remove-if-not #'stringp 
+    ;;                              (delete-duplicates gthr :test #'equal)))
+    ;;              (:keyword 
+    ;;               (remove-if-not #'keywordp (delete-duplicates gthr :test #'eql)))
+    ;;              (t
+    ;;               (remove-if #'null (delete-duplicates gthr :test #'equal))))
+    ;;            #'string>))))
     finally (return (sort (remove-if-not #'stringp (delete-duplicates gthr :test #'equal)) #'string>))))
 
 ;; (clrhash *api-response-string-symbol-hash-for-object-key-fn*)
 ;; (api-method-unique-parameter-names-hashed)
 (defun api-method-unique-parameter-names-hashed (&key (hash-table *api-response-string-symbol-hash-for-object-key-fn*))
+  "Return as cl:values the `cl:hash-table-count' of HASH-TABLE before and after performing the following operations:
+For each :PARAM alist element in list returned by `api-method-unique-parameter-names'
+check whether the param element is present as a hash-key in HASH-TABLE and if
+not not evaluate `api-string-or-symbol-list-hash-for-object-key-fn' using
+`api-method-param-name-as-keyword' as its MUNGING-FUNCTION'.
+:EXAMPLE
+ ;; Make sure we're using the production endpoint when making this request.
+ \(let* \(\(*base-url* \"http://openapi.etsy.com/v2\"\)
+        \(*api-method-table-json-pathname* \(dump-api-method-table-json-response\)\)\)
+   \(*api-method-table* \(nth-value 0 \(set-api-method-table-from-parsed-json-pathname\)\)\)
+   \(api-method-unique-parameter-names-hashed\)\)
+:SEE-ALSO `dump-api-method-table-json-response', `set-api-method-table-json-response', `api-method-unique-parameter-names-hashed',
+`api-method-unique-parameter-names', `api-method-unique-parameter-types', `api-method-find-methods-with-param-type',
+`api-method-unique-parameter-names-hashed-verify-all-keyword-p', `get-method-table', `api-method'."
+  ;; we hash only those params named by strings in *api-method-table* and which
+  ;; are currently not in *api-response-string-symbol-hash-for-object-key-fn*
   (let ((maybe-method-string-list (api-method-unique-parameter-names))
         (start-hash-count  (hash-table-count hash-table)))
     (if maybe-method-string-list
@@ -624,7 +676,10 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
 (defun api-method-unique-parameter-types (method-table) ;; *api-method-table* (get-method-table)
   "Return a list of all unique parameter types returned by the equivalent of \"getMethodTable\".
 :EXAMPLE
- \(api-method-unique-parameter-types *api-method-table*\)"
+ \(api-method-unique-parameter-types *api-method-table*\)
+:SEE-ALSO `dump-api-method-table-json-response', `set-api-method-table-json-response', `api-method-unique-parameter-names-hashed',
+`api-method-unique-parameter-names', `api-method-unique-parameter-types', `api-method-find-methods-with-param-type',
+`api-method-unique-parameter-names-hashed-verify-all-keyword-p', `get-method-table', `api-method'."
   (loop 
     for method in (or method-table
                       (parsed-api-call (concatenate 'string *base-url* "/") 
@@ -641,7 +696,10 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
 (defun api-method-find-methods-with-param-type (method-table param-type) ; *api-method-table* (get-method-table)
    "Return a list of all Etsy API api-method's in METHOD-TABLE with type PARAM-TYPE.
 :EXAMPLE
- \(api-method-find-methods-with-param-type \(get-method-table\) \"boolean\"\)"
+ \(api-method-find-methods-with-param-type \(get-method-table\) \"boolean\"\)
+:SEE-ALSO `dump-api-method-table-json-response', `set-api-method-table-json-response', `api-method-unique-parameter-names-hashed',
+`api-method-unique-parameter-names', `api-method-unique-parameter-types', `api-method-find-methods-with-param-type',
+`api-method-unique-parameter-names-hashed-verify-all-keyword-p', `get-method-table', `api-method'."
   (loop 
     for method in method-table
     for verify-params =  (loop 
@@ -657,13 +715,16 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
 
 ;; Sanity
 (defun api-method-unique-parameter-names-hashed-verify-all-keyword-p (method-table) ;; *api-method-table* (get-method-table)
-  ;; Return as cl:values.
-  ;; nth-value 0 is T if `api-method-unique-parameter-names-hashed' processed every unique parameter name as a keyword.
-  ;; nth-value 1 is null when nth-value 1 is T otherwise it is a list of consed pairs each cons has the form:
-  ;;  ( <API-METHOD-NAME> . <PARAM-NAME> )
-  ;; api-method-name and param-name are strings designating the camel-cased Etsy
-  ;; API method name and the parameter name of that method which we failed to
-  ;; hash as a string/keyword keyword/string pair.
+  "Return as cl:values.
+  nth-value 0 is T if `api-method-unique-parameter-names-hashed' processed every unique parameter name as a keyword.
+  nth-value 1 is null when nth-value 1 is T otherwise it is a list of consed pairs each cons has the form:
+   ( <API-METHOD-NAME> . <PARAM-NAME> )
+  api-method-name and param-name are strings designating the camel-cased Etsy
+  API method name and the parameter name of that method which we failed to
+  hash as a string/keyword keyword/string pair.
+:SEE-ALSO `dump-api-method-table-json-response', `set-api-method-table-json-response', `api-method-unique-parameter-names-hashed',
+`api-method-unique-parameter-names', `api-method-unique-parameter-types', `api-method-find-methods-with-param-type',
+`api-method-unique-parameter-names-hashed-verify-all-keyword-p', `get-method-table', `api-method'."
   (loop 
     for method in (or method-table ;; (get-method-table) *api-method-table*
                       (parsed-api-call (concatenate 'string *base-url* "/") 
@@ -681,24 +742,26 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
 
 #|
 
- - The 109 unique api-method parameter names returned  on 2012-07-24:
-
-  (loop 
-    for method in (parsed-api-call (concatenate 'string *base-url* "/") 
-                                   :object-as :alist
-                                   :object-key-fn #'api-string/symbol-lookup)
-    for params = (mapcar #'car (cdr (assoc :params method)))
-    nconcing params into gthr
-    finally (return (sort (delete-duplicates gthr :test #'equal) #'string<)))
+ - The 108 unique api-method parameter names returned  on 2012-07-24:
+ (loop 
+   with rtn = ()
+   for method in (parsed-api-call (concatenate 'string *base-url* "/") 
+                                  :object-as :alist
+                                  :object-key-fn #'api-string/symbol-lookup)
+   for params = (mapcar #'car (cdr (assoc :params method)))
+   nconcing params into gthr
+   finally (return (values 
+                    (setf rtn (sort (delete-duplicates gthr :test #'equal) #'string<))
+                    (map 'list #'(lambda (x) (api-string/symbol-lookup  x)) rtn))))
 
  (:alchemy-message :allow-cc :allow-check :allow-mo :allow-other :allow-paypal
   :announcement :cart-id :category :category-id :city :color :color-accuracy
   :country-id :coupon-code :coupon-id :data-version :description
-  :destination-country-id :destination-region-id :distance-max :domestic-only
+  :destination-country-id :destination-region-id :domestic-only
   :featured-treasury-id :first-line :free-shipping :geo-level :image
-  :is-refusing-alchemy :is-supply :keywords :language :lat :limit :listing-id
-  :listing-ids :listing-image-id :location :lon :materials :max-created
-  :max-price :message :message-from-buyer :message-from-seller
+  :include-private :is-refusing-alchemy :is-supply :keywords :language :lat
+  :limit :listing-id :listing-ids :listing-image-id :location :lon :materials
+  :max-created :max-price :message :message-from-buyer :message-from-seller
   :message-to-seller :min-created :min-price :name :occasion :offset :order-id
   :origin-country-id :owner-id :page :payment-adjustment-id
   :payment-adjustment-item-id :payment-id :payment-template-id :paypal-email
@@ -708,16 +771,16 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
   :sale-message :second-line :secondary-cost :seller-active :shipping-info-id
   :shipping-template-entry-id :shipping-template-id :shop-id :shop-name
   :shop-section-id :sort-on :sort-order :src :state :status :style :subsubtag
-  :subtag :tag :tags :target-user-id :team-id :team-ids :title :transaction-id
+  :subtag :tag :tags :target-user-id :title :to-user-id :transaction-id
   :treasury-key :user-address-id :user-id :was-paid :was-shipped :when-made
-  :who-made :zip))
+  :who-made :zip)
 
  ("alchemy_message" "allow_cc" "allow_check" "allow_mo" "allow_other"
   "allow_paypal" "announcement" "cart_id" "category" "category_id" "city"
   "color" "color_accuracy" "country_id" "coupon_code" "coupon_id" "data_version"
-  "description" "destination_country_id" "destination_region_id" "distance_max"
-  "domestic_only" "featured_treasury_id" "first_line" "free_shipping"
-  "geo_level" "image" "is_refusing_alchemy" "is_supply" "keywords" "language"
+  "description" "destination_country_id" "destination_region_id" "domestic_only"
+  "featured_treasury_id" "first_line" "free_shipping" "geo_level" "image"
+  "include_private" "is_refusing_alchemy" "is_supply" "keywords" "language"
   "lat" "limit" "listing_id" "listing_ids" "listing_image_id" "location" "lon"
   "materials" "max_created" "max_price" "message" "message_from_buyer"
   "message_from_seller" "message_to_seller" "min_created" "min_price" "name"
@@ -730,9 +793,9 @@ For each uniqe slot in CLASS-WITH-CLASS-SLOT-LIST output has the format:
   "second_line" "secondary_cost" "seller_active" "shipping_info_id"
   "shipping_template_entry_id" "shipping_template_id" "shop_id" "shop_name"
   "shop_section_id" "sort_on" "sort_order" "src" "state" "status" "style"
-  "subsubtag" "subtag" "tag" "tags" "target_user_id" "team_id" "team_ids"
-  "title" "transaction_id" "treasury_key" "user_address_id" "user_id" "was_paid"
-  "was_shipped" "when_made" "who_made" "zip")
+  "subsubtag" "subtag" "tag" "tags" "target_user_id" "title" "to_user_id"
+  "transaction_id" "treasury_key" "user_address_id" "user_id" "was_paid"
+  "was_shipped" "when_made" "who_made" "zip") 
 
 |#
 
