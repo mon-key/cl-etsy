@@ -52,6 +52,26 @@
 
 ;;; ==============================
 
+;; Following are slots which are in a transitional state due to deprecation announcements:
+
+;; [DEPRECATED] To be removed as of 2012/08/14
+;; 1 classes: shop
+(defgeneric alchemy-message (object))
+(defgeneric (setf alchemy-message) (alchemy-message object))
+
+;; [DEPRECATED] To be removed as of 2012/08/14
+;; 1 classes: shop
+(defgeneric is-refusing-alchemy (object))
+(defgeneric (setf is-refusing-alchemy) (is-refusing-alchemy object))
+
+;; :NOTE As of 2012/08/14 supersedes/replaces `is-refusing-alchemy' which is to be deprecated/removed 
+;; 1 classes: shop
+(defgeneric accepts-custom-requests (object))
+(defgeneric (setf accepts-custom-requests) (accepts-custom-requests object))
+
+
+;;; ==============================
+
 ;; 1 classes: featured-treasury
 (defgeneric active-date (object))
 (defgeneric (setf active-date) (active-date object))
@@ -75,10 +95,6 @@
 ;; 1 classes: payment-adjustment-item
 (defgeneric adjustment-type (object))
 (defgeneric (setf adjustment-type) (adjustment-type object))
-
-;; 1 classes: shop
-(defgeneric alchemy-message (object))
-(defgeneric (setf alchemy-message) (alchemy-message object))
 
 ;; 1 classes: payment-template
 (defgeneric allow-bt (object))
@@ -447,10 +463,6 @@
 ;; 1 classes: billing-overview
 (defgeneric is-overdue (object))
 (defgeneric (setf is-overdue) (is-overdue object))
-
-;; 1 classes: shop
-(defgeneric is-refusing-alchemy (object))
-(defgeneric (setf is-refusing-alchemy) (is-refusing-alchemy object))
 
 ;; 1 classes: user-profile
 (defgeneric is-seller (object))
