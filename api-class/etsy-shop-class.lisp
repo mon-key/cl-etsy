@@ -259,7 +259,10 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type string
-    :documentation "A message to potential Alchemy buyers.")
+    :documentation "A message to potential Alchemy buyers.
+[DEPRECATED] As of 2012/08/27 this field has ben removed.
+ (URL `https://groups.google.com/group/etsy-api-v2/msg/e652316d5701124c')")
+
 
    ;; is_refusing_alchemy
    (is-refusing-alchemy
@@ -268,7 +271,21 @@ API-METHODS
     ;; :visibility public
     ;; :perm-scope none
     ;; :type boolean
-    :documentation "True is the shop does not accept Alchemy requests.")
+    :documentation "True is the shop does not accept Alchemy requests.
+[DEPRECATED] As of 2012/08/27 is_refusing_alchemy field (along with alchemy_message) has been removed from Shop representations.
+It will be replaced by accepts_custom_requests, which indicates whether or not
+the shop owner is open to accepting convos about custom item requests.
+ (URL `https://groups.google.com/group/etsy-api-v2/msg/97ec390b3e0a9bae')")
+
+   ;; accepts_custom_requests
+   (accepts-custom-requests
+    :initarg :accepts-custom-requests
+    :accessor accepts-custom-requests
+    ;; :visibility public
+    ;; :perm-scope none
+    ;; :type boolean
+    :documentation "True if the shop accepts requests for custom items.
+:NOTE Replaces/supersedes is_refusing_alchemy field.")
 
    ;; policy_welcome
    (policy-welcome

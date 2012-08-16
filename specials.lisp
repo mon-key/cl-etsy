@@ -372,8 +372,10 @@ currency to which the currency code corresponds.
     (listing
      (listing-id state user-id category-id title description creation-tsz ending-tsz
       original-creation-tsz last-modified-tsz price currency-code quantity tags
-      category-path materials shop-section-id featured-rank state-tsz hue saturation
-      brightness is-black-and-white url views num-favorers who-made is-supply
+      category-path materials shop-section-id featured-rank state-tsz 
+      ;; Following four fields removed as of 2012/08/14
+      hue saturation brightness is-black-and-white
+      url views num-favorers who-made is-supply
       when-made recipient occasion style))
 
     (listing-image
@@ -438,7 +440,11 @@ currency to which the currency code corresponds.
      (shop-id shop-name first-line second-line city state zip country-id user-id
       creation-tsz title announcement currency-code is-vacation vacation-message
       sale-message last-updated-tsz listing-active-count login-name lat lon
-      alchemy-message is-refusing-alchemy policy-welcome policy-payment
+      ;; Following two fields removed as of 2012/08/14:
+      alchemy-message is-refusing-alchemy
+      ;; is-refusing-alchemy to be superseded by accepts-custom-requests
+      accepts-custom-requests
+      policy-welcome policy-payment
       policy-shipping policy-refunds policy-additional policy-seller-info
       policy-updated-tsz vacation-autoreply ga-code name url image-url-760x100
       num-favorers languages))
