@@ -101,7 +101,10 @@ Following errors successfully:
                          resonse-uri response-stream response-stream-closed
                          response-reason) ; &key (method :get))
   ;; This fails should Etsy ever go down which does happen i.e. 2012-07-30T15:31
-  ;; https://groups.google.com/forum/?fromgroups#!topic/etsy-api-v2/lyZkWT0y1Jk
+  ;; (URL `https://groups.google.com/etsy-api-v2/lyZkWT0y1Jk')
+  ;; Etsy says that whenever the service is unavailable for maintenance they will return code 503:
+  ;;  "503 is what we respond with when we've explicitly taken the site down for maintenance"
+  ;; (URL `https://groups.google.com/group/etsy-api-v2/msg/596436e0ef15e59a')
   (if (or (eql response-code 200) ; GET PUT DELETE
           (eql response-code 201)) ; POST only
       (values
